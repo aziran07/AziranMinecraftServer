@@ -1,0 +1,157 @@
+version: "3.9"
+
+services:
+  minecraft:
+    image: itzg/minecraft-server:java21-alpine
+    container_name: minecraft
+    expose:
+      - 8123:8123/tcp
+      - 25565:25565/tcp
+    volumes:
+      - ./server-data:/data
+    environment:
+      #default env
+      EULA: "true"
+      INIT_MEMORY: "4G"
+      MAX_MEMORY: "20G"
+      VERSION: "1.21"
+      TYPE: "FABRIC"
+
+      #curseforge env
+      # CURSEFORGE_FILES: |
+      #   cloth-config
+      #   fabric-api
+      #   let-me-despawn
+      #   packet-fixer
+      #   lithium
+      #   indium
+      #   chunky-pregenerator
+      #   clumps
+      #   dynmapforge
+      #   resourceful-lib
+      #   handcrafted
+      #   architectury-api
+      #   ftb-library-fabric
+      #   ftb-ranks-fabric
+      #   ftb-essentials
+      #   neruina
+      #   macaws-bridges
+      #   macaws-fences-and-walls
+      #   toms-storage-fabric
+      #   terralith
+      #   structory
+      #   structory-towers
+      #   nullscape
+      #   croptopia
+      #   yet-another-discord-chat-link
+      # CF_API_KEY: ${CF_API_KEY}
+      #server properties
+      DIFFICULTY: "hard"
+      ALLOW_FLIGHT: "true"
+      ANNOUNCE_PLAYER_ACHIEVEMENTS: "true"
+
+      #rcon env
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: ${RCON_PASSWORD}
+
+      #misc
+      TZ: "Asia/Seoul"
+    restart: always
+    networks:
+      - aziran-mc-network
+
+  rcon:
+    image: itzg/rcon
+    container_name: rcon
+    expose:
+      - 4326:4326/tcp
+      - 4327:4327/tcp
+    environment:
+      RWA_ENV: "true"
+      RWA_RCON_HOST: minecraft
+      RWA_RCON_PASSWORD: ${RCON_PASSWORD}
+      RWA_ADMIN: "true"
+      RWA_USERNAME: ${ADMIN_NAME}
+      RWA_PASSWORD: ${ADMIN_PASSWORD}
+      RWA_WEB_RCON: "false"
+      RWA_WEBSOCKET_URL_SSL: ${WSS_URL}
+      RWA_WEBSOCKET_URL: ${WS_URL}
+    links:
+      - minecraft
+    networks:
+      - aziran-mc-network
+
+  portainer:
+    image: portainer/portainer-ce:alpine-sts
+    container_name: portainer
+    expose:
+      - 9443:9443/tcp
+    volumes:
+      - ./portainer-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - aziran-mc-network
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    user: root
+    restart: always
+    networks:
+      - aziran-mc-network
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    expose:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-data:/prometheus
+    command:
+      - "--storage.tsdb.path=/prometheus"
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    user: root
+    restart: always
+    networks:
+      - aziran-mc-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    expose:
+      - 3000:3000/tcp
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+    user: root
+    networks:
+      - aziran-mc-network
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+      - 25565:25565/tcp
+      - 8123:8123/tcp
+    volumes:
+      - ./nginx/logs:/var/log/nginx
+    environment:
+      - TZ=Asia/Seoul
+    links:
+      - minecraft
+    networks:
+      - aziran-mc-network
+
+networks:
+  aziran-mc-network:
+    driver: bridge

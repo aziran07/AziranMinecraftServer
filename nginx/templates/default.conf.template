@@ -1,0 +1,87 @@
+gzip on;
+
+ssl_certificate cert.pem;
+ssl_certificate_key key.pem;
+
+proxy_set_header Host $host;
+proxy_http_version 1.1;
+
+#websocket
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $connection_upgrade;
+
+
+server {
+    listen 80;
+    listen 443 ssl http2;
+
+    server_name mcmap.aziran.uk;
+
+    location / {
+        proxy_pass http://localhost:8123;
+    }
+}
+
+server {
+    listen 80;
+
+    server_name www.aziran.uk aziran.uk grafana.aziran.uk portainer.aziran.uk minecraft-rcon.aziran.uk;
+
+    return 301 https://$server_name$request_uri;
+
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name www.aziran.uk aziran.uk;
+
+    location / {
+        proxy_pass http://localhost:8123;
+    }
+    # location / {
+    #     add_header Content-Type text/html;
+        
+    #     return 200 '<html><body>Aziran Minecraft Server</body></html>';
+    # }
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name  grafana.aziran.uk;
+    
+    location / {
+        proxy_pass http://grafana:3000;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name portainer.aziran.uk;
+
+    location / {
+        proxy_pass https://portainer:9443;
+        
+    }
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name minecraft-rcon.aziran.uk;
+
+    location / {
+        proxy_pass http://rcon:4326;
+    }
+
+    location /websocket-req {
+        proxy_pass http://rcon:4327;
+    }
+}

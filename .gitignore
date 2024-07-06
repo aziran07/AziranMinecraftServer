@@ -1,0 +1,8 @@
+/.vscode
+*.pem
+.env
+logs
+/grafana-data
+/portainer-data
+/prometheus-data
+/server-data
