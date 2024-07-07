@@ -6,3 +6,4 @@ logs
 /portainer-data
 /prometheus-data
 /server-data
+/minecraft_backups
