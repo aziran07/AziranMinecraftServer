@@ -1,0 +1,908 @@
+{
+  "minecraft_version": "26.3",
+  "loader": "neoforge",
+  "loader_version": "26.3.0.8-beta",
+  "loader_installer": {
+    "source": "neoforged-maven",
+    "maven_metadata": "https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml",
+    "installer_url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.8-beta/neoforge-26.3.0.8-beta-installer.jar",
+    "note": "26.3 계열은 현재 beta 채널만 배포된다. itzg 이미지의 기본값(최신 non-beta)으로는 해결되지 않으므로 NEOFORGE_VERSION에 정확한 버전을 고정한다."
+  },
+  "java_version": 25,
+  "server_image": "itzg/minecraft-server:java25-alpine",
+  "server_type": "NEOFORGE",
+  "data_directory": "server-data-26.3-neoforge",
+  "mods_directory": "server-data-26.3-neoforge/mods",
+  "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
+  "mod_count": 20,
+  "mods": [
+    {
+      "title": "Almanac",
+      "source": "modrinth",
+      "project_slug": "almanac",
+      "project_id": "Gi02250Z",
+      "version_id": "a2UjhUbC",
+      "version_number": "1.26.9.1",
+      "version_type": "release",
+      "date_published": "2026-09-03T07:28:34.076454Z",
+      "filename": "almanac-neoforge-26.2-1.26.9.1.jar",
+      "url": "https://cdn.modrinth.com/data/Gi02250Z/versions/a2UjhUbC/almanac-neoforge-26.2-1.26.9.1.jar",
+      "size": 34836,
+      "sha1": "7960a5a4fcc951ed9890deb7b543af03d4e6813e",
+      "sha512": "e7bf6df95a9c6029d26a44a30362c221604e7612f17bbe5985b8c33aa606dec1755f7600b80e798b135bc69386796ce64d1beb15ac84c654caffc7d537d3e781",
+      "game_versions": [
+        "26.2",
+        "26.3-snapshot-1",
+        "26.3-snapshot-2",
+        "26.3-snapshot-3",
+        "26.3-snapshot-4",
+        "26.3-snapshot-5",
+        "26.3-snapshot-6",
+        "26.3-snapshot-7",
+        "26.3-snapshot-8",
+        "26.3-snapshot-9",
+        "26.3-snapshot-10",
+        "26.3-pre-1",
+        "26.3-pre-2",
+        "26.3-pre-3",
+        "26.3-rc-1",
+        "26.3-rc-2",
+        "26.3-rc-3",
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "server_side": "required",
+      "client_side": "unsupported",
+      "declared_mod_ids": [
+        "almanac"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.2.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.2,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Balm",
+      "source": "modrinth",
+      "project_slug": "balm",
+      "project_id": "MBAkmtvl",
+      "version_id": "gbPO54rd",
+      "version_number": "26.3.0.1+neoforge-26.3",
+      "version_type": "release",
+      "date_published": "2026-09-15T20:08:55.621693Z",
+      "filename": "balm-neoforge-26.3-26.3.0.1.jar",
+      "url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/gbPO54rd/balm-neoforge-26.3-26.3.0.1.jar",
+      "size": 1185440,
+      "sha1": "bbab9d3c95a1856fc4ff237de0d67e7fb4dd4abc",
+      "sha512": "f5a6440bc85e592ab906bfcbf7d24297bf4d9167b908af170fcab4888d9fc92ef87f8073c5d6a1765cb15513f4df8d5caf07f47a3d50a05e48730c737ba7bed4",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "balm"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3-,26.4)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "kuma-api-neoforge-26.3.0.1.jar",
+          "path": "META-INF/jarjar/kuma-api-neoforge-26.3.0.1.jar",
+          "size": 211844,
+          "sha512": "4d1847f4ca55a9a9bf21104f16adae5ccaa2ed66f624852f40afb00544415a1f530f77a5024363e7879448eb8bffe5833f08d1bb79d8b203284538e9872ce2bc",
+          "declared_mod_ids": [
+            "kuma_api"
+          ]
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Chunky",
+      "source": "modrinth",
+      "project_slug": "chunky",
+      "project_id": "fALzjamp",
+      "version_id": "EyCqftOK",
+      "version_number": "1.5.4",
+      "version_type": "release",
+      "date_published": "2026-07-23T04:22:28.142267Z",
+      "filename": "Chunky-NeoForge-1.5.4.jar",
+      "url": "https://cdn.modrinth.com/data/fALzjamp/versions/EyCqftOK/Chunky-NeoForge-1.5.4.jar",
+      "size": 353241,
+      "sha1": "eec0049466be9dca966a7446df116c97ce000410",
+      "sha512": "ffcbedca6a0b5018962a8a62df21afdafe327ef306e6acb2f602b3bb56f313b88c90e9a57d9a2abaa9d12bd122e888d933ccb243c8fa3388e086a5dd1c18e30d",
+      "game_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "chunky"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.1.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.1,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Clumps",
+      "source": "modrinth",
+      "project_slug": "clumps",
+      "project_id": "Wnxd13zP",
+      "version_id": "kV095inH",
+      "version_number": "26.3.2",
+      "version_type": "release",
+      "date_published": "2026-09-16T17:03:25.035105Z",
+      "filename": "Clumps-neoforge-26.3-26.3.2.jar",
+      "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/kV095inH/Clumps-neoforge-26.3-26.3.2.jar",
+      "size": 18766,
+      "sha1": "aeb6689f2f3840021a8af0b02248ece388d262ab",
+      "sha512": "710ac1f2ac8f2f6d39b6a4f56a7b0159a32bb64d3ff8337e20fca9eb991b32df54d38c7c0c1e3487a7c220bde80988def8562925fbc5dc5e2c94134244f41b4a",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "clumps"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[4,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Cooking for Blockheads",
+      "source": "modrinth",
+      "project_slug": "cooking-for-blockheads",
+      "project_id": "vJnhuDde",
+      "version_id": "6CTYyIMC",
+      "version_number": "26.3.0.1+neoforge-26.3",
+      "version_type": "release",
+      "date_published": "2026-09-16T07:42:12.218991Z",
+      "filename": "cookingforblockheads-neoforge-26.3-26.3.0.1.jar",
+      "url": "https://cdn.modrinth.com/data/vJnhuDde/versions/6CTYyIMC/cookingforblockheads-neoforge-26.3-26.3.0.1.jar",
+      "size": 1680026,
+      "sha1": "23109a70bb82d4cb2b733ab12d3d8e65ad27ca42",
+      "sha512": "f1ab202af18c9a7cb3f0582565896df20f1b527aea7ce7645e2607f2394ee85ba322581100b41b026431aba14f6af878c0432ec29dbc1333f892c7cecab93a86",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "cookingforblockheads"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3-,26.4)"
+        },
+        {
+          "mod_id": "balm",
+          "version_range": "[26.3.0.1,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "shogi-api-26.3.0.1.jar",
+          "path": "META-INF/jarjar/shogi-api-26.3.0.1.jar",
+          "size": 103561,
+          "sha512": "4b97e8bd0458267c2e2df78e1b34919a01f8e3a8141a8900f6cd7174905980e33783931ddebffbc977979bdb4ceda0a2c637677c2af5908f135df93eab96152a",
+          "declared_mod_ids": [
+            "shogi_api"
+          ]
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Cristel Lib",
+      "source": "modrinth",
+      "project_slug": "cristel-lib",
+      "project_id": "cl223EMc",
+      "version_id": "v197aEhs",
+      "version_number": "neoforge-26.3-3.1.13",
+      "version_type": "release",
+      "date_published": "2026-09-19T14:48:20.456281Z",
+      "filename": "cristellib-neoforge-26.3-3.1.13.jar",
+      "url": "https://cdn.modrinth.com/data/cl223EMc/versions/v197aEhs/cristellib-neoforge-26.3-3.1.13.jar",
+      "size": 581558,
+      "sha1": "4d4ef0d578ca419b0ce1c2bfab38cba66e49e694",
+      "sha512": "efb06f8c5cdc8ec4852e705fab68fb6f1668be0b226058a24d7ae9d511d8eb77800d128f314fb5d7652fc56faef81c430d8becb376d54991fb14ec1ebeb1dea3",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "server_only_client_optional",
+      "server_side": "required",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "cristellib"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "jankson-1.2.3.jar",
+          "path": "META-INF/jarjar/jankson-1.2.3.jar",
+          "size": 74750,
+          "sha512": "dd48e0db5c138a1ca3bb0f64a1326beee4e796d13f2e45f01ff361b9e42c1ba487cfe0a0f875a8ae7384297cb6fbd3da5d8e10581871682b546305a384902046",
+          "declared_mod_ids": []
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Curios API",
+      "source": "modrinth",
+      "project_slug": "curios",
+      "project_id": "vvuO3ImH",
+      "version_id": "QZcvrMJc",
+      "version_number": "17.0.0-beta+26.3",
+      "version_type": "beta",
+      "date_published": "2026-09-22T06:12:54.761652Z",
+      "filename": "curios-neoforge-17.0.0-beta+26.3.jar",
+      "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/QZcvrMJc/curios-neoforge-17.0.0-beta%2B26.3.jar",
+      "size": 430333,
+      "sha1": "1f11b7a64387bf52a62af3cca7430ba2ae9fe2f7",
+      "sha512": "6d58479f53150e604e6eac839d251299a44486fa4e61d4598940e85e0b3328bf1c0ac71919076aacef8495af0ac37171fc80f4c69c274a3ce6a7cf4c3494e557",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "curios"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3,27)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Farmer's Delight 26 Neo Ver",
+      "source": "curseforge",
+      "project_id": 1699768,
+      "project_slug": "farmers-delight-26-neo-ver",
+      "project_url": "https://www.curseforge.com/minecraft/mc-mods/farmers-delight-26-neo-ver",
+      "file_id": 8928319,
+      "version_number": "26.3-1.3.3-fix4",
+      "version_type": "beta",
+      "date_published": "2026-09-20T06:59:53.74Z",
+      "filename": "FarmersDelight-26.3-1.3.3-fix4.jar",
+      "url": "https://edge.forgecdn.net/files/8928/319/FarmersDelight-26.3-1.3.3-fix4.jar",
+      "size": 3234656,
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "curseforge_reported_sha1": "49c74258da11327ebe25a549e51c1df456463c96",
+      "curseforge_reported_md5": "d1e00998f382874f4827b123844be843",
+      "note": "vectorwing Farmer's Delight 1.21.1-1.3.3의 비공식 NeoForge 26.x 이식판. 원본 프로젝트의 26.3 배포는 없다.",
+      "sha1": "49c74258da11327ebe25a549e51c1df456463c96",
+      "sha512": "7289d3b95946d5fd446c30640bd87c70b4a30aa5cf2ef40e4c9fb19a7c4b9edbed479fdece6614942002bf432659456d0fe6bfd741a9efdd24eae915a751acae",
+      "curseforge_reported_size": 3234656,
+      "declared_mod_ids": [
+        "farmersdelight"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Geckolib",
+      "source": "modrinth",
+      "project_slug": "geckolib",
+      "project_id": "8BmcQJ2H",
+      "version_id": "2s1O42FX",
+      "version_number": "5.5.7",
+      "version_type": "release",
+      "date_published": "2026-09-22T08:02:29.169540Z",
+      "filename": "geckolib-neoforge-26.3-5.5.7.jar",
+      "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/2s1O42FX/geckolib-neoforge-26.3-5.5.7.jar",
+      "size": 1159026,
+      "sha1": "24d1aa6c02afa779558165d0529b1f21a03e1cf7",
+      "sha512": "24a607529f57841a12d90d653a7823acf9a13284cb4631c9ee4c017bcba062e81cb8a7db8933112d9349dd05765333d54c90c9dde8feae3d2590f417201a3220",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only_server_optional",
+      "server_side": "optional",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "geckolib"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.7-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Jade 🔍",
+      "source": "modrinth",
+      "project_slug": "jade",
+      "project_id": "nvQzSEkH",
+      "version_id": "bzrrwapQ",
+      "version_number": "26.3.1+neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-16T04:17:23.111529Z",
+      "filename": "Jade-mc26.3-NeoForge-26.3.1.jar",
+      "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/bzrrwapQ/Jade-mc26.3-NeoForge-26.3.1.jar",
+      "size": 1030902,
+      "sha1": "0a385a583a1e9413ecf2a47d972cb7dd25bf20e0",
+      "sha512": "b6c782de87e7259d997e1992ab610e90dfe83371a37d9a2fd4170c2ff875b7f2453b72255cbbaae36df4cf3e4dabfe8ca409ddaad9e38304db487d4eed363e55",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "jade"
+      ],
+      "required_dependencies": [],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Just Enough Items (JEI)",
+      "source": "modrinth",
+      "project_slug": "jei",
+      "project_id": "u6dRKJwZ",
+      "version_id": "aPx3jxor",
+      "version_number": "31.4.0.21",
+      "version_type": "beta",
+      "date_published": "2026-09-22T11:48:54.803792Z",
+      "filename": "jei-26.3-neoforge-31.4.0.21.jar",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/aPx3jxor/jei-26.3-neoforge-31.4.0.21.jar",
+      "size": 2273626,
+      "sha1": "5a7ef247c40a58aad6b898d3df0f9d73139e1823",
+      "sha512": "0474732486b08d6dcfda0f8286480baef494f0eb99ba4c8262e2468ae91b5a5ddc8649d81a4fecb9f3c858ae5f3512d603b042388fbc8469d4edc647382f686a",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "jei"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "mezz_config",
+          "version_range": "[0.6.3,1.0.0)"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "mezz_config-26.3-neoforge-0.6.3.jar",
+          "path": "META-INF/jarjar/mezz_config-26.3-neoforge-0.6.3.jar",
+          "size": 344304,
+          "sha512": "1eaacd1a7a71849f95d1de59f6d9d0e2d3332202c89f393ef31cd216a386550c76c7372cb9b305d751d09dbc6dee5fe35f837f521d9a9232c177e195a2fa9842",
+          "declared_mod_ids": [
+            "mezz_config"
+          ]
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Let Me Despawn",
+      "source": "modrinth",
+      "project_slug": "lmd",
+      "project_id": "vE2FN5qn",
+      "version_id": "uN2ynf2u",
+      "version_number": "1.26.9.2",
+      "version_type": "release",
+      "date_published": "2026-09-17T11:04:51.207971Z",
+      "filename": "letmedespawn-neoforge-26.3-1.26.9.2.jar",
+      "url": "https://cdn.modrinth.com/data/vE2FN5qn/versions/uN2ynf2u/letmedespawn-neoforge-26.3-1.26.9.2.jar",
+      "size": 23013,
+      "sha1": "eb437203f150c303ee8d655b82e7fd2858520bcc",
+      "sha512": "dea4003181cb9f8b8578074ddbd38dfd75780962d648d3a7485626ec23b31de888ae29b10eff30abcb5ba871b8b9d2ab0f0d2897834dc94a6c0139c4621cd587",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "server_side": "required",
+      "client_side": "unsupported",
+      "declared_mod_ids": [
+        "letmedespawn"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        },
+        {
+          "mod_id": "almanac",
+          "version_range": "[1.26.7.3,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Lithium",
+      "source": "modrinth",
+      "project_slug": "lithium",
+      "project_id": "gvQqBUqZ",
+      "version_id": "efIED0FC",
+      "version_number": "mc26.3-0.26.1-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-16T14:39:40.492614Z",
+      "filename": "lithium-neoforge-0.26.1+mc26.3.jar",
+      "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/efIED0FC/lithium-neoforge-0.26.1%2Bmc26.3.jar",
+      "size": 904073,
+      "sha1": "5ba04eef3fde45de80ff4ce10d057f10c2cfe01f",
+      "sha512": "7cb306c5a8ce0068752f216928bfb5e948b1b0482cc0c8ba6c9319217b11c97f16a326bf8f8f0ee949fb29dd8b7a9023d066f59385772092d10632642dedc42a",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "lithium"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3, 26.4)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Modonomicon",
+      "source": "modrinth",
+      "project_slug": "modonomicon",
+      "project_id": "692GClaE",
+      "version_id": "CPBu0enR",
+      "version_number": "26.3-2.6.0",
+      "version_type": "release",
+      "date_published": "2026-09-21T08:39:27.317035Z",
+      "filename": "modonomicon-26.3-neoforge-2.6.0.jar",
+      "url": "https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar",
+      "size": 2973738,
+      "sha1": "02311031457e30527199579f0cb41a3d4559ba07",
+      "sha512": "4dafaf737bafd2420bce6f5857a6908c90c1fe687ad303dce5d1eb5c960f0f3a14019319fdcd22f0c1f7f75e255d77637a1e2041d9e85cda69c296c74fa35433",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "modonomicon"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.3-beta,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "commonmark-0.30.0.jar",
+          "path": "META-INF/jarjar/commonmark-0.30.0.jar",
+          "size": 220139,
+          "sha512": "88468209cb33c25237d039207c876198488cb2b5d9ffe1b7791e4d40854c5bfd3e267a3fb71ccf03528a8a83beb9b621fd54c4a6563d4a3a8d0969f31994d238",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "commonmark-ext-gfm-strikethrough-0.30.0.jar",
+          "path": "META-INF/jarjar/commonmark-ext-gfm-strikethrough-0.30.0.jar",
+          "size": 13259,
+          "sha512": "0c2972e05e49ec15b5a6c5ae1db58c9b6436a5e14189d97e77e5ec7074dcdb9a5e2e27962b2312eb8a3cea58847e7e694e7334e24c83242eab57d21be68f62e0",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "commonmark-ext-ins-0.30.0.jar",
+          "path": "META-INF/jarjar/commonmark-ext-ins-0.30.0.jar",
+          "size": 11009,
+          "sha512": "5d4e757c132747827b97f3b2c03af3df9b5b9c1bfe7d5e234458f2bfa7b0e59a4b559a66a2e6aee1305dd31d7dc63e39228ccfd197334fab58cdf359965ddd72",
+          "declared_mod_ids": []
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Occultism",
+      "source": "modrinth",
+      "project_slug": "occultism",
+      "project_id": "sbJh4AZw",
+      "version_id": "gayRu2vd",
+      "version_number": "26.3-neoforge-1.256.0",
+      "version_type": "release",
+      "date_published": "2026-09-21T13:26:48.747848Z",
+      "filename": "occultism-26.3-neoforge-1.256.0.jar",
+      "url": "https://cdn.modrinth.com/data/sbJh4AZw/versions/gayRu2vd/occultism-26.3-neoforge-1.256.0.jar",
+      "size": 10240037,
+      "sha1": "34296a259604da656fd855b0093771ab8d04f2c4",
+      "sha512": "26c6a4076feba21f276dd410585fffe1642d0f5439ac7710fd6e6c834f06fedbc476abd60544e57383b92bc434e06b057302ca6fa95f65c98c32dccc71f07ca0",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "occultism"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.3-beta,)"
+        },
+        {
+          "mod_id": "modonomicon",
+          "version_range": "[2.5.0,)"
+        },
+        {
+          "mod_id": "codedefinedgui",
+          "version_range": "[1.13.0,)"
+        },
+        {
+          "mod_id": "geckolib",
+          "version_range": "[5.5.6,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "codedefinedgui-26.3-neoforge-1.13.0.jar",
+          "path": "META-INF/jarjar/codedefinedgui-26.3-neoforge-1.13.0.jar",
+          "size": 382591,
+          "sha512": "19794cbbede7e5e60314db1acf90b68163eee056383cf7b29a892db1606564d8aab8cf94c4c8e198e770848e634d5a6796e886cd9dceb8eef0f454ea7b4d8b1f",
+          "declared_mod_ids": [
+            "codedefinedgui"
+          ]
+        },
+        {
+          "filename": "magicparticleslib-26.3-neoforge-1.8.0.jar",
+          "path": "META-INF/jarjar/magicparticleslib-26.3-neoforge-1.8.0.jar",
+          "size": 1345204,
+          "sha512": "cdf9eea1dcb2c1745bb4b294acfc5b049fb2a4f1df72aad0d0e7ccee68692eff5ddc2a94f565d9c0d3c964d99eb2f16762bb4347f1fab05e538381b06dcf0880",
+          "declared_mod_ids": [
+            "magicparticleslib"
+          ]
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Packet Fixer",
+      "source": "modrinth",
+      "project_slug": "packet-fixer",
+      "project_id": "c7m1mi73",
+      "version_id": "Fq2YuqLr",
+      "version_number": "3.3.7",
+      "version_type": "release",
+      "date_published": "2026-09-20T13:44:58.949135Z",
+      "filename": "PacketFixer-neoforge-3.3.7.jar",
+      "url": "https://cdn.modrinth.com/data/c7m1mi73/versions/Fq2YuqLr/PacketFixer-neoforge-3.3.7.jar",
+      "size": 31580,
+      "sha1": "eb595fc4e642bed3bbc1e2ea919b8dfc76e25524",
+      "sha512": "a2fce502f00a16676ca2a647f9d99c5660a4969514626cd0cfdf48fc767212ac00461ba1498bc2b39c486faabd17b2d025fb496ecd51aa12e459530eaa39d11d",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "packetfixer"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[0,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,26.4)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "spark",
+      "source": "modrinth",
+      "project_slug": "spark",
+      "project_id": "l6YH9Als",
+      "version_id": "HwHxykP9",
+      "version_number": "1.10.187-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-19T07:44:39.577210Z",
+      "filename": "spark-1.10.187-neoforge.jar",
+      "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/HwHxykP9/spark-1.10.187-neoforge.jar",
+      "size": 3910570,
+      "sha1": "be5c8cf137b1bcaa5627a85c7cfe83da846e9e36",
+      "sha512": "130c6f529346cd275460070491a47d76c0e61b30f1d02530e97aae7fce3eccba2b82b4e3bef5abe5febff62daf53066a235d843a94e81fed2ecf1def5946349a",
+      "game_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_or_server",
+      "server_side": "optional",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "spark"
+      ],
+      "required_dependencies": [],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Structures – Structures & Exploration",
+      "source": "curseforge",
+      "project_id": 1391238,
+      "project_slug": "structures-modd",
+      "project_url": "https://www.curseforge.com/minecraft/mc-mods/structures-modd",
+      "file_id": 8849254,
+      "version_number": "4.1",
+      "version_type": "release",
+      "date_published": "2026-09-10T08:35:01.997Z",
+      "filename": "Structures v4.1.jar",
+      "url": "https://edge.forgecdn.net/files/8849/254/Structures%20v4.1.jar",
+      "size": 426023,
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "curseforge_reported_sha1": "d0dd7a704da03c1be2ff17d03c7af5842dbb8145",
+      "curseforge_reported_md5": "6c2f3f88833acf4d6d88e4894d1dd365",
+      "note": "데이터팩을 모드로 포장한 다중 로더 JAR. CurseForge 배포 메타데이터가 NeoForge와 26.3을 명시한다. 구버전과 신버전 레지스트리 경로(structure/structures, loot_table/loot_tables)를 모두 담는다.",
+      "sha1": "d0dd7a704da03c1be2ff17d03c7af5842dbb8145",
+      "sha512": "3aacf7c578a0b724ea53efb3273605236c85215b4a1ec8f9ba4b9aa8066f19cb5cfb08aa3ae9b3edac4f35efd1699328ab30430dd7ffd390712337572da819a4",
+      "curseforge_reported_size": 426023,
+      "declared_mod_ids": [
+        "structures"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[21.0.0,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[1.20,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": true
+    },
+    {
+      "title": "Towns and Towers",
+      "source": "modrinth",
+      "project_slug": "towns-and-towers",
+      "project_id": "DjLobEOy",
+      "version_id": "yajFnGZS",
+      "version_number": "1.13.12",
+      "version_type": "release",
+      "date_published": "2026-09-16T13:53:21.572108Z",
+      "filename": "t_and_t-fabric-neoforge-1.13.12.jar",
+      "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/yajFnGZS/t_and_t-fabric-neoforge-1.13.12.jar",
+      "size": 3195626,
+      "sha1": "91b1a4883406e4ffc113cb9d4e188e8db8ad606f",
+      "sha512": "6774391b873d0241538be29cf7f8299ebfaf2d9f03292b28103dff41fced203dc69e64032ca9b99e3b5364de2169f654a6633a255465adc994db17ac0a4c33d8",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge",
+        "quilt"
+      ],
+      "environment": "server_only_client_optional",
+      "server_side": "required",
+      "client_side": "optional",
+      "declared_mod_ids": [
+        "t_and_t"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        },
+        {
+          "mod_id": "cristellib",
+          "version_range": "[3.1.12,)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": true
+    },
+    {
+      "title": "Tom's Simple Storage Mod",
+      "source": "modrinth",
+      "project_slug": "toms-storage",
+      "project_id": "XZNI4Cpy",
+      "version_id": "o5IxrYts",
+      "version_number": "26.3-2.12.0",
+      "version_type": "release",
+      "date_published": "2026-09-16T19:21:24.524784Z",
+      "filename": "toms_storage-26.3-2.12.0.jar",
+      "url": "https://cdn.modrinth.com/data/XZNI4Cpy/versions/o5IxrYts/toms_storage-26.3-2.12.0.jar",
+      "size": 845688,
+      "sha1": "40b73357bdb2053a39be27eeced1c634a552c383",
+      "sha512": "5b7de6443f10838ab7fb95eca0a05563b1366204ca30c38a4095eaec3da68eefd2389cea84e3527475d50070e49f1fff695cf30edfb50aa4c7a4a38f77433946",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "toms_storage"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,26.4)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    }
+  ]
+}

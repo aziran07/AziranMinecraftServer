@@ -1,0 +1,717 @@
+{
+  "pack_name": "Aziran 26.3 Client",
+  "pack_version": "1.1.3",
+  "minecraft_version": "26.3",
+  "loader": "neoforge",
+  "loader_version": "26.3.0.8-beta",
+  "java_version": 25,
+  "release_note": "1.1.3은 1.1.2에서 Xaero's Minimap을 빼고 같은 자리에 JourneyMap 26.3-6.0.9+neoforge를 넣은 구성이다. Sodium은 1.1.1부터와 같이 계속 제외한다. 16개를 모두 켠 1.1.2는 Windows에서 네이티브 종료 코드 0xc0000005로 크래시했고, 같은 인스턴스에서 xaerominimap-neoforge-26.3-26.5.3.jar 하나만 비활성화하면 실행됐다(A/B 확인). 따라서 그 조합에서 크래시의 방아쇠는 Xaero's Minimap으로 확인됐지만, 네이티브 실패 메커니즘은 규명하지 않았고 다른 환경에서도 재현된다는 뜻은 아니다. JourneyMap JAR은 라이선스상 재배포·번들이 금지돼 있어 .mrpack에만 Modrinth CDN 다운로드 항목으로 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 나머지 15개 JAR만 담는다. 1.1.3 구성으로 Windows 실행과 서버 접속은 아직 확인하지 않았다. 실행과 접속이 함께 확인된 구성은 Sodium을 꺼 둔 1.1.0 인스턴스뿐이다.",
+  "source_locks": [
+    "mods-26.3.lock.json",
+    "mods-26.3-client-extra.lock.json"
+  ],
+  "mod_count": 16,
+  "shared_with_server_count": 13,
+  "client_only_count": 3,
+  "bundled_jar_count": 15,
+  "external_download_only": [
+    {
+      "title": "JourneyMap",
+      "filename": "journeymap-neoforge-26.3-6.0.9.jar",
+      "url": "https://cdn.modrinth.com/data/lfHFW1mp/versions/OCuB6UWq/journeymap-neoforge-26.3-6.0.9.jar",
+      "reason": "라이선스가 JAR 번들·재호스팅을 금지한다. 모드팩은 설치·실행 과정에서 JourneyMap을 CurseForge 또는 Modrinth에서 내려받을 때만 허용된다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다."
+    }
+  ],
+  "provided_mod_ids": [
+    "balm",
+    "clumps",
+    "codedefinedgui",
+    "commonnetworking",
+    "cookingforblockheads",
+    "curios",
+    "farmersdelight",
+    "geckolib",
+    "immediatelyfast",
+    "jade",
+    "jei",
+    "journeymap",
+    "journeymap_api",
+    "kuma_api",
+    "lithium",
+    "magicparticleslib",
+    "mezz_config",
+    "minecraft",
+    "modonomicon",
+    "mousetweaks",
+    "neoforge",
+    "occultism",
+    "packetfixer",
+    "shogi_api",
+    "toms_storage"
+  ],
+  "excluded": [
+    {
+      "title": "Almanac",
+      "reason": "Modrinth client_side=unsupported. Let Me Despawn 전용 서버 라이브러리."
+    },
+    {
+      "title": "Chunky",
+      "reason": "청크 프리젠 도구. 서버 콘솔에서만 사용하며 레지스트리·네트워크 페이로드가 없다."
+    },
+    {
+      "title": "Cristel Lib",
+      "reason": "Towns and Towers용 데이터팩 설정 라이브러리. 콘텐츠 레지스트리가 없다."
+    },
+    {
+      "title": "Let Me Despawn",
+      "reason": "Modrinth client_side=unsupported. 몹 디스폰 정리는 서버 전용이다."
+    },
+    {
+      "title": "Structures – Structures & Exploration",
+      "reason": "클래스 0개의 데이터팩 JAR. 구조물은 서버가 생성해 전송한다."
+    },
+    {
+      "title": "Towns and Towers",
+      "reason": "클래스 0개의 데이터팩 JAR. 구조물은 서버가 생성해 전송한다."
+    },
+    {
+      "title": "spark",
+      "reason": "프로파일링 도구. 서버 콘솔에서만 사용한다."
+    }
+  ],
+  "archives": {
+    "aziran-26.3-client-1.1.3.mrpack": {
+      "size": 2725971,
+      "sha256": "a9f2734b95d9e4909b19e96f737c297b4c8e10b522f38d772153b22ef20b0450"
+    },
+    "aziran-26.3-client-1.1.3-manual.zip": {
+      "size": 22398749,
+      "sha256": "43799b03a569a6ba03dc734fc2b335946db6e83f17e68ae4e0375e44712caa52"
+    },
+    "aziran-26.3-client-1.1.3-multimc.zip": {
+      "size": 22399683,
+      "sha256": "d7376fac7a92556e5827b2638d09a945a58d7cb31f40dbedf3060f2ddfc0c498"
+    }
+  },
+  "mods": [
+    {
+      "title": "Balm",
+      "filename": "balm-neoforge-26.3-26.3.0.1.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3.0.1+neoforge-26.3",
+      "project_slug": "balm",
+      "url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/gbPO54rd/balm-neoforge-26.3-26.3.0.1.jar",
+      "size": 1185440,
+      "sha1": "bbab9d3c95a1856fc4ff237de0d67e7fb4dd4abc",
+      "sha512": "f5a6440bc85e592ab906bfcbf7d24297bf4d9167b908af170fcab4888d9fc92ef87f8073c5d6a1765cb15513f4df8d5caf07f47a3d50a05e48730c737ba7bed4",
+      "sha256": "8670175f955b41333e682224a40ee1a80d8d24587fc8b753941dd17befb58261",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩 사용 허가 있음)",
+        "url": "https://mods.twelveiterations.com/permissions",
+        "note": "제작자 허가 페이지: \"Use in modpacks is allowed on all supported platforms.\" 같은 페이지가 공개 재업로드·재호스팅은 금지한다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "balm"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "kuma-api-neoforge-26.3.0.1.jar",
+          "declared_mod_ids": [
+            "kuma_api"
+          ]
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3-,26.4)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Clumps",
+      "filename": "Clumps-neoforge-26.3-26.3.2.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3.2",
+      "project_slug": "clumps",
+      "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/kV095inH/Clumps-neoforge-26.3-26.3.2.jar",
+      "size": 18766,
+      "sha1": "aeb6689f2f3840021a8af0b02248ece388d262ab",
+      "sha512": "710ac1f2ac8f2f6d39b6a4f56a7b0159a32bb64d3ff8337e20fca9eb991b32df54d38c7c0c1e3487a7c220bde80988def8562925fbc5dc5e2c94134244f41b4a",
+      "sha256": "18d65f554984a81a4dfe5f5e4038298ae02e6d8cc66870469305e8fae2a1fb79",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": null,
+        "note": "JAR의 neoforge.mods.toml이 license=\"MIT\"를 선언하며 Modrinth 프로젝트 메타데이터와 같다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "clumps"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[4,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Cooking for Blockheads",
+      "filename": "cookingforblockheads-neoforge-26.3-26.3.0.1.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3.0.1+neoforge-26.3",
+      "project_slug": "cooking-for-blockheads",
+      "url": "https://cdn.modrinth.com/data/vJnhuDde/versions/6CTYyIMC/cookingforblockheads-neoforge-26.3-26.3.0.1.jar",
+      "size": 1680026,
+      "sha1": "23109a70bb82d4cb2b733ab12d3d8e65ad27ca42",
+      "sha512": "f1ab202af18c9a7cb3f0582565896df20f1b527aea7ce7645e2607f2394ee85ba322581100b41b026431aba14f6af878c0432ec29dbc1333f892c7cecab93a86",
+      "sha256": "9bdc8828615c3757745d68f21856dfa2384fadba05b6d0e2a289584029af4ea1",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩 사용 허가 있음)",
+        "url": "https://mods.twelveiterations.com/permissions",
+        "note": "Balm과 같은 제작자(BlayTheNinth)의 같은 허가 페이지를 따른다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "cookingforblockheads"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "shogi-api-26.3.0.1.jar",
+          "declared_mod_ids": [
+            "shogi_api"
+          ]
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3-,26.4)"
+        },
+        {
+          "mod_id": "balm",
+          "version_range": "[26.3.0.1,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Curios API",
+      "filename": "curios-neoforge-17.0.0-beta+26.3.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "17.0.0-beta+26.3",
+      "project_slug": "curios",
+      "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/QZcvrMJc/curios-neoforge-17.0.0-beta%2B26.3.jar",
+      "size": 430333,
+      "sha1": "1f11b7a64387bf52a62af3cca7430ba2ae9fe2f7",
+      "sha512": "6d58479f53150e604e6eac839d251299a44486fa4e61d4598940e85e0b3328bf1c0ac71919076aacef8495af0ac37171fc80f4c69c274a3ce6a7cf4c3494e557",
+      "sha256": "6483ff2d109a07a3d60cd768fd1bece697be89b1374e8eb239259557c4f6cb4c",
+      "license": {
+        "id": "LGPL-3.0-or-later",
+        "name": "GNU LGPL v3.0 or later",
+        "url": null,
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "curios"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3,27)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Farmer's Delight 26 Neo Ver",
+      "filename": "FarmersDelight-26.3-1.3.3-fix4.jar",
+      "origin": "server-lock",
+      "source": "curseforge",
+      "version_number": "26.3-1.3.3-fix4",
+      "project_slug": "farmers-delight-26-neo-ver",
+      "url": null,
+      "size": 3234656,
+      "sha1": "49c74258da11327ebe25a549e51c1df456463c96",
+      "sha512": "7289d3b95946d5fd446c30640bd87c70b4a30aa5cf2ef40e4c9fb19a7c4b9edbed479fdece6614942002bf432659456d0fe6bfd741a9efdd24eae915a751acae",
+      "sha256": "381ae322c803b74ec724132b01bb14076b2879a4a637112c142af97b53c9ba0e",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": "https://github.com/vectorwing/FarmersDelight",
+        "note": "vectorwing의 원본 Farmer's Delight(MIT)를 기반으로 한 비공식 NeoForge 26.3 이식판. JAR 메타데이터가 license=\"MIT License\"를 선언한다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "farmersdelight"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "mrpack_delivery": "client-overrides"
+    },
+    {
+      "title": "Geckolib",
+      "filename": "geckolib-neoforge-26.3-5.5.7.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "5.5.7",
+      "project_slug": "geckolib",
+      "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/2s1O42FX/geckolib-neoforge-26.3-5.5.7.jar",
+      "size": 1159026,
+      "sha1": "24d1aa6c02afa779558165d0529b1f21a03e1cf7",
+      "sha512": "24a607529f57841a12d90d653a7823acf9a13284cb4631c9ee4c017bcba062e81cb8a7db8933112d9349dd05765333d54c90c9dde8feae3d2590f417201a3220",
+      "sha256": "0ec0677c0e2f24fd5925aabe999dd2af2393662a26b16b00f688cf38838b08e3",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": null,
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "geckolib"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.7-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Jade 🔍",
+      "filename": "Jade-mc26.3-NeoForge-26.3.1.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3.1+neoforge",
+      "project_slug": "jade",
+      "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/bzrrwapQ/Jade-mc26.3-NeoForge-26.3.1.jar",
+      "size": 1030902,
+      "sha1": "0a385a583a1e9413ecf2a47d972cb7dd25bf20e0",
+      "sha512": "b6c782de87e7259d997e1992ab610e90dfe83371a37d9a2fd4170c2ff875b7f2453b72255cbbaae36df4cf3e4dabfe8ca409ddaad9e38304db487d4eed363e55",
+      "sha256": "07b1660aa3df07b228f3b2ff5614504498386b7d70151b36631aed369468ae78",
+      "license": {
+        "id": "CC-BY-NC-SA-4.0",
+        "name": "Creative Commons BY-NC-SA 4.0",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "note": "비상업적 사용에 한해 저작자 표시와 동일조건변경허락 조건으로 재배포할 수 있다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "jade"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Just Enough Items (JEI)",
+      "filename": "jei-26.3-neoforge-31.4.0.21.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "31.4.0.21",
+      "project_slug": "jei",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/aPx3jxor/jei-26.3-neoforge-31.4.0.21.jar",
+      "size": 2273626,
+      "sha1": "5a7ef247c40a58aad6b898d3df0f9d73139e1823",
+      "sha512": "0474732486b08d6dcfda0f8286480baef494f0eb99ba4c8262e2468ae91b5a5ddc8649d81a4fecb9f3c858ae5f3512d603b042388fbc8469d4edc647382f686a",
+      "sha256": "c997de78a4098f8b02d44ca00468cc6cefb9308f00e0de98f329db0e307337d9",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": null,
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "jei"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "mezz_config-26.3-neoforge-0.6.3.jar",
+          "declared_mod_ids": [
+            "mezz_config"
+          ]
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "mezz_config",
+          "version_range": "[0.6.3,1.0.0)"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Lithium",
+      "filename": "lithium-neoforge-0.26.1+mc26.3.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "mc26.3-0.26.1-neoforge",
+      "project_slug": "lithium",
+      "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/efIED0FC/lithium-neoforge-0.26.1%2Bmc26.3.jar",
+      "size": 904073,
+      "sha1": "5ba04eef3fde45de80ff4ce10d057f10c2cfe01f",
+      "sha512": "7cb306c5a8ce0068752f216928bfb5e948b1b0482cc0c8ba6c9319217b11c97f16a326bf8f8f0ee949fb29dd8b7a9023d066f59385772092d10632642dedc42a",
+      "sha256": "1bcd9c7e8515b9e8ab19af0fb66e4a505ab2c4972d7eb63c6d08fdae09a0e3cd",
+      "license": {
+        "id": "LGPL-3.0-only",
+        "name": "GNU LGPL v3.0 only",
+        "url": null,
+        "note": "JAR의 neoforge.mods.toml이 license=\"LGPL-3.0-only\"를 선언하며 Modrinth 프로젝트 메타데이터와 같다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "lithium"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3, 26.4)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Modonomicon",
+      "filename": "modonomicon-26.3-neoforge-2.6.0.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3-2.6.0",
+      "project_slug": "modonomicon",
+      "url": "https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar",
+      "size": 2973738,
+      "sha1": "02311031457e30527199579f0cb41a3d4559ba07",
+      "sha512": "4dafaf737bafd2420bce6f5857a6908c90c1fe687ad303dce5d1eb5c960f0f3a14019319fdcd22f0c1f7f75e255d77637a1e2041d9e85cda69c296c74fa35433",
+      "sha256": "c86e42623aafbe60449065c10b6a145b092ca0bf4301ee2b243ea491afb780dc",
+      "license": {
+        "id": "MIT AND CC-BY-4.0",
+        "name": "MIT License, Creative Commons Attribution 4.0",
+        "url": "https://github.com/klikli-dev/modonomicon#licensing",
+        "note": "코드는 MIT, 에셋은 CC-BY-4.0이다."
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "modonomicon"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "commonmark-0.30.0.jar",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "commonmark-ext-gfm-strikethrough-0.30.0.jar",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "commonmark-ext-ins-0.30.0.jar",
+          "declared_mod_ids": []
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.3-beta,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Occultism",
+      "filename": "occultism-26.3-neoforge-1.256.0.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3-neoforge-1.256.0",
+      "project_slug": "occultism",
+      "url": "https://cdn.modrinth.com/data/sbJh4AZw/versions/gayRu2vd/occultism-26.3-neoforge-1.256.0.jar",
+      "size": 10240037,
+      "sha1": "34296a259604da656fd855b0093771ab8d04f2c4",
+      "sha512": "26c6a4076feba21f276dd410585fffe1642d0f5439ac7710fd6e6c834f06fedbc476abd60544e57383b92bc434e06b057302ca6fa95f65c98c32dccc71f07ca0",
+      "sha256": "118d02366adffbd8ebbe0024f484c88d8720eff43fb70b1adfd7d0fde74ddb51",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": "https://github.com/klikli-dev/occultism#licensing",
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "occultism"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "codedefinedgui-26.3-neoforge-1.13.0.jar",
+          "declared_mod_ids": [
+            "codedefinedgui"
+          ]
+        },
+        {
+          "filename": "magicparticleslib-26.3-neoforge-1.8.0.jar",
+          "declared_mod_ids": [
+            "magicparticleslib"
+          ]
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.3-beta,)"
+        },
+        {
+          "mod_id": "modonomicon",
+          "version_range": "[2.5.0,)"
+        },
+        {
+          "mod_id": "codedefinedgui",
+          "version_range": "[1.13.0,)"
+        },
+        {
+          "mod_id": "geckolib",
+          "version_range": "[5.5.6,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Packet Fixer",
+      "filename": "PacketFixer-neoforge-3.3.7.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "3.3.7",
+      "project_slug": "packet-fixer",
+      "url": "https://cdn.modrinth.com/data/c7m1mi73/versions/Fq2YuqLr/PacketFixer-neoforge-3.3.7.jar",
+      "size": 31580,
+      "sha1": "eb595fc4e642bed3bbc1e2ea919b8dfc76e25524",
+      "sha512": "a2fce502f00a16676ca2a647f9d99c5660a4969514626cd0cfdf48fc767212ac00461ba1498bc2b39c486faabd17b2d025fb496ecd51aa12e459530eaa39d11d",
+      "sha256": "90e73e88b8c15f52a06754038ee8211edec365c0a8ec31e86d10f82d60685396",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": null,
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "packetfixer"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[0,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,26.4)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Tom's Simple Storage Mod",
+      "filename": "toms_storage-26.3-2.12.0.jar",
+      "origin": "server-lock",
+      "source": "modrinth",
+      "version_number": "26.3-2.12.0",
+      "project_slug": "toms-storage",
+      "url": "https://cdn.modrinth.com/data/XZNI4Cpy/versions/o5IxrYts/toms_storage-26.3-2.12.0.jar",
+      "size": 845688,
+      "sha1": "40b73357bdb2053a39be27eeced1c634a552c383",
+      "sha512": "5b7de6443f10838ab7fb95eca0a05563b1366204ca30c38a4095eaec3da68eefd2389cea84e3527475d50070e49f1fff695cf30edfb50aa4c7a4a38f77433946",
+      "sha256": "93a0a10a631b33f9d613c22604c1447c70a36b0f5af9c56fa4953191f624de76",
+      "license": {
+        "id": "MIT",
+        "name": "MIT License",
+        "url": null,
+        "note": ""
+      },
+      "bundle_jar": true,
+      "declared_mod_ids": [
+        "toms_storage"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,26.4)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "Mouse Tweaks",
+      "filename": "MouseTweaks-neoforge-mc26.3-2.31.jar",
+      "origin": "client-extra-lock",
+      "source": "modrinth",
+      "version_number": "26.3-2.31-neoforge",
+      "project_slug": "mouse-tweaks",
+      "url": "https://cdn.modrinth.com/data/aC3cM3Vq/versions/f4tPRGDq/MouseTweaks-neoforge-mc26.3-2.31.jar",
+      "size": 74133,
+      "sha1": "de224d4e3c270b749345c3a6703b51336a3ce5d3",
+      "sha512": "93e7ac34bbc15de635073722054b11fed3981e0f39954286e8a57214ce5ce007e5562882cb81cd230c8ea49970970c84548cfc598332c539777986090b090798",
+      "sha256": "e9ec08badec2e36f875a6b001b456284a40e337f6f224e85c7373770bce8103f",
+      "license": {
+        "id": "BSD-3-Clause",
+        "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+        "url": "https://github.com/YaLTeR/MouseTweaks",
+        "note": "JAR의 neoforge.mods.toml이 license=\"BSD-3-Clause\"를 선언한다. Modrinth 프로젝트 메타데이터와 같다.",
+        "distribution_note": "이 버전의 Modrinth 파일 3개 중 primary 파일만 담는다. -api.jar(dev-jar)와 -src.jar(sources-jar)는 게임 실행에 필요하지 않다."
+      },
+      "bundle_jar": true,
+      "bundle_jar_reason": null,
+      "declared_mod_ids": [
+        "mousetweaks"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "ImmediatelyFast",
+      "filename": "ImmediatelyFast-NeoForge-1.17.1+26.3.jar",
+      "origin": "client-extra-lock",
+      "source": "modrinth",
+      "version_number": "1.17.1+26.3-neoforge",
+      "project_slug": "immediatelyfast",
+      "url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/4SovUFpn/ImmediatelyFast-NeoForge-1.17.1%2B26.3.jar",
+      "size": 109497,
+      "sha1": "a072863c3b4e7cfed81899d8d3115839a161a708",
+      "sha512": "6fddcf7e9de2bf179bdd18cc317fa1cc50ea9c3a40b06a0e0673ecb1dba29fb2ac2743ada361e32f52c2c1f333043795a5149b8b89ee467665c2b734e7d5d951",
+      "sha256": "447a22be8b4610d8c2fe35c5a3ea3f445a2cb7151650dd9fec1149ebe8e8bf67",
+      "license": {
+        "id": "LGPL-3.0-or-later",
+        "name": "GNU LGPL v3.0 or later",
+        "url": "https://github.com/RaphiMC/ImmediatelyFast",
+        "note": "JAR의 neoforge.mods.toml이 license=\"LGPL-3.0-or-later\"를 선언하고 루트에 LICENSE_ImmediatelyFast 사본이 들어 있다. Modrinth 프로젝트 메타데이터와 같다."
+      },
+      "bundle_jar": true,
+      "bundle_jar_reason": null,
+      "declared_mod_ids": [
+        "immediatelyfast"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3.0]"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0,26.4.0.0)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    },
+    {
+      "title": "JourneyMap",
+      "filename": "journeymap-neoforge-26.3-6.0.9.jar",
+      "origin": "client-extra-lock",
+      "source": "modrinth",
+      "version_number": "26.3-6.0.9+neoforge",
+      "project_slug": "journeymap",
+      "url": "https://cdn.modrinth.com/data/lfHFW1mp/versions/OCuB6UWq/journeymap-neoforge-26.3-6.0.9.jar",
+      "size": 4352830,
+      "sha1": "e4d81a338a2997d6d517d5f7b51b607277f21733",
+      "sha512": "1ed0fc68d17e5134d55111aeea256cac523097eb2c899c11b4ead7f611058983ff54277a0dbcfe5a422a0bd77c05591a677be3bf13b7c927d0f4cfdfbe4d440b",
+      "sha256": "0494997081c999eea1e5ce5b7806af335509e49883fcb635cbbf1f759111499f",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩은 설치 중 공식 배포처 다운로드 조건으로만 허용)",
+        "url": "https://teamjm.github.io/journeymap-docs/6.0.x/about/licensing/",
+        "note": "JAR의 neoforge.mods.toml이 license=\"All rights reserved\"를 선언하고 루트 license.txt가 \"may not be altered, file-hosted, re-packaged, reverse-engineered, or distributed in part or in whole without express written permission\"이라고 적는다. Modrinth 프로젝트 메타데이터도 LicenseRef-All-Rights-Reserved로 같다.",
+        "distribution_note": "공식 라이선스 문서가 허용하는 것: \"Create a modpack containing JourneyMap, as long as JourneyMap is downloaded from CurseForge or Modrinth as part of the modpack installation or launch process.\" 금지하는 것: \"Re-host, redistribute or bundle the mod in any way, including as part of a larger distribution such as a modpack.\" 따라서 .mrpack은 Modrinth CDN에서 내려받는 files 항목으로만 JourneyMap을 지정하고, JAR을 담는 수동 ZIP·MultiMC 인스턴스 ZIP에서는 제외한다."
+      },
+      "bundle_jar": false,
+      "bundle_jar_reason": "라이선스가 JAR 번들·재호스팅을 금지한다. 모드팩은 설치·실행 과정에서 JourneyMap을 CurseForge 또는 Modrinth에서 내려받을 때만 허용된다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다.",
+      "declared_mod_ids": [
+        "journeymap"
+      ],
+      "bundled_jars": [
+        {
+          "filename": "common-networking-neoforge-26.3-1.1.1.jar",
+          "declared_mod_ids": [
+            "commonnetworking"
+          ]
+        },
+        {
+          "filename": "journeymap-api-neoforge-26.3-2.0.0.jar",
+          "declared_mod_ids": [
+            "journeymap_api"
+          ]
+        },
+        {
+          "filename": "pngj-2.1.0.jar",
+          "declared_mod_ids": []
+        }
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.1.2.22-beta,)"
+        },
+        {
+          "mod_id": "commonnetworking",
+          "version_range": "[1.0.22,)"
+        }
+      ],
+      "mrpack_delivery": "download"
+    }
+  ]
+}

@@ -1,0 +1,1129 @@
+{
+  "minecraft_version": "26.3",
+  "loader": "fabric",
+  "loader_version": "0.19.5",
+  "java_version": 25,
+  "data_directory": "server-data-26.3",
+  "mods": [
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "hTNvMewX",
+      "project_id": "7vxePowz",
+      "author_id": "k9zWRRPK",
+      "featured": false,
+      "name": "Farmer's Delight Refabricated 3.6.27 - 26.3",
+      "version_number": "26.3-3.6.27",
+      "changelog": "### Fixes\n- Reversed models on the Stove.\n- Canvas signs not placing with the correct text colour.",
+      "changelog_url": null,
+      "date_published": "2026-09-19T13:43:56.883287Z",
+      "downloads": 6369,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "oy6O3fU0",
+          "hashes": {
+            "sha512": "d7c66b883e3c900a5539b2fec91c8a81d73ad438437151019843b958584f4c45bcb29581846056ff83787efea53fe0cd244106b4856a9979d7088eebba54da44",
+            "sha1": "8c00b5f004fafe157df7ddb241d32f28f458a4d6"
+          },
+          "url": "https://cdn.modrinth.com/data/7vxePowz/versions/hTNvMewX/FarmersDelight-26.3-3.6.27%2Brefabricated.jar",
+          "filename": "FarmersDelight-26.3-3.6.27+refabricated.jar",
+          "primary": true,
+          "size": 3486296,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        },
+        {
+          "version_id": null,
+          "project_id": "u6dRKJwZ",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "5VolwT6c",
+          "file_name": null,
+          "dependency_type": "optional"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "YjTFkjoV",
+      "project_id": "vJnhuDde",
+      "author_id": "WE4nCeiO",
+      "featured": false,
+      "name": "26.3.0.1+fabric-26.3",
+      "version_number": "26.3.0.1+fabric-26.3",
+      "changelog": "- Updated to Minecraft 26.3\n",
+      "changelog_url": null,
+      "date_published": "2026-09-16T07:41:43.159409Z",
+      "downloads": 541,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "5yS0hi7G",
+          "hashes": {
+            "sha1": "ed6d09343d426010e38185003c20fafc8296eacf",
+            "sha512": "050100c5da98c16ebd6e263b3602c4bf4482108767fb7e2ef769056fe57d3961401722074dc127c7af48fff427d3d276cb1721148fc38fe030492be28ea9123a"
+          },
+          "url": "https://cdn.modrinth.com/data/vJnhuDde/versions/YjTFkjoV/cookingforblockheads-fabric-26.3-26.3.0.1.jar",
+          "filename": "cookingforblockheads-fabric-26.3-26.3.0.1.jar",
+          "primary": true,
+          "size": 1734892,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "MBAkmtvl",
+          "file_name": null,
+          "dependency_type": "required"
+        },
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "neoforge",
+        "quilt"
+      ],
+      "environment": "server_only_client_optional",
+      "id": "yajFnGZS",
+      "project_id": "DjLobEOy",
+      "author_id": "3tNWgp1O",
+      "featured": false,
+      "name": "(26.3) Towns and Towers 1.13.12 (NeoForge/Fabric/Quilt)",
+      "version_number": "1.13.12",
+      "changelog": "- updated to 26.3\r\n- added regions_unexplored:poppy_fields to flower forest outpost tag (if RU ever gets updated to 26.3)\r\n",
+      "changelog_url": null,
+      "date_published": "2026-09-16T13:53:21.572108Z",
+      "downloads": 7910,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "5zZ8Ovku",
+          "hashes": {
+            "sha1": "91b1a4883406e4ffc113cb9d4e188e8db8ad606f",
+            "sha512": "6774391b873d0241538be29cf7f8299ebfaf2d9f03292b28103dff41fced203dc69e64032ca9b99e3b5364de2169f654a6633a255465adc994db17ac0a4c33d8"
+          },
+          "url": "https://cdn.modrinth.com/data/DjLobEOy/versions/yajFnGZS/t_and_t-fabric-neoforge-1.13.12.jar",
+          "filename": "t_and_t-fabric-neoforge-1.13.12.jar",
+          "primary": true,
+          "size": 3195626,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "cl223EMc",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "bNnaTiuM",
+      "project_id": "P7dR8mSH",
+      "author_id": "JZA4dW8o",
+      "featured": false,
+      "name": "[26.3] Fabric API 0.161.0+26.3",
+      "version_number": "0.161.0+26.3",
+      "changelog": "- Bump version (modmuss50)\n- Advancement API (#5600) (maityyy, Paulem79, GauntRecluse, amolinamounier, SkyNotTheLimit)\n- Add missing Dapple Forest tags (#5601) (TelepathicGrunt)\n- Fix common issues with brewing providers (#5602) (Cassian)\n",
+      "changelog_url": null,
+      "date_published": "2026-09-18T17:36:49.548962Z",
+      "downloads": 436647,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "Gw6y5YRp",
+          "hashes": {
+            "sha1": "53f9ee02c3702734d90520aa8c9719bf0e1c8d4f",
+            "sha512": "ed6b2586d6fde11fde8472f5a527c51e99b67026e46f94d4bfd85e7e28ce5ee299173ee16ad576ceb51f39f98d30a811086a6deb1a86a524859cc16e12da109d"
+          },
+          "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/bNnaTiuM/fabric-api-0.161.0%2B26.3.jar",
+          "filename": "fabric-api-0.161.0+26.3.jar",
+          "primary": true,
+          "size": 2620967,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server",
+      "id": "fPwhz0pb",
+      "project_id": "MBAkmtvl",
+      "author_id": "WE4nCeiO",
+      "featured": false,
+      "name": "26.3.0.1+fabric-26.3",
+      "version_number": "26.3.0.1+fabric-26.3",
+      "changelog": "- Updated to Minecraft 26.3\n",
+      "changelog_url": null,
+      "date_published": "2026-09-15T20:09:35.676761Z",
+      "downloads": 36748,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "Ehsrf0nj",
+          "hashes": {
+            "sha512": "e3320cf84ace6aac08cc6493cebbe6ad5ec0c21b7f747a766105d63e1d123f2dee64f05c02d3cebce85d43d9457210d3d15666a01f435dd22371da6dc5794acc",
+            "sha1": "b1a52e045209c12f2372fd10a805ea0fb099a718"
+          },
+          "url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/fPwhz0pb/balm-fabric-26.3-26.3.0.1.jar",
+          "filename": "balm-fabric-26.3-26.3.0.1.jar",
+          "primary": true,
+          "size": 1214363,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "server_only_client_optional",
+      "id": "rWxmPrGC",
+      "project_id": "cl223EMc",
+      "author_id": "3tNWgp1O",
+      "featured": false,
+      "name": "Cristel Lib 3.1.13",
+      "version_number": "fabric-26.3-3.1.13",
+      "changelog": "- hopefully fix performance issue when generating screens in big modpacks\r\n",
+      "changelog_url": null,
+      "date_published": "2026-09-19T14:48:25.657302Z",
+      "downloads": 4536,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "mTBa3oSu",
+          "hashes": {
+            "sha512": "96198dfc067ce7003cad9b211286e58e36efcaa29729af3c09c643d3e8bd8a54e5814eb8d88680a38caf9e6328a541151b6c6b1bd9ac117d9c7278d93d6de88c",
+            "sha1": "9cc655e54a8e613ccacdd0e372e360067986174d"
+          },
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/rWxmPrGC/cristellib-fabric-26.3-3.1.13.jar",
+          "filename": "cristellib-fabric-26.3-3.1.13.jar",
+          "primary": true,
+          "size": 588323,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        },
+        {
+          "version_id": null,
+          "project_id": "9s6osm5g",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "eZ3xIIuk",
+      "project_id": "9s6osm5g",
+      "author_id": "1Hsaf75m",
+      "featured": false,
+      "name": "[Fabric 26.3] v26.3.158",
+      "version_number": "26.3.158+fabric",
+      "changelog": "",
+      "changelog_url": null,
+      "date_published": "2026-09-15T03:38:34.451316Z",
+      "downloads": 289125,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "k2NBC67W",
+          "hashes": {
+            "sha1": "41596f189fbea3bb835a8fd62619ee4092ff4882",
+            "sha512": "baceff3b69ac4277831b7fc150a485e54492d987e778a33330a3b75354bcf2b3d0c968519645be919013243e766a35cf638caa418a46a9f81c9099f0728d3d03"
+          },
+          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/eZ3xIIuk/cloth-config-26.3.158.jar",
+          "filename": "cloth-config-26.3.158.jar",
+          "primary": true,
+          "size": 1134981,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "4Eotm6ov",
+      "project_id": "fALzjamp",
+      "author_id": "nfBsvT1J",
+      "featured": false,
+      "name": "Chunky 1.5.3",
+      "version_number": "1.5.3",
+      "changelog": "",
+      "changelog_url": null,
+      "date_published": "2026-05-04T05:47:16.215347Z",
+      "downloads": 878702,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "1H7wRpeN",
+          "hashes": {
+            "sha512": "b83bfe7b218d0aa6232af977ae741dc1f82b10e50cd12bb759f65cf416b8b62beccb543e587ef0b9670abe03815660f8e091bc6823624d65cf07300571573516",
+            "sha1": "fc1f2f374c5c82117599071ed18b6ef9bba2c7fb"
+          },
+          "url": "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar",
+          "filename": "Chunky-Fabric-1.5.3.jar",
+          "primary": true,
+          "size": 354095,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "J4I1wxJZ",
+      "project_id": "Wnxd13zP",
+      "author_id": "l45nT5ov",
+      "featured": false,
+      "name": "Fabric-26.3-26.3.2",
+      "version_number": "26.3.2",
+      "changelog": "- [Update CurseForgeGradle, fixing the build](https://github.com/jaredlll08/Clumps/commit/43dfc0cdad83f1f6b179812e7918b27264093a5e) - Jared \n- [Port to 26.3](https://github.com/jaredlll08/Clumps/commit/c4cc11f9b1def9a60508a0ada14a6293ea794ec6) - Jared \n- [Port to 26.2](https://github.com/jaredlll08/Clumps/commit/6c4d4e4bee4c0d9f7cff5de802508e27914aadca) - Jared \n- [Port to 26.1.2](https://github.com/jaredlll08/Clumps/commit/a9cb23b093f76c2ba691fcc6e13067547c98425d) - Jared \n- [Port to 26.1.1](https://github.com/jaredlll08/Clumps/commit/5a65f702a9578edea77f7139949a6c4293392173) - Jared \n- [Port to 26.1](https://github.com/jaredlll08/Clumps/commit/5fcec428801eee0e76677dcc5e26cd699031c1bb) - Jared \n- [Port to 1.21.11](https://github.com/jaredlll08/Clumps/commit/ddf3979e3c7f249b7abdb6bbfc887e6957c4d84a) - Jared \n- [Port to 1.21.10. Close #166](https://github.com/jaredlll08/Clumps/commit/8875200e3d796c88359a9b749c13d7e6153e37d8) - Jared \n- [Port to 1.21.9. Close #164](https://github.com/jaredlll08/Clumps/commit/5032adf8914e0c5e6d6c39cc0b3d7f688437c9db) - Jared \n- [port to 1.21.8](https://github.com/jaredlll08/Clumps/commit/fbd61df8b6e6a9acc13d837aaf89518338744faf) - Jared",
+      "changelog_url": null,
+      "date_published": "2026-09-16T17:03:19.759021Z",
+      "downloads": 48743,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "89EI9kZn",
+          "hashes": {
+            "sha512": "8c166ae97e1999d0f213d0a181d6ef87b99648016c92c9aa1414d2c2e24364b12549569cd7e247a3d675df703ae6a8a88fc175d3f527818c710578408508c8ab",
+            "sha1": "86d6618f772320bb5e66b4696396a450d5cb845e"
+          },
+          "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/J4I1wxJZ/Clumps-fabric-26.3-26.3.2.jar",
+          "filename": "Clumps-fabric-26.3-26.3.2.jar",
+          "primary": true,
+          "size": 20154,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "lt43vWtF",
+      "project_id": "nvQzSEkH",
+      "author_id": "UxbEV316",
+      "featured": false,
+      "name": "[Fabric 26.3.X] 26.3.1",
+      "version_number": "26.3.1+fabric",
+      "changelog": "## 26.3.1\r\n\r\n- fix: check collider shape when ray tracing entities\r\n- feat: add recipe lookup keybind tooltips\r\n- rc1\r\n- fix: improve compatibility with Create Aeronautics\r\n- fix: item serialization incompatibility with polymer (close [#792](https://github.com/Snownee/Jade/issues/792))\r\n- fix: Width of TextElementImpl is miscalculated when Caxton is present\r\n- feat: box progress provider API ([#811](https://github.com/Snownee/Jade/issues/811))\r\n- fix: check block entity type in vanilla providers (close [#765](https://github.com/Snownee/Jade/issues/765))\r\n- feat: drag to scroll list\r\n- fix: entity ray tracing (close [#749](https://github.com/Snownee/Jade/issues/749))\r\n- refactor: abstract SmoothScrollableList\r\n- fix: OptionsNav entries not clickable after MC 26.3 mouse button renumbering\r\n- feat: use fabric enchantment power provider api\r\n- pre3\r\n- feat:tool tier removal api\r\n- s10\r\n- feat: add REI placeholders\r\n- fix: [#804](https://github.com/Snownee/Jade/issues/804)\r\n- fix: Seagrass harvestability (close [#805](https://github.com/Snownee/Jade/issues/805))\r\n- compat: add support for RRV ([#786](https://github.com/Snownee/Jade/issues/786))\r\n- Merge branch '26.3-fabric' of https://github.com/Snownee/Jade into 26.3-fabric\r\n- Validate block requests before accessing the level ([#801](https://github.com/Snownee/Jade/issues/801))\r\n- s7\r\n- fix: text width calculation (close [#791](https://github.com/Snownee/Jade/issues/791))\r\n- improve: use rounded entity health (close [#788](https://github.com/Snownee/Jade/issues/788))\r\n- fix: [#796](https://github.com/Snownee/Jade/issues/796)\r\n- Merge branch '26.3-fabric' of https://github.com/Snownee/Jade into 26.3-fabric\r\n- feat: add `/jadec generate_server_overrides`\r\n- Update build.gradle for 26.3-fabric\r\n- improve: vanilla harvest addon\r\n- port\r\n- improve: bypass singleplayer reach distance check\r\n\r\n## 26.2.9\r\n\r\n- chore: API javadocs\r\n- Add harvest tool registration API ([#772](https://github.com/Snownee/Jade/issues/772))\r\n\r\n## 26.2.8\r\n\r\n- [#777](https://github.com/Snownee/Jade/issues/777)\r\n\r\n## 26.2.7\r\n\r\n- fix: Jade Loot Table Tooltip Crash (Invalid Translatable Argument Type)\r\n- fix: Crash in KeybindOptionButton due to invalid narration argument (StringWidget)\r\n\r\n## 26.2.6\r\n\r\n- fix: Only the first element of a MutableComponent is shown in appendTooltip\r\n\r\n## 26.2.5\r\n\r\n- feat: add REI integration back\r\n",
+      "changelog_url": null,
+      "date_published": "2026-09-16T03:00:40.533568Z",
+      "downloads": 61908,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "rpeIYane",
+          "hashes": {
+            "sha1": "0a5e23dcebedcb6ee9e7d065ca4c7b317aaf86f4",
+            "sha512": "1359d6576214fffadcb7bd4202bfd1606c827ab6c75143cbc7747269ed7d4131f5db226a914b9a924cac92e596c7994e6fe3303671ff8d5a2dcd41caf613e7ae"
+          },
+          "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/lt43vWtF/Jade-mc26.3-Fabric-26.3.1.jar",
+          "filename": "Jade-mc26.3-Fabric-26.3.1.jar",
+          "primary": true,
+          "size": 1038435,
+          "file_type": null
+        },
+        {
+          "id": "uA6lGF28",
+          "hashes": {
+            "sha1": "8fbb9a7106c2461a6fa2ed52cf4e6f03d850c1ae",
+            "sha512": "a4228e3cffd637298f4264e3d9139cabe09b84590655d0d35684072b2ccade462718d7c2ea22705f179b17d4ca471fdb616b8b86025b995cca5314540bc7222f"
+          },
+          "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/lt43vWtF/Jade-mc26.3-Fabric-26.3.1-sources.jar",
+          "filename": "Jade-mc26.3-Fabric-26.3.1-sources.jar",
+          "primary": false,
+          "size": 521868,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "u6dRKJwZ",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "gkoJCQn0",
+      "project_id": "lhGA9TYQ",
+      "author_id": "OQodw31Z",
+      "featured": false,
+      "name": "[Fabric 26.3] v22.0.2",
+      "version_number": "22.0.2+fabric",
+      "changelog": "## Architectury v22.0.2 for 26.3\nUpdated at **2026-09-18 21:11**.\n[Click here for changelog](https://www.github.com/architectury/architectury/commits/26.3)\n- Fix invalid atlas id on NeoForge",
+      "changelog_url": null,
+      "date_published": "2026-09-18T21:12:40.982114Z",
+      "downloads": 22525,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "7XHvH9wd",
+          "hashes": {
+            "sha1": "3d2795fe029dfed6212e5ce1eef362459d24895d",
+            "sha512": "23ddacd8ca3289302d860a5b63362ae705721ec4275c86514dbc28a9b7e6afd8392dd2241845676c059e9ecf8e6df85bc6fe35cfeb26d0a44fa3ac4f4b6d2a2c"
+          },
+          "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/gkoJCQn0/architectury-fabric-22.0.2.jar",
+          "filename": "architectury-fabric-22.0.2.jar",
+          "primary": true,
+          "size": 622449,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "server_only_client_optional",
+      "id": "yt9oDFOj",
+      "project_id": "TQTTVgYE",
+      "author_id": "BIC780Hy",
+      "featured": false,
+      "name": "Carpet 26.3",
+      "version_number": "26.3",
+      "changelog": "What's new in Carpet 26.3:\n - support for Minecraft 26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-18T17:13:20.243699Z",
+      "downloads": 12444,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "fxzGr4ch",
+          "hashes": {
+            "sha512": "7a479ba69eb5049cb94365d5044bd58c9f970c50b3484861fe3675f1917f7c99c1b1f50a5e01bdd9ded940d76a995539009a3656e05be2f513f20ec14de991a7",
+            "sha1": "564c46b80e3a98430f0265b0485833f335d94a8d"
+          },
+          "url": "https://cdn.modrinth.com/data/TQTTVgYE/versions/yt9oDFOj/fabric-carpet-26.3%2Bv260915.jar",
+          "filename": "fabric-carpet-26.3+v260915.jar",
+          "primary": true,
+          "size": 1541420,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3-rc-1",
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "server_only",
+      "id": "r9hY06vQ",
+      "project_id": "yn9u3ypm",
+      "author_id": "L8RLwrF2",
+      "featured": false,
+      "name": "UniversalGraves 3.13.0+26.3",
+      "version_number": "3.13.0+26.3",
+      "changelog": "**Full Changelog**: https://github.com/Patbox/UniversalGraves/compare/3.12.0+26.2...3.13.0+26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-10T21:45:03.499567Z",
+      "downloads": 3434,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "KirNHyAx",
+          "hashes": {
+            "sha512": "0a1e8bf88d66f0ba5cfdf3d7544b73d373f283c0b75ddb627fb8841825e58af7925f6eb3e8aa437f3739771396e4b32207192500062761bcdac7efcc3ff5cc03",
+            "sha1": "b18202703051275d9d4f7f7ddab18e54a21d14f5"
+          },
+          "url": "https://cdn.modrinth.com/data/yn9u3ypm/versions/r9hY06vQ/graves-3.13.0%2B26.3.jar",
+          "filename": "graves-3.13.0+26.3.jar",
+          "primary": true,
+          "size": 770590,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "xGdtZczs",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "WXHRsMRl",
+      "project_id": "gvQqBUqZ",
+      "author_id": "uhPSqlnd",
+      "featured": false,
+      "name": "Lithium 0.26.1 for Fabric",
+      "version_number": "mc26.3-0.26.1-fabric",
+      "changelog": "Lithium 0.26.1 for Minecraft 26.3.x fixes two critical issues.\n\nMake sure to take a backup of your world before using the mod and please report any bugs and mod compatibility issues at the [issue tracker](https://github.com/CaffeineMC/lithium-fabric/issues). You can check the [description of each optimization](https://github.com/CaffeineMC/lithium/blob/mc26.3-0.26.1/lithium-mixin-config.md) and how to disable it when encountering a problem.\n\n## Changes\n- Fix F3+1 profiler crash\n- Disable optimization that causes chunk corruption",
+      "changelog_url": null,
+      "date_published": "2026-09-16T14:39:40.495837Z",
+      "downloads": 280944,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "BNC5cVEt",
+          "hashes": {
+            "sha512": "acbb9b037a203f005e03a20bf1d9866019384abb5ad27664808a12b919639a2501ecb52f8f0d77d27e1409935b0dbdbb70e01ac466480c0ae421ee403f649c59",
+            "sha1": "91e91c955650afaf98e4acebee060a58ac99ade5"
+          },
+          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/WXHRsMRl/lithium-fabric-0.26.1%2Bmc26.3.jar",
+          "filename": "lithium-fabric-0.26.1+mc26.3.jar",
+          "primary": true,
+          "size": 915429,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "client_or_server",
+      "id": "wJeXgIoa",
+      "project_id": "codAaoxh",
+      "author_id": "6YsSV9eP",
+      "featured": false,
+      "name": "MidnightLib 1.9.3 - Fabric 26.3",
+      "version_number": "1.9.3+26.3-fabric",
+      "changelog": "## MidnightLib v1.9.3\n- Dynamic comment formatting (tysm [@Jaffe2718](https://github.com/Jaffe2718))\n  - Modders can now provide a list of Strings to format the text with – useful for dynamic stats\n- Fix NullPointerException while loading @Condition from the field behind #129 (by [@Jaffe2718](https://github.com/Jaffe2718))\n- Updated Tatar translations (by [@Amirhan-Taipovjan-Greatest-I](https://github.com/Amirhan-Taipovjan-Greatest-I))\n- Updated Argentine Spanish translations (by [@Texaliuz](https://github.com/Texaliuz))\n## MidnightLib v1.9.2\n- Add support for using `StringRepresentable` to translate enums\n## MidnightLib v1.9.1\n- Fix crash when loading existing main config on NeoForge\n# MidnightLib v1.9.0\n- Setup a **multiversion** build environment \n  - MidnightLib will now always be up-to-date on all relevant versions of Minecraft  \n    (Fabric/Forge 1.20.1; Fabric/NeoForge 1.21.1, 1.21.5, 1.21.8, 1.21.10)\n  - Measures were taken to ensure this doesn't break mods targeting old MidnightLib versions.  \n    In case you still find a broken mod, please [report it](https://github.com/TeamMidnightDust/MidnightLib/issues/new/choose) and tag the issue with `1.9.0`.\n- New logo! This offers improved visibility on light themes and a more modern, fresh look. \n- Added JavaDocs to improve the developer experience.\n  - To be able to view them, adjust your midnightlib gradle dependency by following the [wiki](https://midnightdust.eu/wiki/midnightlib).\n- Reduced jar size – now under 60KB again for Fabric builds :)\n- Migrate to Mojang mappings in preparation for upcoming non-obfuscated releases",
+      "changelog_url": null,
+      "date_published": "2026-09-13T22:44:13.131953Z",
+      "downloads": 13595,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "NYFXwPxQ",
+          "hashes": {
+            "sha512": "2b5c5ed195d44d97dd6fafdb8583d1d883f10303c0cde331da72c6004f88cf27207167aaf77f0c692113399db42f616d1174144671898a25dfa69e9525135b8b",
+            "sha1": "2c0e2ba8a9a2b66729b6074325b40a901740238b"
+          },
+          "url": "https://cdn.modrinth.com/data/codAaoxh/versions/wJeXgIoa/midnightlib-fabric-1.9.3%2B26.3-rc-2.jar",
+          "filename": "midnightlib-fabric-1.9.3+26.3-rc-2.jar",
+          "primary": true,
+          "size": 60602,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "client_or_server_prefers_both",
+      "id": "dTKbGYbb",
+      "project_id": "c7m1mi73",
+      "author_id": "1wRstasz",
+      "featured": false,
+      "name": "Packet Fixer 3.3.6",
+      "version_number": "3.3.6",
+      "changelog": "Port 26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-15T19:58:40.271912Z",
+      "downloads": 12226,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "leC0sc5L",
+          "hashes": {
+            "sha1": "a71fcdee677e23583da12b9237ab165ae7a0c8b0",
+            "sha512": "8d3139b150ef591c62b086f553be212bc72eb4a32b0b1f8bb5cc069a9b79a85046d31b1147e5aaff23e4b69bb92c76445d41884657a7b652def25e2b73d61613"
+          },
+          "url": "https://cdn.modrinth.com/data/c7m1mi73/versions/dTKbGYbb/PacketFixer-fabric-3.3.6.jar",
+          "filename": "PacketFixer-fabric-3.3.6.jar",
+          "primary": true,
+          "size": 32477,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3-pre-3",
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server",
+      "id": "lXytLqWj",
+      "project_id": "eXts2L7r",
+      "author_id": "L8RLwrF2",
+      "featured": false,
+      "name": "3.2.0+26.3",
+      "version_number": "3.2.0+26.3",
+      "changelog": "**Full Changelog**: https://github.com/Patbox/TextPlaceholderAPI/compare/3.1.0-beta.1+26.2...3.2.0+26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-09T09:23:44.714312Z",
+      "downloads": 277321,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "S55UzZQh",
+          "hashes": {
+            "sha1": "4c455faa6333dbaef72cedbb91fe4a2a03176741",
+            "sha512": "eb2bb31e51068aad2581b7864ea7b11b1209ba1c2b27551cd5837d9b312b818b73bb47c06374b46b99b73401c62c6b6c115f702c55aed6afd467ad8ad6448de4"
+          },
+          "url": "https://cdn.modrinth.com/data/eXts2L7r/versions/lXytLqWj/placeholder-api-3.2.0%2B26.3.jar",
+          "filename": "placeholder-api-3.2.0+26.3.jar",
+          "primary": true,
+          "size": 254959,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "9zaNfTib",
+      "project_id": "6lvkzFFj",
+      "author_id": "In8LcZpn",
+      "featured": false,
+      "name": "2.0.15 [Fabric]",
+      "version_number": "2.0.15",
+      "changelog": "",
+      "changelog_url": null,
+      "date_published": "2026-09-17T11:14:07.388773Z",
+      "downloads": 196,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "1pE2sD7i",
+          "hashes": {
+            "sha1": "044a20a3cf4e673f909d0fe128ba1a1da8bc51ed",
+            "sha512": "28ed165acf83468642ae2215a3cacff634c74e73fb6023f173e2cc0e711956b54f938f51f035eff724a777bcf6a840ed7c67d279fe0a70d57c2541d1bc6c227b"
+          },
+          "url": "https://cdn.modrinth.com/data/6lvkzFFj/versions/9zaNfTib/polylib-fabric-26.3-2.0.15.jar",
+          "filename": "polylib-fabric-26.3-2.0.15.jar",
+          "primary": true,
+          "size": 1417231,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "cNHatNw3",
+      "project_id": "G1hIVOrD",
+      "author_id": "VTfgLJ1p",
+      "featured": true,
+      "name": "[Fabric] Resourceful Lib 6.0.0",
+      "version_number": "6.0.0",
+      "changelog": "# -----{ 6.0.0 }-----\n\nUpdate to 26.3\nadded convenience method to ResourcefulCreativeModeTab for sorting multiple registries\n\n# -----{ 5.0.4 }-----\n\nadded convenience method to ResourcefulCreativeModeTab for sorting multiple registries\nfixed missing fluid properties\n\n# -----{ 5.0.3 }-----\n\nAdded getOpaqueValue on the Color class and a byte codec in ExtraByteCodecs for WeightCollection\n\n# -----{ 5.0.1 }-----\n\nFix client watchdog hanging up on scheduler\nUpdate to 26.2\n\n# -----{ 5.0.0 }-----\n\nUpdate to 26.2\n\n# -----{ 4.0.1 }-----\n\nFix crash when highlights being rendered\nUpdate to 26.1\n\n# -----{ 4.0.0 }-----\n\nUpdate to 26.1\n\n# -----{ 4.0.0 }-----\n\nUpdate to 26.1\nUpdate to 1.21.11\n\n# -----{ 3.11.0 }-----\n\nUpdate to 1.21.11\n\n# -----{ 3.9.1 }-----\n\nUpdate to 1.21.5\n\n# -----{ 3.9.0 }-----\n\nUpdate to 1.21.5\n\n# -----{ 3.6.0 }-----\n\n\n\n# -----{ 3.5.0 }-----\n\nUpdate to 1.21.5\n\n# -----{ 3.4.5 }-----\n\nFix crash on newer neoforge versions\n\n# -----{ 3.4.4 }-----\n\nUse block description prefix for registered bloc items\nUse fabric-api instead of fabric in FMJ\n\n# -----{ 3.4.3 }-----\n\nUse fabric-api instead of fabric in FMJ\nAdd auto enclosing of type specific parent registries\n\n# -----{ 3.4.2 }-----\n\nFix common shading issue\nAdd parentable builtin registries\n\n# -----{ 3.4.1 }-----\n\nAdd parentable builtin registries\nUpdate to 1.21.4\n\n# -----{ 3.4.0 }-----\n\nUpdate to 1.21.4\n\n# -----{ 3.3.1 }-----\n\nAdd support for specialized registries for items and blocks\n\n# -----{ 3.3.0 }-----\n\n1.21.3\n\n# -----{ 3.0.11 }-----\n\nImproved performance for certain UI render utilities.\nFix crash with Tech Reborn on fabric\n\n# -----{ 3.0.10 }-----\n\n\n\n# -----{ 3.0.9 }-----\n\n\n\n# -----{ 3.0.8 }-----\n\nFix extra parameter in CodecSavedData\nAdded CodecSavedData\n\n# -----{ 3.0.7 }-----\n\nAdded CodecSavedData\nAdded NetworkHandle and bumped ByteCodecs\n\n# -----{ 3.0.6 }-----\n\nAdded NetworkHandle and bumped ByteCodecs\nDeprecated PacketType.type, added helpers for CodecPacketType\n\n# -----{ 3.0.5 }-----\n\nDeprecated PacketType.type, added helpers for CodecPacketType\n\n# -----{ 3.0.4 }-----\n\nFixed crash on dedicated server\n\n# -----{ 3.0.3 }-----\n\nFixed crash on dedicated server\n\n# -----{ 3.0.2 }-----\n\nfixed crash if someone used stack sensitive texture on neo\n\n# -----{ 3.0.1 }-----\n\nfixed crash if someone used stack sensitive texture on neo\n\n# -----{ 3.0.0 }-----\n\n\n\n# -----{ 2.5.5 }-----\n\nAdded helper for mojang either in bytecodecs.\nUpdate bytecodecs to 1.1.0\n\n# -----{ 2.5.4 }-----\n\nUpdate bytecodecs to 1.1.0\n\n# -----{ 2.5.3 }-----\n\nFixed fabric network packets being flipped\nAdded helper for creating data components & added pair bytecodec\n\n# -----{ 2.5.2 }-----\n\nAdded helper for creating data components & added pair bytecodec\n\n# -----{ 2.5.1 }-----\n\n\n\n# -----{ 2.5.0 }-----\n\nUpdated to 1.20.5\n\n# -----{ 2.4.10 }-----\n\nAdded option to stop resetting mouse on container open.\nAdd menu content player context from 1.20.1 to 1.20.4\n\n# -----{ 2.4.9 }-----\n\nAdd menu content player context from 1.20.1 to 1.20.4\nUpdated highlight internals to use less memory\n\n# -----{ 2.4.8 }-----\n\nUpdated highlight internals to use less memory\n\n# -----{ 2.4.7 }-----\n\nAdded required option to packs and allow loading datapacks\n\n# -----{ 2.4.6 }-----\n\nCheck if the mouse is in bounds to try cursor checks.\n\n# -----{ 2.4.5 }-----\n\nCheck if the mouse is in bounds to try cursor checks.\n\n# -----{ 2.4.4 }-----\n\nUse correct generic for recipe serializer\n\n# -----{ 2.4.3 }-----\n\nAdd check if network is optional if it should send the packet to the player\n\n# -----{ 2.4.2 }-----\n\nAdd check if network is optional if it should send the packet to the player\n\n# -----{ 2.4.1 }-----\n\nFix possible crash on neoforge and improve code on fabric\n\n# -----{ 2.4.0 }-----\n\nDeprecated old networking and added a new version.\nRemoved FinishedCodecRecipe and add CodecRecipeBuilder\nDeprecated bound and update render utils to respect that\nAdded width and height to parent widget\nAdded number range codecs\nUpdate to 1.20.4\nAdded nbt validators\n\n# -----{ 2.2.4 }-----\n\nFixed scroll list scrolling on different axis\nFix neoforge not loading\n\n# -----{ 2.2.3 }-----\n\nFix neoforge not loading\n\n# -----{ 2.2.2 }-----\n\nAdd missing impl on forge\n\n# -----{ 2.2.1 }-----\n\n\n\n# -----{ 2.2.0 }-----\n\n1.20.2 Update\n\n# -----{ 2.2.0 }-----\n\n1.20.2 Update\n\n# -----{ 2.1.16 }-----\n\nAdded codec metadata section serializer\nAdded context menus widget\n\n# -----{ 2.1.15 }-----\n\nAdded context menus widget\n\n# -----{ 2.1.14 }-----\n\nFixed issue where hidden widgets could have cursors shown\n\n# -----{ 2.1.13 }-----\n\nFixed crash in nbt predicates\nAdded strict mode for nbt predicates\n\n# -----{ 2.1.12 }-----\n\nAdded strict mode for nbt predicates\nAdded ability to set random and get total to WeightedCollection, should allow for more deterministic responses\n\n# -----{ 2.1.11 }-----\n\nAdded ability to set random and get total to WeightedCollection, should allow for more deterministic responses\nAdded Fabric-Loom-Remap to manifest file\n\n# -----{ 2.1.10 }-----\n\nAdded Fabric-Loom-Remap to manifest file\n\n# -----{ 2.1.9 }-----\n\nAdded component bytecodec and update bytecodec version.\nFixed server translations not pulling value properly.\n\n# -----{ 2.1.8 }-----\n\nFixed server translations not pulling value properly.\n\n# -----{ 2.1.7 }-----\n\nAdded more ByteCodec types\n\n# -----{ 2.1.6 }-----\n\nAdded new experimental ByteCodec packets\n\n# -----{ 2.1.5 }-----\n\nFix CME in creative tabs\n\n# -----{ 2.1.4 }-----\n\nAdd dataless packet handler, fix web responses not being correct in WebUtils\nAdd enumbuilder, fix fabric ingredients, add unsafe methods\n\n# -----{ 2.1.3 }-----\n\nAdd enumbuilder, fix fabric ingredients, add unsafe methods\n\n# -----{ 2.1.2 }-----\n\nAdd map tag and map collection methods for tags.\nAdd replace versions of tooltip set methods and add clear tooltip method.\nAdd mod file paths to mod info and add pretty gson.\nRegister ingredients properly on forge.\nAdd CursorWidget and allow for better cursor setting on base screens\nAdded NetworkChannel#canSendPlayerPackets and NetworkChannel now accept an 'optional' parameter to determine if connections should be refused if channel does not exist on the other side\n\n# -----{ 2.1.1 }-----\n\nAdded NetworkChannel#canSendPlayerPackets and NetworkChannel now accept an 'optional' parameter to determine if connections should be refused if channel does not exist on the other side\nBreaking change: changed IntContainerData#size to IntContainerData#getSize to fix conflict with yarn mappings\n\n# -----{ 2.1.0 }-----\n\nBreaking change: changed IntContainerData#size to IntContainerData#getSize to fix conflict with yarn mappings\nAdded ResourcefulCreativeTab#addContent for ability to add a dynamic amount of itemstacks\n\n# -----{ 2.0.8 }-----\n\nAdded ResourcefulCreativeTab#addContent for ability to add a dynamic amount of itemstacks\nAdded support for defining internal resource packs in mods.toml and fabric.mods.json\n\n# -----{ 2.0.7 }-----\n\nAdded support for defining internal resource packs in mods.toml and fabric.mods.json\n\n# -----{ 2.0.6 }-----\n\n\n\n# -----{ 2.0.5 }-----\n\n\n\n# -----{ 2.0.5 }-----\n\n- Full 1.20 release",
+      "changelog_url": null,
+      "date_published": "2026-09-19T23:09:48.129569Z",
+      "downloads": 855,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "COrE7WQ9",
+          "hashes": {
+            "sha512": "5ed8703b352f8c85ec4a8fc57f06d901c93f0131aa6f188dd8d9dbd9628f501647847c01764645262555601e7990f8993d9f208e139b50faeb0dc41be50df0c6",
+            "sha1": "696b1dad5d45a4ad3522c426e04054bf21fc668a"
+          },
+          "url": "https://cdn.modrinth.com/data/G1hIVOrD/versions/cNHatNw3/ResourcefulLib-6.0.0.jar",
+          "filename": "ResourcefulLib-6.0.0.jar",
+          "primary": true,
+          "size": 455984,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_or_server",
+      "id": "e3hsPc1o",
+      "project_id": "l6YH9Als",
+      "author_id": "iRtG8gdL",
+      "featured": true,
+      "name": "1.10.187 (Fabric 26.x)",
+      "version_number": "1.10.187-fabric",
+      "changelog": "This update brings the latest version of spark for Minecraft 26.x to Modrinth. The full changelog can be viewed at https://spark.lucko.me/changelog.",
+      "changelog_url": null,
+      "date_published": "2026-09-19T07:44:18.489950Z",
+      "downloads": 20128,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "dUlQPHpm",
+          "hashes": {
+            "sha512": "c74bf5d5a16b2445ec6ea717eac756412b272a8015e91f91a7bf5a27e6f2f99c4a11878d434510f941f37b0344b3a7d1ba0dd6c34e80642762c48fb6e9a93894",
+            "sha1": "0940b4089affdfca37d6b6d0ea5ecae4dbd8fe98"
+          },
+          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/e3hsPc1o/spark-1.10.187-fabric.jar",
+          "filename": "spark-1.10.187-fabric.jar",
+          "primary": true,
+          "size": 3838499,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "client_and_server",
+      "id": "7rBEfM19",
+      "project_id": "XZNI4Cpy",
+      "author_id": "WBSj30w3",
+      "featured": false,
+      "name": "Tom's Storage 26.3-2.12.0 Fabric",
+      "version_number": "26.3-2.12.0-fabric",
+      "changelog": "26.3 port",
+      "changelog_url": null,
+      "date_published": "2026-09-16T19:38:12.916511Z",
+      "downloads": 3085,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "eKVOVppH",
+          "hashes": {
+            "sha1": "22a2b6de4a0d8b39498d58d4940bf9111d1b4e41",
+            "sha512": "fbd6d3c7e460481ab436716462172245b32eb18522ba0c68d514ec806b0a9258676c87688e99821f060bd56e9ce45d866b19cd91379de3031513ade0982dc36a"
+          },
+          "url": "https://cdn.modrinth.com/data/XZNI4Cpy/versions/7rBEfM19/toms_storage_fabric-26.3-2.12.0.jar",
+          "filename": "toms_storage_fabric-26.3-2.12.0.jar",
+          "primary": true,
+          "size": 1853317,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "Orvt0mRa",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "fRiHVvU7",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "nfn13YXA",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "9s6osm5g",
+          "file_name": null,
+          "dependency_type": "embedded"
+        },
+        {
+          "version_id": null,
+          "project_id": "5aaWibi9",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "u6dRKJwZ",
+          "file_name": null,
+          "dependency_type": "optional"
+        },
+        {
+          "version_id": null,
+          "project_id": "tagwiZkJ",
+          "file_name": null,
+          "dependency_type": "optional"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "environment": "server_only_client_optional",
+      "id": "REBDssAz",
+      "project_id": "xGdtZczs",
+      "author_id": "L8RLwrF2",
+      "featured": false,
+      "name": "polymer-bundled 0.18.2+26.3",
+      "version_number": "0.18.2+26.3",
+      "changelog": "**Full Changelog**: https://github.com/Patbox/polymer/compare/0.18.1+26.3...0.18.2+26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-18T19:11:40.659503Z",
+      "downloads": 4001,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "KX45aCeR",
+          "hashes": {
+            "sha1": "8571b8aaa1533e08739e75f01020836a76daa30d",
+            "sha512": "a83bec0ef7ee4c905429f102a9a1b2ff9db60fb23f3e6b5a26ff4442b0427c3edd821f311643a3c377541cfd5a4753519001cbfebbeb78014a77041d91449f51"
+          },
+          "url": "https://cdn.modrinth.com/data/xGdtZczs/versions/REBDssAz/polymer-bundled-0.18.2%2B26.3.jar",
+          "filename": "polymer-bundled-0.18.2+26.3.jar",
+          "primary": true,
+          "size": 1411315,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "server_only",
+      "id": "VC5LRxai",
+      "project_id": "vE2FN5qn",
+      "author_id": "nkUT94hf",
+      "featured": false,
+      "name": "Let Me Despawn 1.26.9.2",
+      "version_number": "1.26.9.2",
+      "changelog": "- Updated to 26.3",
+      "changelog_url": null,
+      "date_published": "2026-09-17T11:04:24.270554Z",
+      "downloads": 5973,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "QKvHllgC",
+          "hashes": {
+            "sha512": "9870c2293d6c65341bf61fce49ca4d40f0a6c7c4dae51ad68c969c4ed7d3fa9750c8da585eb04fb1d5276e9ff7e31d42c4e6b0a3dc6368a3f5fd8fdefb3c7818",
+            "sha1": "3678d4413213897ab54e12e3e395b3801c861b05"
+          },
+          "url": "https://cdn.modrinth.com/data/vE2FN5qn/versions/VC5LRxai/letmedespawn-fabric-26.3-1.26.9.2.jar",
+          "filename": "letmedespawn-fabric-26.3-1.26.9.2.jar",
+          "primary": true,
+          "size": 23065,
+          "file_type": null
+        }
+      ],
+      "dependencies": [
+        {
+          "version_id": null,
+          "project_id": "Gi02250Z",
+          "file_name": null,
+          "dependency_type": "required"
+        },
+        {
+          "version_id": null,
+          "project_id": "P7dR8mSH",
+          "file_name": null,
+          "dependency_type": "required"
+        }
+      ]
+    },
+    {
+      "game_versions": [
+        "26.2",
+        "26.3-snapshot-1",
+        "26.3-snapshot-2",
+        "26.3-snapshot-3",
+        "26.3-snapshot-4",
+        "26.3-snapshot-5",
+        "26.3-snapshot-6",
+        "26.3-snapshot-7",
+        "26.3-snapshot-8",
+        "26.3-snapshot-9",
+        "26.3-snapshot-10",
+        "26.3-pre-1",
+        "26.3-pre-2",
+        "26.3-pre-3",
+        "26.3-rc-1",
+        "26.3-rc-2",
+        "26.3-rc-3",
+        "26.3"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "environment": "server_only",
+      "id": "IRKkj8xt",
+      "project_id": "Gi02250Z",
+      "author_id": "nkUT94hf",
+      "featured": false,
+      "name": "Almanac 1.26.9.1",
+      "version_number": "1.26.9.1",
+      "changelog": "- Replaced WeakHashMap with MapMaker to prevent crashes where an entity doesnt have an ID assigned yet (Like the CarryOn mod)",
+      "changelog_url": null,
+      "date_published": "2026-09-03T07:28:08.039014Z",
+      "downloads": 36427,
+      "version_type": "release",
+      "status": "listed",
+      "requested_status": null,
+      "files": [
+        {
+          "id": "NLM9JgGM",
+          "hashes": {
+            "sha1": "766acfd5c46ce8e26125ea046dcb4864339487e1",
+            "sha512": "40d660a1645baacbfc8639549344433f5e96eca9cdaa9e0b60db0059eedec36f45d79433667a05ed157845c8d64bad59779d97150df6cd311bc0113c3c7e1ab0"
+          },
+          "url": "https://cdn.modrinth.com/data/Gi02250Z/versions/IRKkj8xt/almanac-fabric-26.2-1.26.9.1.jar",
+          "filename": "almanac-fabric-26.2-1.26.9.1.jar",
+          "primary": true,
+          "size": 1029461,
+          "file_type": null
+        }
+      ],
+      "dependencies": []
+    }
+  ]
+}

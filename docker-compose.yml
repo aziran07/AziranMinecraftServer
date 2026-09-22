@@ -2,20 +2,23 @@ version: "3.9"
 
 services:
   minecraft:
-    image: itzg/minecraft-server:java21-alpine
-    container_name: minecraft
-    expose:
-      - 8123:8123/tcp
+    image: itzg/minecraft-server:java25-alpine
+    container_name: aziran-minecraft-26-3
+    ports:
       - 25565:25565/tcp
+    expose:
+      - 8123/tcp
+      - 25565/tcp
     volumes:
-      - ./server-data:/data
+      - ./server-data-26.3-neoforge:/data
     environment:
       #default env
       EULA: "true"
       INIT_MEMORY: "4G"
       MAX_MEMORY: "20G"
-      VERSION: "1.21"
-      TYPE: "FABRIC"
+      VERSION: "26.3"
+      TYPE: "NEOFORGE"
+      NEOFORGE_VERSION: "26.3.0.8-beta"
 
       #curseforge env
       # CURSEFORGE_FILES: |
@@ -141,7 +144,6 @@ services:
     ports:
       - 80:80/tcp
       - 443:443/tcp
-      - 25565:25565/tcp
       - 8123:8123/tcp
     volumes:
       - ./nginx/logs:/var/log/nginx

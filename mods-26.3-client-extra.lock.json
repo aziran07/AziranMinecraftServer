@@ -1,0 +1,190 @@
+{
+  "description": "서버에 설치하지 않는 클라이언트 전용 모드의 고정 목록. 서버 lock(mods-26.3.lock.json)과 분리해서 관리한다.",
+  "minecraft_version": "26.3",
+  "loader": "neoforge",
+  "loader_version": "26.3.0.8-beta",
+  "java_version": 25,
+  "cache_directory": "client-mods-cache",
+  "cache_note": "JAR은 Git에 포함하지 않는다. 아래 url에서 cache_directory/filename으로 받으면 빌더가 size·sha512를 대조한다.",
+  "mod_count": 3,
+  "removed": [
+    {
+      "title": "Sodium",
+      "project_slug": "sodium",
+      "version_number": "mc26.3-0.9.2-neoforge",
+      "filename": "sodium-neoforge-0.9.2+mc26.3.jar",
+      "removed_in_pack_version": "1.1.1",
+      "reason": "Windows MultiMC 크래시 로그에서 Sodium의 Nvidia 워크어라운드가 IllegalStateException \"Command line is already modified\"로 실패하고 곧바로 네이티브 종료 코드 0xc0000409가 기록됐다. 원인을 확정하지 못했으므로 런타임 수정 대신 팩에서 빼고 나머지 구성으로 재현 여부를 가리는 진단 격리다.",
+      "still_excluded_in": [
+        "1.1.2",
+        "1.1.3"
+      ],
+      "status_note": "사용자가 1.1.0 인스턴스에서 Sodium JAR만 비활성화한 뒤 Windows MultiMC 실행과 서버 접속에 성공했다고 알려 왔다. 나머지 구성으로는 크래시가 재현되지 않는다는 뜻이므로 1.1.2에 이어 1.1.3에서도 계속 뺀다. 다만 이것으로 네이티브 종료 코드의 정확한 원인이 확정되지는 않는다."
+    },
+    {
+      "title": "Xaero's Minimap",
+      "project_slug": "xaeros-minimap",
+      "version_number": "neoforge-26.3-26.5.3",
+      "filename": "xaerominimap-neoforge-26.3-26.5.3.jar",
+      "removed_in_pack_version": "1.1.3",
+      "reason": "16개를 모두 켠 1.1.2가 Windows에서 네이티브 종료 코드 0xc0000005(액세스 위반)로 크래시했다. 사용자가 같은 인스턴스에서 이 JAR 하나만 비활성화하자 실행됐고, 1.1.1과 1.1.2의 최상위 JAR 차이도 이 파일 하나뿐이었다. 그래서 이 모드·드라이버·런타임 조합에서 크래시의 방아쇠는 Xaero's Minimap으로 확인됐다. 네이티브 실패 메커니즘은 규명하지 않았다.",
+      "still_excluded_in": [],
+      "status_note": "미니맵 기능 요구는 남아 있으므로 1.1.3에서 JourneyMap으로 대체한다. Xaero's Minimap 자체에 결함이 있다고 단정한 것이 아니라, 이 환경에서 크래시하지 않는 다른 미니맵으로 바꾼 것이다. 다른 버전의 Xaero's Minimap은 시험하지 않았다."
+    }
+  ],
+  "mods": [
+    {
+      "title": "Mouse Tweaks",
+      "source": "modrinth",
+      "project_slug": "mouse-tweaks",
+      "project_id": "aC3cM3Vq",
+      "version_id": "f4tPRGDq",
+      "version_number": "26.3-2.31-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-15T20:52:25.056514Z",
+      "filename": "MouseTweaks-neoforge-mc26.3-2.31.jar",
+      "url": "https://cdn.modrinth.com/data/aC3cM3Vq/versions/f4tPRGDq/MouseTweaks-neoforge-mc26.3-2.31.jar",
+      "size": 74133,
+      "sha1": "de224d4e3c270b749345c3a6703b51336a3ce5d3",
+      "sha512": "93e7ac34bbc15de635073722054b11fed3981e0f39954286e8a57214ce5ce007e5562882cb81cd230c8ea49970970c84548cfc598332c539777986090b090798",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only",
+      "client_side": "required",
+      "server_side": "unsupported",
+      "declared_mod_ids": [
+        "mousetweaks"
+      ],
+      "required_dependencies": [],
+      "bundled_jars": [],
+      "has_fabric_metadata": false,
+      "client_reason": "인벤토리 마우스 조작 편의. 클라이언트 전용이라 서버에는 설치하지 않는다.",
+      "license": {
+        "id": "BSD-3-Clause",
+        "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+        "url": "https://github.com/YaLTeR/MouseTweaks",
+        "note": "JAR의 neoforge.mods.toml이 license=\"BSD-3-Clause\"를 선언한다. Modrinth 프로젝트 메타데이터와 같다.",
+        "distribution_note": "이 버전의 Modrinth 파일 3개 중 primary 파일만 담는다. -api.jar(dev-jar)와 -src.jar(sources-jar)는 게임 실행에 필요하지 않다."
+      }
+    },
+    {
+      "title": "ImmediatelyFast",
+      "source": "modrinth",
+      "project_slug": "immediatelyfast",
+      "project_id": "5ZwdcRci",
+      "version_id": "4SovUFpn",
+      "version_number": "1.17.1+26.3-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-17T16:51:35.440900Z",
+      "filename": "ImmediatelyFast-NeoForge-1.17.1+26.3.jar",
+      "url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/4SovUFpn/ImmediatelyFast-NeoForge-1.17.1%2B26.3.jar",
+      "size": 109497,
+      "sha1": "a072863c3b4e7cfed81899d8d3115839a161a708",
+      "sha512": "6fddcf7e9de2bf179bdd18cc317fa1cc50ea9c3a40b06a0e0673ecb1dba29fb2ac2743ada361e32f52c2c1f333043795a5149b8b89ee467665c2b734e7d5d951",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only",
+      "client_side": "required",
+      "server_side": "unsupported",
+      "declared_mod_ids": [
+        "immediatelyfast"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3.0]"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.0,26.4.0.0)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false,
+      "client_reason": "immediate mode 렌더링 최적화. 클라이언트 전용이라 서버에는 설치하지 않는다.",
+      "license": {
+        "id": "LGPL-3.0-or-later",
+        "name": "GNU LGPL v3.0 or later",
+        "url": "https://github.com/RaphiMC/ImmediatelyFast",
+        "note": "JAR의 neoforge.mods.toml이 license=\"LGPL-3.0-or-later\"를 선언하고 루트에 LICENSE_ImmediatelyFast 사본이 들어 있다. Modrinth 프로젝트 메타데이터와 같다."
+      }
+    },
+    {
+      "title": "JourneyMap",
+      "source": "modrinth",
+      "project_slug": "journeymap",
+      "project_id": "lfHFW1mp",
+      "version_id": "OCuB6UWq",
+      "version_number": "26.3-6.0.9+neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-19T18:47:29.429965Z",
+      "filename": "journeymap-neoforge-26.3-6.0.9.jar",
+      "url": "https://cdn.modrinth.com/data/lfHFW1mp/versions/OCuB6UWq/journeymap-neoforge-26.3-6.0.9.jar",
+      "size": 4352830,
+      "sha1": "e4d81a338a2997d6d517d5f7b51b607277f21733",
+      "sha512": "1ed0fc68d17e5134d55111aeea256cac523097eb2c899c11b4ead7f611058983ff54277a0dbcfe5a422a0bd77c05591a677be3bf13b7c927d0f4cfdfbe4d440b",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_optional_server_optional",
+      "client_side": "optional",
+      "server_side": "optional",
+      "server_install": "서버에 설치하지 않는다. Modrinth는 server_side=optional로 표시한다. 지도 표시와 웨이포인트는 클라이언트만으로 동작하므로 서버 구성·모드 디렉터리는 바꾸지 않는다.",
+      "declared_mod_ids": [
+        "journeymap"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.1.2.22-beta,)"
+        },
+        {
+          "mod_id": "commonnetworking",
+          "version_range": "[1.0.22,)"
+        }
+      ],
+      "required_dependencies_note": "Modrinth 버전 메타데이터의 dependencies는 비어 있지만, JAR의 META-INF/neoforge.mods.toml은 neoforge와 commonnetworking을 required로 선언한다. commonnetworking은 내장 JAR common-networking-neoforge-26.3-1.1.1.jar가 제공하므로 별도 설치가 필요 없다. 고정한 NeoForge 26.3.0.8-beta가 [26.1.2.22-beta,)를 만족한다.",
+      "bundled_jars": [
+        {
+          "filename": "common-networking-neoforge-26.3-1.1.1.jar",
+          "declared_mod_ids": [
+            "commonnetworking"
+          ]
+        },
+        {
+          "filename": "journeymap-api-neoforge-26.3-2.0.0.jar",
+          "declared_mod_ids": [
+            "journeymap_api"
+          ]
+        },
+        {
+          "filename": "pngj-2.1.0.jar",
+          "declared_mod_ids": []
+        }
+      ],
+      "has_fabric_metadata": true,
+      "fabric_metadata_note": "루트의 fabric.mod.json은 id=\"journeymap-wrongloader\", version=\"not a fabric mod\"인 안내용 스텁이다. Fabric 로더에서 실수로 쓰는 것을 막으려는 파일이며 이 JAR은 NeoForge 전용이다.",
+      "client_reason": "실시간 지도와 웨이포인트. 표시는 클라이언트에서만 이뤄지므로 서버에는 설치하지 않는다.",
+      "bundle_jar": false,
+      "bundle_jar_reason": "라이선스가 JAR 번들·재호스팅을 금지한다. 모드팩은 설치·실행 과정에서 JourneyMap을 CurseForge 또는 Modrinth에서 내려받을 때만 허용된다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다.",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩은 설치 중 공식 배포처 다운로드 조건으로만 허용)",
+        "url": "https://teamjm.github.io/journeymap-docs/6.0.x/about/licensing/",
+        "note": "JAR의 neoforge.mods.toml이 license=\"All rights reserved\"를 선언하고 루트 license.txt가 \"may not be altered, file-hosted, re-packaged, reverse-engineered, or distributed in part or in whole without express written permission\"이라고 적는다. Modrinth 프로젝트 메타데이터도 LicenseRef-All-Rights-Reserved로 같다.",
+        "distribution_note": "공식 라이선스 문서가 허용하는 것: \"Create a modpack containing JourneyMap, as long as JourneyMap is downloaded from CurseForge or Modrinth as part of the modpack installation or launch process.\" 금지하는 것: \"Re-host, redistribute or bundle the mod in any way, including as part of a larger distribution such as a modpack.\" 따라서 .mrpack은 Modrinth CDN에서 내려받는 files 항목으로만 JourneyMap을 지정하고, JAR을 담는 수동 ZIP·MultiMC 인스턴스 ZIP에서는 제외한다."
+      }
+    }
+  ]
+}
