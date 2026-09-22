@@ -67,8 +67,8 @@ services:
     image: itzg/rcon
     container_name: rcon
     expose:
-      - 4326:4326/tcp
-      - 4327:4327/tcp
+      - 4326/tcp
+      - 4327/tcp
     environment:
       RWA_ENV: "true"
       RWA_RCON_HOST: minecraft
@@ -84,75 +84,78 @@ services:
     networks:
       - aziran-mc-network
 
-  portainer:
-    image: portainer/portainer-ce:alpine-sts
-    container_name: portainer
-    expose:
-      - 9443:9443/tcp
-    volumes:
-      - ./portainer-data:/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-    networks:
-      - aziran-mc-network
+  # Minecraft 서버와 RCON만 운영하기 위해 아래 보조 서비스(portainer, cadvisor,
+  # prometheus, grafana, nginx) 정의를 주석 처리했습니다. 각 줄 앞의 "# "만
+  # 제거하면 원래 정의가 그대로 복원됩니다.
+#   portainer:
+#     image: portainer/portainer-ce:alpine-sts
+#     container_name: portainer
+#     expose:
+#       - 9443:9443/tcp
+#     volumes:
+#       - ./portainer-data:/data
+#       - /var/run/docker.sock:/var/run/docker.sock
+#     restart: unless-stopped
+#     networks:
+#       - aziran-mc-network
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    user: root
-    restart: always
-    networks:
-      - aziran-mc-network
+#   cadvisor:
+#     image: gcr.io/cadvisor/cadvisor
+#     container_name: cadvisor
+#     volumes:
+#       - /:/rootfs:ro
+#       - /var/run:/var/run:ro
+#       - /sys:/sys:ro
+#       - /var/lib/docker/:/var/lib/docker:ro
+#       - /dev/disk/:/dev/disk:ro
+#     user: root
+#     restart: always
+#     networks:
+#       - aziran-mc-network
 
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    expose:
-      - 9090:9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus-data:/prometheus
-    command:
-      - "--storage.tsdb.path=/prometheus"
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    user: root
-    restart: always
-    networks:
-      - aziran-mc-network
+#   prometheus:
+#     image: prom/prometheus
+#     container_name: prometheus
+#     expose:
+#       - 9090:9090
+#     volumes:
+#       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#       - ./prometheus-data:/prometheus
+#     command:
+#       - "--storage.tsdb.path=/prometheus"
+#       - "--config.file=/etc/prometheus/prometheus.yml"
+#     user: root
+#     restart: always
+#     networks:
+#       - aziran-mc-network
 
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    expose:
-      - 3000:3000/tcp
-    volumes:
-      - ./grafana-data:/var/lib/grafana
-    user: root
-    networks:
-      - aziran-mc-network
+#   grafana:
+#     image: grafana/grafana
+#     container_name: grafana
+#     expose:
+#       - 3000:3000/tcp
+#     volumes:
+#       - ./grafana-data:/var/lib/grafana
+#     user: root
+#     networks:
+#       - aziran-mc-network
 
-  nginx:
-    build:
-      context: ./nginx
-    container_name: nginx
-    ports:
-      - 80:80/tcp
-      - 443:443/tcp
-      - 8123:8123/tcp
-    volumes:
-      - ./nginx/logs:/var/log/nginx
-    environment:
-      - TZ=Asia/Seoul
-    links:
-      - minecraft
-    networks:
-      - aziran-mc-network
+#   nginx:
+#     build:
+#       context: ./nginx
+#     container_name: nginx
+#     ports:
+#       - 80:80/tcp
+#       - 443:443/tcp
+#       - 8123:8123/tcp
+#     volumes:
+#       - ./nginx/logs:/var/log/nginx
+#     environment:
+#       - TZ=Asia/Seoul
+#     links:
+#       - minecraft
+#     networks:
+#       - aziran-mc-network
 
 networks:
   aziran-mc-network:
