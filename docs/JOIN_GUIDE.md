@@ -35,6 +35,17 @@ node --test tests/test_join_guide_copy.cjs
 다운로드한 `.mrpack`의 SHA-256을 `mods-26.3-client.lock.json`의 `archives` 값과 대조한다.
 HTTP 접속은 HTTPS로 리다이렉트해야 하며 `mc.aziran.uk`의 게임 서버 연결도 유지되어야 한다.
 
+2026-09-22 배포 검증 결과:
+
+- 공개 HTTPS 페이지·CSS·JavaScript가 모두 200으로 응답하고 인증서 검증을 통과했다.
+- 실제 공개 사이트를 Chromium의 1280px·360px 화면에서 확인했다. 가로 넘침과 JavaScript
+  오류가 없었고, 주소 복사 결과가 `mc.aziran.uk`와 일치했다.
+- Python 테스트 6개와 JavaScript 테스트 2개가 통과했다.
+- 공개 릴리스에서 다시 받은 `.mrpack`의 SHA-256이 잠금 파일과 일치했다.
+- GitHub Pages의 HTTPS 강제를 활성화했다. `/index.html`의 HTTP→HTTPS 및 `www`→루트
+  리다이렉트는 확인했다. 설정 직후 루트 HTTP 응답에는 이전 200 응답의 CDN 캐시가 남아 있었다.
+- 외부 Minecraft 상태 조회에서 26.3 서버가 온라인이었다. 서버 컨테이너 재시작은 없었다.
+
 ## 업데이트
 
 사이트 내용은 `site/`에서 수정한다. GitHub Actions가 `site/`만 업로드하므로 저장소 루트의
