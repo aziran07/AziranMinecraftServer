@@ -2,6 +2,18 @@
 
 2026-09-22에 저장소 설정과 로컬 파일 목록을 확인한 결과입니다. 실행 중인 서비스의 정상 동작을 보증하는 문서가 아닙니다. 기능 변경 시 해당 절과 검증 기준을 함께 갱신합니다.
 
+## 26.3 준비 변경
+
+현재 브랜치의 Minecraft 구성은 Java 25, Minecraft 26.3, NeoForge `26.3.0.8-beta`와 `server-data-26.3-neoforge/`를 사용하도록 준비한다. 26.3 계열 NeoForge는 베타 채널만 배포되므로 Compose의 `NEOFORGE_VERSION`에 정확한 버전을 고정한다. 고정 모드 목록은 `mods-26.3.lock.json`, 설치 및 검증 상태는 [모드 설치 안내](MODS_26_3.md), 로더 결정 근거는 [로더 비교](LOADER_COMPARISON_26_3.md)에 기록한다.
+
+| 구성 | 데이터 경로 | 고정 목록 | 상태 |
+| --- | --- | --- | --- |
+| 1.21 Fabric | `server-data/` | 없음 | 백업 후 보존. 이번 작업에서 수정하지 않음 |
+| 26.3 Fabric 준비 | `server-data-26.3/` | `mods-26.3-fabric-historical.lock.json` | 사용하지 않는 이전 결정. 파일만 보존 |
+| 26.3 NeoForge | `server-data-26.3-neoforge/` | `mods-26.3.lock.json` | 현재 Compose가 사용하는 구성 |
+
+아래 표의 1.21 구성과 로컬 모드 탐색 내용은 보존된 기존 서버에 대한 조사 기록이다. 기존 `mc_backup.sh`는 여전히 `server-data/world`를 대상으로 하므로 신규 서버의 백업으로 사용하면 안 된다.
+
 ## 범위와 구조
 
 7개 서비스로 구성된 Docker Compose 운영 저장소입니다. 애플리케이션 소스, 자체 모드 소스, 패키지 빌드 설정, 자동화 테스트, CI 파이프라인은 현재 추적 파일에서 확인되지 않았습니다.
@@ -24,10 +36,10 @@ CLAUDE.md                        Claude 작업 진입점
 
 | 기능 | 구현·설정 위치 | 현재 선언된 동작 |
 | --- | --- | --- |
-| Minecraft 서버 | `docker-compose.yml` → `services.minecraft` | `itzg/minecraft-server:java21-alpine`, Minecraft `1.21`, `FABRIC`, 초기 메모리 `4G`, 최대 `20G` |
+| Minecraft 서버 | `docker-compose.yml` → `services.minecraft` | `itzg/minecraft-server:java25-alpine`, Minecraft `26.3`, `NEOFORGE`, `NEOFORGE_VERSION=26.3.0.8-beta`, 초기 메모리 `4G`, 최대 `20G` |
 | 게임 기본 정책 | 같은 서비스의 `environment` | 난이도 `hard`, 비행 허용, 업적 알림, EULA 동의, `Asia/Seoul` |
-| 월드·모드 저장 | 같은 서비스의 `volumes` | 호스트 `./server-data` → 컨테이너 `/data`; 상세 설정·게임 기능은 아래 로컬 데이터 절 참고 |
-| 게임 TCP 접속 | `services.nginx.ports`, `nginx/templates/minecraft.conf.template` | 호스트 `25565` → Nginx stream → `minecraft:25565` |
+| 월드·모드 저장 | 같은 서비스의 `volumes` | 호스트 `./server-data-26.3-neoforge` → 컨테이너 `/data`; 설치 모드는 `mods-26.3.lock.json`, 기존 데이터는 아래 로컬 데이터 절 참고 |
+| 게임 TCP 접속 | `services.minecraft.ports` | 호스트 `25565` → 컨테이너 `aziran-minecraft-26-3:25565` 직접 게시. Nginx는 더 이상 `25565`를 게시하지 않으므로 `minecraft.conf.template`의 게임 stream은 현재 경로에서 사용되지 않습니다 |
 | 웹 지도 | 두 Nginx 템플릿, 로컬 `server-data/mods/`·`server-data/dynmap/` | TCP `8123` → `minecraft:8123`; HTTP 도메인은 Nginx 내부 `localhost:8123` stream listener 경유 |
 | RCON 활성화 | `services.minecraft.environment` | RCON 활성화와 `${RCON_PASSWORD}` 전달 |
 | 웹 RCON 관리 | `services.rcon`, `default.conf.template` | `itzg/rcon`, 웹 `4326`, WebSocket `4327`, Minecraft에 내부 연결 |
@@ -41,14 +53,14 @@ CLAUDE.md                        Claude 작업 진입점
 
 ## 요청 흐름과 도메인
 
-모든 서비스는 Compose의 `aziran-mc-network` bridge 네트워크를 사용합니다. 호스트에 포트를 게시하는 서비스는 Nginx입니다. 나머지 서비스의 `expose`는 호스트 포트 게시가 아닙니다.
+모든 서비스는 Compose의 `aziran-mc-network` bridge 네트워크를 사용합니다. 호스트에 포트를 게시하는 서비스는 Nginx와 Minecraft입니다. 게임 `25565`는 Minecraft 컨테이너가 직접 게시하고, Nginx는 `80`·`443`·`8123`만 게시합니다. 나머지 서비스의 `expose`는 호스트 포트 게시가 아닙니다.
 
 ```mermaid
 flowchart LR
-    Player[게임 클라이언트] -->|TCP 25565| N[Nginx]
-    Browser[웹 브라우저] -->|HTTP 80 / HTTPS 443| N
+    Player[게임 클라이언트] -->|TCP 25565| MC[Minecraft + 로컬 모드]
+    Browser[웹 브라우저] -->|HTTP 80 / HTTPS 443| N[Nginx]
     Map[지도 직접 접속] -->|TCP 8123| N
-    N -->|25565 / 8123| MC[Minecraft + 로컬 모드]
+    N -->|8123| MC
     N -->|4326 / 4327| R[RCON Web]
     R -->|내부 RCON| MC
     N -->|HTTPS 9443| P[Portainer]
@@ -86,7 +98,9 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 | --- | --- |
 | `.env` | 자격 증명과 배포별 URL; Git 제외 |
 | `nginx/cert.pem`, `nginx/key.pem` | Dockerfile의 필수 입력; Git 제외, 현 로컬에 파일 존재. 키는 이미지에 복사되므로 이미지 공유 범위에 주의 |
-| `server-data/` | Minecraft 영속 데이터 전체; Git 제외 |
+| `server-data/` | 기존 1.21 Minecraft 영속 데이터; Git 제외 |
+| `server-data-26.3/` | 26.3 Fabric 준비 당시 설치한 모드; 보존용, Git 제외 |
+| `server-data-26.3-neoforge/` | 현재 Compose가 사용하는 26.3 NeoForge 데이터 경로; Git 제외 |
 | `grafana-data/` | Grafana DB·설정 등 영속 데이터; Git 제외 |
 | `prometheus-data/` | Prometheus 시계열 데이터; Git 제외 |
 | `portainer-data/` | Portainer 관리 데이터; Git 제외 |
@@ -131,7 +145,7 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 
 | 작업 | 함께 검토할 영역 | 최소 검증·관찰 기준 |
 | --- | --- | --- |
-| 버전·메모리·모드 변경 | Compose Minecraft, 로컬 모드 호환성·월드 영향 | Compose 설정 검사; 합의된 실행 환경에서 서버 기동·모드 로드·게임 접속 확인 |
+| 버전·메모리·모드 변경 | Compose Minecraft, `mods-26.3.lock.json`, 로컬 모드 호환성·월드 영향 | Compose 설정 검사; 각 JAR의 크기·해시·ZIP 무결성과 로더 메타데이터의 필수 의존성·버전 범위 대조; 합의된 실행 환경에서 서버 기동·모드 로드·게임 접속 확인 |
 | 도메인·TLS·지도 경로 변경 | 두 템플릿, `nginx.conf`, Dockerfile, 게시 포트 | 실제 빌드 이미지의 `nginx -t`; 도메인별 리다이렉트·TLS·지도·게임 접속 확인 |
 | 웹 RCON 변경 | Minecraft/RCON 환경변수, HTTP·WebSocket 경로 | 설정 검사; 실제 로그인·WebSocket 연결·허용된 조회 명령 확인 |
 | 모니터링 변경 | cAdvisor, Prometheus, Grafana | 대상 버전의 `promtool check config`; 실제 scrape 상태·지표·대시보드 조회 확인 |
@@ -163,3 +177,11 @@ Orca 명령은 이 문서에 고정하지 않습니다. 작업 시 설치된 `or
 - `docker compose config --quiet`: 성공, 상기 `version` obsolete 경고 발생.
 - `bash -n mc_backup.sh`: 성공. 백업 실행·복원 성공을 의미하지 않습니다.
 - 서비스 기동·이미지 빌드·Nginx 런타임 검사·실제 접속·모드 로드·백업 실행은 수행하지 않았습니다.
+
+## 클라이언트 모드팩
+
+`scripts/build_client_pack.py`는 서버 고정 목록과 `mods-26.3-client-extra.lock.json`을 읽어 클라이언트 모드 16개(팩 `1.1.3`)를 Modrinth `.mrpack`, 수동 설치 ZIP, MultiMC 인스턴스 ZIP 세 가지로 패키징한다. MultiMC ZIP의 로더 컴포넌트 UID는 MultiMC 공식 메타의 `net.neoforged`이며 Prism Launcher의 `net.neoforged.neoforge`와 다르다. 클라이언트 전용 JAR 캐시는 `client-mods-cache/`, 생성 파일은 `dist/`에 두며 둘 다 Git에서 제외한다. 생성된 목록은 `mods-26.3-client.lock.json`, 검증은 `python3 -m unittest discover -s tests -v`를 사용한다. 설치 안내는 [README](../README.md#클라이언트-모드팩), 선택 근거는 [호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md)에 있다. 클라이언트 전용 모드(ImmediatelyFast, Mouse Tweaks, JourneyMap)는 서버에 설치하지 않으므로 이 빌드는 서버 구성·모드 디렉터리를 바꾸지 않는다. 재빌드는 이전 버전의 MultiMC 인스턴스 ZIP만 `gio trash`로 휴지통에 보내며(복구 가능, `gio` 없으면 빌드 중단), `.mrpack`과 수동 ZIP은 지우지 않는다.
+
+입력 lock이 `bundle_jar=false`로 표시한 모드는 JAR을 산출물에 담지 않는다. `.mrpack`의 Modrinth CDN 다운로드 항목으로만 설치되고, 수동 ZIP·MultiMC ZIP·`manifest.json`에서는 빠진다. `1.1.3`에서는 JourneyMap이 여기에 해당한다. [공식 라이선스](https://teamjm.github.io/journeymap-docs/6.0.x/about/licensing/)가 번들·재호스팅을 금지하고 설치·실행 중 CurseForge·Modrinth 다운로드만 허용하기 때문이다. 그래서 두 ZIP은 JAR 15개만 담고, 생성되는 `README.md`가 맨 앞에서 그 사실과 공식 배포처에서 직접 받아 넣는 절차를 안내하며 MultiMC 사용자에게 `.mrpack`을 권한다. `bundle_jar=false`인데 CDN URL이 없으면 설치 경로가 없으므로 빌드를 중단한다.
+
+크래시 관찰 기록: 16개를 모두 켠 `1.1.2`는 Windows에서 `0xc0000005`로 크래시하며 `xaerominimap-neoforge-26.3-26.5.3.jar` 하나만 빼면 실행된다(A/B 확인). 그 조합에서의 방아쇠는 Xaero's Minimap이고 네이티브 실패 메커니즘은 규명하지 않았다. `1.1.3`은 그 모드를 JourneyMap으로 교체했으나 **Windows 실행·접속을 아직 확인하지 않았다.** 실행과 서버 접속이 함께 확인된 유일한 구성은 Sodium을 꺼 둔 `1.1.0` 인스턴스다.

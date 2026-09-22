@@ -7,3 +7,7 @@ logs
 /prometheus-data
 /server-data
 /minecraft_backups
+/server-data-26.3
+/server-data-26.3-neoforge
+/dist
+/client-mods-cache

@@ -13,7 +13,7 @@ These instructions apply throughout this repository.
 ## Required Orca Workflow
 
 1. Codex inspects the relevant repository state, identifies the root cause or requirements, and defines the design, scope, constraints, and observable acceptance criteria.
-2. Read the installed `orca-cli` and `orchestration` skills and load their version-matched CLI guides before using Orca commands. Follow their executable discovery rules; do not guess commands or flags.
+2. This server is controlled over SSH by Orca running on another computer and uses the Orca relay at `~/.orca-relay/bin/orca`, not a local Orca installation. Read the installed `orca-cli` and `orchestration` skills and load their version-matched CLI guides through this relay; do not guess commands or flags.
 3. Use **Orca CLI** for Orca-managed worktrees and terminals, and **Orca orchestration** for task dispatch, threaded communication, questions, decisions, progress, and completion reporting between Codex and Claude. Use a Claude agent for implementation; a Codex worker is not a substitute.
 4. Codex defines verification before implementation, writes appropriate tests against the agreed requirements, and dispatches a bounded production implementation task to Claude with the design, affected areas, acceptance criteria, tests and validation expectations, and relevant context. Assign clear ownership when multiple tasks are active, including Codex ownership of test files.
 5. Claude implements the production change, runs the relevant tests and local checks, and returns the changed files, implementation summary, validation results, and any remaining concerns through Orca orchestration. Claude reports test defects or missing coverage to Codex rather than editing tests itself.
