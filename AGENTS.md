@@ -4,9 +4,10 @@ These instructions apply throughout this repository.
 
 ## Responsibilities
 
-- **Codex owns analysis, architecture, design, task decomposition, acceptance criteria, review, and independent verification.** Codex coordinates the work and reports the final outcome to the user.
-- **Claude owns actual code implementation.** This includes application code, scripts, operational configuration, infrastructure changes, and automated test code, including fixes requested during review.
-- Codex may inspect code, run commands and checks, and maintain design documents and agent instructions. Codex must delegate implementation to Claude instead of writing implementation patches itself.
+- **Codex owns analysis, architecture, design, task decomposition, acceptance criteria, automated test authoring and maintenance, review, and independent verification.** Codex coordinates the work and reports the final outcome to the user.
+- **Claude owns production implementation.** This includes application code, operational scripts, operational configuration, and infrastructure changes, including fixes requested during review. Claude runs tests and fixes implementation defects; Codex writes and modifies automated test code.
+- Codex may inspect code, run commands and checks, write and maintain tests and test-only helpers or fixtures, and maintain design documents and agent instructions. Codex must delegate production implementation to Claude instead of writing production patches itself.
+- Claude must report proposed test changes and their rationale to Codex through Orca orchestration. Codex reviews and makes warranted test changes; Claude must not modify tests or expected results to accommodate its implementation.
 - Claude must follow the agreed design and report ambiguities, blockers, and proposed design changes to Codex before implementing a materially different approach.
 
 ## Required Orca Workflow
@@ -14,13 +15,13 @@ These instructions apply throughout this repository.
 1. Codex inspects the relevant repository state, identifies the root cause or requirements, and defines the design, scope, constraints, and observable acceptance criteria.
 2. Read the installed `orca-cli` and `orchestration` skills and load their version-matched CLI guides before using Orca commands. Follow their executable discovery rules; do not guess commands or flags.
 3. Use **Orca CLI** for Orca-managed worktrees and terminals, and **Orca orchestration** for task dispatch, threaded communication, questions, decisions, progress, and completion reporting between Codex and Claude. Use a Claude agent for implementation; a Codex worker is not a substitute.
-4. Codex dispatches a bounded implementation task to Claude with the design, affected areas, acceptance criteria, validation expectations, and relevant context. Assign clear ownership when multiple tasks are active.
-5. Claude implements the change, performs relevant local checks, and returns the changed files, implementation summary, validation results, and any remaining concerns through Orca orchestration.
-6. Codex reviews the actual diff and independently runs the checks needed to verify the acceptance criteria. Claude's completion message alone is not verification.
-7. Codex sends implementation defects back to Claude through Orca orchestration and repeats review and verification until the requirements are met.
+4. Codex defines verification before implementation, writes appropriate tests against the agreed requirements, and dispatches a bounded production implementation task to Claude with the design, affected areas, acceptance criteria, tests and validation expectations, and relevant context. Assign clear ownership when multiple tasks are active, including Codex ownership of test files.
+5. Claude implements the production change, runs the relevant tests and local checks, and returns the changed files, implementation summary, validation results, and any remaining concerns through Orca orchestration. Claude reports test defects or missing coverage to Codex rather than editing tests itself.
+6. Codex reviews the actual diff, adds or corrects tests as warranted by the agreed requirements, and independently runs the checks needed to verify the acceptance criteria. Claude's completion message alone is not verification.
+7. Codex sends production implementation defects back to Claude through Orca orchestration, handles test defects itself, and repeats review and verification until the requirements are met. Changes to expected behavior require an explicit design decision, not merely a failing implementation.
 8. Codex reports the final behavior, verification evidence, and unresolved limitations accurately. Keep task status consistent with the actual result.
 
-Do not replace this workflow with built-in non-Orca subagents, untracked terminal handoffs, or self-implementation by Codex. If Orca or Claude is unavailable, report the concrete failure and stop implementation until the dependency is restored or the user explicitly changes the workflow. Independent analysis and documentation may continue.
+Do not replace this workflow with built-in non-Orca subagents, untracked terminal handoffs, or production implementation by Codex. If Orca or Claude is unavailable, report the concrete failure and stop production implementation until the dependency is restored or the user explicitly changes the workflow. Independent analysis, documentation, test authoring, and verification may continue.
 
 ## Never Conceal Bugs
 

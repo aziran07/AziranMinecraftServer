@@ -3,7 +3,8 @@
 작업 전에 [AGENTS.md](AGENTS.md)를 읽고 전체 작업 규칙으로 따릅니다. 역할과 협업 절차의 기준 문서는 `AGENTS.md`입니다.
 
 - [docs/PROJECT_MAP.md](docs/PROJECT_MAP.md)에서 대상 기능의 설정 위치, 연결 서비스, 검증 기준을 확인합니다.
-- 실제 코드·스크립트·운영 설정·테스트 구현은 Claude가 담당합니다. Codex가 Orca orchestration으로 전달한 설계, 범위, 수용 기준에 따라 작업합니다.
+- 실제 기능 코드·운영 스크립트·운영 설정·인프라 구현은 Claude가 담당합니다. Codex가 Orca orchestration으로 전달한 설계, 범위, 수용 기준과 테스트에 따라 작업합니다.
+- 자동화 테스트와 테스트 전용 헬퍼·픽스처의 작성·수정은 Codex가 담당합니다. Claude는 테스트를 실행하고 구현 결함을 수정합니다. 테스트 결함·누락이나 기대 결과 변경이 필요하면 근거와 함께 Orca orchestration으로 Codex에게 보고하고, 테스트를 직접 수정하지 않습니다.
 - 설계 변경이나 모호한 요구사항은 구현 전에 Orca orchestration으로 Codex에게 보고합니다. 실행 전에 설치된 `orca-cli`와 `orchestration` 스킬 및 버전에 맞는 가이드를 읽습니다.
 - `.env`, 인증서, 서버 월드, 백업, 관리 서비스 DB는 로컬 운영 데이터입니다. 내용을 답변·로그에 노출하거나 구현 변경에 섞지 않습니다.
 - 완료 시 변경 파일, 동작 변화, 실제 수행한 검증과 결과, 미검증 항목·남은 우려를 Orca orchestration으로 보고합니다. Codex가 실제 diff와 검증 결과를 독립적으로 확인합니다.
