@@ -32,6 +32,17 @@ Do not replace this workflow with built-in non-Orca subagents, untracked termina
 - Do not weaken assertions, disable checks, skip failing tests, or change expected results merely to obtain a passing result. Changes to expected behavior require a justified design decision.
 - Keep pre-existing failures visible and distinguish them from regressions introduced by the current work.
 
+## Code Simplicity and Readability
+
+Synced from the global `~/.dotfiles/agents/AGENTS.md` on 2026-09-22. Its no-bug-concealment rules are covered by the section above.
+
+- Write concise, straightforward code that humans can easily read and understand. Prioritize clarity over cleverness or brevity.
+- Use descriptive names and explicit control flow. Avoid cryptic abbreviations, dense one-liners, and deeply nested logic.
+- Keep functions focused and implementations as simple as the current requirements allow.
+- Do not introduce excessive abstractions or unnecessary layers, wrappers, factories, or generic frameworks.
+- Introduce abstractions only when they clearly simplify existing code or eliminate meaningful duplication. Do not design for hypothetical future requirements.
+- Keep related logic together. Do not fragment straightforward behavior across many small functions or files without a clear readability benefit.
+
 ## Verification and Repository Care
 
 - Define verification before implementation and choose checks appropriate to the change: focused tests, static checks, configuration validation, or runtime checks as needed.
