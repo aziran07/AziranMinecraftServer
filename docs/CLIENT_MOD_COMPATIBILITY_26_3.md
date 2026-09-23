@@ -8,7 +8,39 @@
 이번 작업에서 바꾸지 않았다.
 
 아래 "이번에 추가한 모드"는 팩 `1.1.0` 기준에 `1.1.2`·`1.1.3`에서 더한 모드를 합쳐 적었다.
-현재 팩 `1.1.3`은 여기서 Sodium과 Xaero's Minimap을 빼고 JourneyMap을 더한 모드 16개다.
+`1.1.3`은 여기서 Sodium과 Xaero's Minimap을 빼고 JourneyMap을 더한 모드 16개였다.
+현재 후보 `1.1.4`는 `1.1.3`에 Sodium을 되돌리고 Iris 로컬 빌드를 더한 모드 18개와 셰이더 팩 1개다.
+
+## 1.1.4: 셰이더(Iris·Sodium·Complementary Reimagined)와 options.txt 우회
+
+- **Iris** `1.11.6-snapshot+mc26.3-local`: NeoForge 26.3 지원은 미병합
+  [PR #3354](https://github.com/IrisShaders/Iris/pull/3354)에만 있다. 커밋
+  `10d3598cd96b0566497b66efe66256f468cd977e`를 수정 없이 JDK 25로 로컬 빌드한 JAR이며 빌드 당시
+  NeoForge 26.3.0.7-beta 기준으로 컴파일했다. 메타데이터상 필수 의존성은 `minecraft [1.21.3,)`,
+  `neoforge [21.3.9-beta,)`, `sodium [0.6,)`로 모두 충족된다. 내장 JAR은 glsl-transformer
+  3.0.0-pre3(AGPL-3.0), jcpp 1.4.14(Apache-2.0), antlr4-runtime 4.13.1(BSD-3-Clause)이다.
+  공식 배포처에 없으므로 `.mrpack`에도 JAR을 담고, LGPL-3.0·AGPL-3.0의 대응 소스 조건에 따라
+  세 아카이브의 `sources/iris/`에 커밋 소스 tar.gz(GitHub 커밋 아카이브와 압축 해제 내용 동일),
+  내장 라이브러리 소스 JAR 3개, 라이선스 전문을 함께 담는다. JAR의 클래스 745개 중 743개가 소스
+  트리의 `.java`에 대응하며, 나머지 2개(`BuildConfig`, `DesktopBuildConfig`)는 빌드 때 생성된다.
+  같은 커밋을 다시 빌드해 바이트 단위로 같은 JAR이 나오는지는 확인하지 않았다.
+- **Sodium** `mc26.3-0.9.2-neoforge`: Iris 필수 의존성이라 `1.1.1`에서 뺀 같은 파일을 되돌렸다.
+  아래 "1.1.1 이후: Sodium 제외"의 `0xc0000409` 원인은 여전히 규명하지 않았다. PolyForm Shield
+  1.0.0은 사본 배포를 허용하고 전문 동봉을 요구하며, JAR 루트 `LICENSE.md`가 이를 충족한다.
+- **Complementary Reimagined** `r5.9.3`: Complementary License Agreement 1.7의 1.2.d가 모드팩에는
+  Modrinth·CurseForge 시스템으로만 넣고 직접 파일 업로드 재배포를 금지하므로, `.mrpack`의
+  Modrinth CDN 다운로드 항목(`shaderpacks/`)으로만 넣고 두 ZIP에는 담지 않는다. 기본으로 켜지 않는다.
+- **options.txt**: Occultism 26.3(커밋 `631457c`) `ClientSetupEventHandler.java` 218행이 사역마
+  단축키 18개를 `Type.KEYBOARD, -1`로 등록해, 첫 실행 뒤 `key.keyboard.-1`이 저장되고 두 번째
+  실행이 `InputConstants.isKeyDown`의 `IndexOutOfBoundsException`으로 실패한다. 상류 결함은 그대로
+  두고, `version:5023`과 사역마 단축키 18개를 `key.keyboard.unknown`으로 적은 최소 `options.txt`를
+  세 아카이브에 넣어 우회한다.
+
+관찰 기록: 사용자의 이전 1.1.4 시험 인스턴스는 `options.txt`를 초기화한 첫 실행에서 Complementary
+셰이더 적용과 서버 접속에 성공했고, 두 번째 실행이 위 단축키 문제로 실패했다. 기존 인스턴스
+복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·접속에
+성공했고 `-1`이 다시 생기지 않았다. **1.1.4 아카이브로 새로 만든 인스턴스의 두 번 실행은 아직
+확인하지 않았다.**
 
 ## 1.1.3: Xaero's Minimap을 JourneyMap으로 교체
 
@@ -122,7 +154,7 @@ Nvidia 드라이버 워크어라운드가 `IllegalStateException: Command line i
 | --- | --- | --- | --- | --- |
 | [Lithium](https://modrinth.com/mod/lithium) | `mc26.3-0.26.1-neoforge` | release | 서버 lock | 서버·클라이언트 공통 |
 | [Clumps](https://modrinth.com/mod/clumps) | `26.3.2` | release | 서버 lock | 서버·클라이언트 공통 |
-| [Sodium](https://modrinth.com/mod/sodium) | `mc26.3-0.9.2-neoforge` | release | 클라이언트 입력 lock | 클라이언트 전용 (`1.1.1`부터 제외) |
+| [Sodium](https://modrinth.com/mod/sodium) | `mc26.3-0.9.2-neoforge` | release | 클라이언트 입력 lock | 클라이언트 전용 (`1.1.1`~`1.1.3` 제외, `1.1.4`에서 Iris 의존성으로 복귀) |
 | [ImmediatelyFast](https://modrinth.com/mod/immediatelyfast) | `1.17.1+26.3-neoforge` | release | 클라이언트 입력 lock | 클라이언트 전용 |
 | [Mouse Tweaks](https://modrinth.com/mod/mouse-tweaks) | `26.3-2.31-neoforge` | release | 클라이언트 입력 lock | 클라이언트 전용 |
 | [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap) | `neoforge-26.3-26.5.3` | release | 클라이언트 입력 lock | 클라이언트 전용 (`1.1.2`에만 포함, `1.1.3`에서 제외) |
@@ -143,7 +175,7 @@ Jade(`26.3.1+neoforge`)와 Packet Fixer(`3.3.7`)는 1.0.0 팩에 이미 들어 �
 | `xaerominimap-neoforge-26.3-26.5.3.jar` | 2178209 | `16bf8eae1710a57bc398b796cd4475d0dcce7564` | Modrinth 버전 `6zzKPjLq` |
 | `journeymap-neoforge-26.3-6.0.9.jar` | 4352830 | `e4d81a338a2997d6d517d5f7b51b607277f21733` | Modrinth 버전 `OCuB6UWq` |
 
-Sodium과 Xaero's Minimap 행은 지난 구성의 기록이며 현재 팩에는 들어가지 않는다.
+Xaero's Minimap 행은 지난 구성의 기록이며 현재 팩에는 들어가지 않는다. Sodium은 `1.1.4`에서 다시 들어간다.
 JourneyMap은 해시를 대조하지만 JAR을 팩에 담지는 않는다. 위 "라이선스 때문에 JAR을 팩에 담지
 않는다" 절을 참고한다.
 

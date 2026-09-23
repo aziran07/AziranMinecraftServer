@@ -14,6 +14,13 @@
 입력 lock이 bundle_jar=false로 표시한 모드는 라이선스가 JAR 재배포를 금지하므로 JAR을 담지
 않는다. 이런 모드는 .mrpack의 Modrinth CDN 다운로드 항목으로만 설치되고, JAR을 담는 수동 ZIP과
 MultiMC 인스턴스 ZIP에서는 빠진다. 대신 README가 공식 배포처에서 직접 받는 절차를 안내한다.
+입력 lock의 셰이더 팩(shaderpacks)도 같은 규칙을 따른다.
+
+공식 배포처에 없는 로컬 빌드 JAR(Iris)은 입력 lock의 source_bundle에 적힌 대응 소스와 라이선스
+전문을 JAR과 함께 모든 아카이브의 sources/ 아래에 담는다.
+
+세 아카이브 모두 Occultism 사역마 단축키만 미지정으로 적은 최소 options.txt를 담는다.
+OCCULTISM_FAMILIARS의 설명을 참고한다.
 """
 
 import hashlib
@@ -32,22 +39,54 @@ CLIENT_LOCK = REPO / "mods-26.3-client.lock.json"
 DIST = REPO / "dist"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.3"
+PACK_VERSION = "1.1.4"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.3 구성의 근거. 입력 lock의 removed 항목과 같은 내용을 산출물에도 남긴다.
+# 1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
-    "1.1.3은 1.1.2에서 Xaero's Minimap을 빼고 같은 자리에 JourneyMap 26.3-6.0.9+neoforge를 "
-    "넣은 구성이다. Sodium은 1.1.1부터와 같이 계속 제외한다. "
-    "16개를 모두 켠 1.1.2는 Windows에서 네이티브 종료 코드 0xc0000005로 크래시했고, 같은 "
-    "인스턴스에서 xaerominimap-neoforge-26.3-26.5.3.jar 하나만 비활성화하면 실행됐다(A/B 확인). "
-    "따라서 그 조합에서 크래시의 방아쇠는 Xaero's Minimap으로 확인됐지만, 네이티브 실패 "
-    "메커니즘은 규명하지 않았고 다른 환경에서도 재현된다는 뜻은 아니다. "
-    "JourneyMap JAR은 라이선스상 재배포·번들이 금지돼 있어 .mrpack에만 Modrinth CDN 다운로드 "
-    "항목으로 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 나머지 15개 JAR만 담는다. "
-    "1.1.3 구성으로 Windows 실행과 서버 접속은 아직 확인하지 않았다. 실행과 접속이 함께 확인된 "
-    "구성은 Sodium을 꺼 둔 1.1.0 인스턴스뿐이다."
+    "1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 "
+    "10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 "
+    "넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 "
+    "지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 "
+    "뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 "
+    "초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 "
+    "단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 "
+    "IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 "
+    "ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 "
+    "상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 "
+    "적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 "
+    "바꾼 뒤 두 번 연속 실행·접속에 성공했다. 이 팩으로 새로 만든 인스턴스의 두 번 실행 확인은 아직 없다."
 )
+
+# Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행은 사역마마다 단축키를
+# Type.KEYBOARD, -1로 등록한다. 첫 실행이 끝날 때 이 기본값이 options.txt에 key.keyboard.-1로
+# 저장되고, 두 번째 실행에서 그 값을 읽어 InputConstants.isKeyDown이 IndexOutOfBoundsException으로
+# 실패한다. 상류 결함은 그대로이며, 여기서는 해당 단축키를 미지정(key.keyboard.unknown)으로 적은
+# options.txt를 처음부터 넣어 -1이 저장되지 않게 우회한다. 이름은 Occultism의 사역마 엔티티 ID다.
+OCCULTISM_FAMILIARS = [
+    "greedy_familiar",
+    "drikwing",
+    "wingnis",
+    "bat_familiar",
+    "deer_familiar",
+    "cthulhu_familiar",
+    "devil_familiar",
+    "dragon_familiar",
+    "blacksmith_familiar",
+    "guardian_familiar",
+    "headless_familiar",
+    "chimera_familiar",
+    "goat_familiar",
+    "shub_niggurath_familiar",
+    "beholder_familiar",
+    "fairy_familiar",
+    "mummy_familiar",
+    "beaver_familiar",
+]
+
+# Minecraft 26.3이 options.txt에 쓰는 데이터 버전. 이보다 낮으면 게임이 옛 형식으로 보고 변환한다.
+OPTIONS_DATA_VERSION = 5023
+UNBOUND_KEY = "key.keyboard.unknown"
 
 # 서버와 공유하는 모드 중 클라이언트에도 설치할 모드. 서버 lock의 title을 키로 쓴다.
 CLIENT_TITLES = [
@@ -218,16 +257,20 @@ def load_client_extras():
     for mod in extra_lock["mods"]:
         jar = CLIENT_CACHE / mod["filename"]
         if not jar.is_file():
-            raise SystemExit(
-                f"클라이언트 캐시에 JAR이 없다: {jar}\n"
-                f"  {mod['url']} 를 받아 이 경로에 두고 다시 실행한다."
-            )
+            if mod["url"]:
+                hint = f"{mod['url']} 를 받아 이 경로에 두고 다시 실행한다."
+            else:
+                hint = f"공식 배포처에 없는 로컬 빌드다. lock의 build 항목대로 빌드해 이 경로에 둔다: {mod.get('build')}"
+            raise SystemExit(f"클라이언트 캐시에 JAR이 없다: {jar}\n  {hint}")
         actual = file_hashes(jar)
         if actual["sha512"] != mod["sha512"] or actual["size"] != mod["size"]:
             raise SystemExit(f"클라이언트 lock과 JAR이 일치하지 않는다: {mod['filename']}")
 
-        url = mod["url"]
+        url = mod["url"] or ""
         from_cdn = mod["source"] == "modrinth" and url.startswith(ALLOWED_DOWNLOAD_PREFIX)
+        # 공식 배포처에 없는 로컬 빌드는 목적 코드와 함께 대응 소스를 담아야 한다.
+        if mod["source"] == "local-build" and "source_bundle" not in mod:
+            raise SystemExit(f"로컬 빌드 JAR에 source_bundle이 없어 대응 소스를 담을 수 없다: {mod['filename']}")
         # JAR 재배포를 금지하는 라이선스는 lock에서 bundle_jar=false로 표시한다.
         # 이런 모드는 런처가 설치 중에 공식 CDN에서 직접 받아야 하므로 CDN URL이 반드시 있어야 한다.
         bundle_jar = mod.get("bundle_jar", True)
@@ -258,8 +301,95 @@ def load_client_extras():
             ],
             "required_dependencies": mod["required_dependencies"],
             "mrpack_delivery": "download" if from_cdn else "client-overrides",
+            "build": mod.get("build"),
+            "source_bundle": verified_source_bundle(mod),
         })
     return extra_lock, mods
+
+
+def verified_source_bundle(mod):
+    """로컬 빌드 JAR의 대응 소스 파일을 lock의 크기·SHA-256과 대조한다. 없으면 None."""
+    bundle = mod.get("source_bundle")
+    if bundle is None:
+        return None
+    directory = REPO / bundle["directory"]
+    listed = {entry["filename"] for entry in bundle["files"]}
+    present = {path.name for path in directory.iterdir()} if directory.is_dir() else set()
+    if listed != present:
+        raise SystemExit(
+            f"{mod['title']} 소스 번들 디렉터리 {directory}의 파일이 lock과 다르다. "
+            f"lock에만 있음: {sorted(listed - present)}, 디렉터리에만 있음: {sorted(present - listed)}"
+        )
+    for entry in bundle["files"]:
+        actual = file_hashes(directory / entry["filename"])
+        if actual["sha256"] != entry["sha256"] or actual["size"] != entry["size"]:
+            raise SystemExit(f"{mod['title']} 소스 번들 파일이 lock과 일치하지 않는다: {entry['filename']}")
+    return bundle
+
+
+def load_shaderpacks(extra_lock):
+    """입력 lock의 셰이더 팩을 읽고 캐시 사본을 lock과 대조한다.
+
+    셰이더 팩은 라이선스상 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣으므로 CDN URL이 필수다.
+    """
+    packs = []
+    for pack in extra_lock.get("shaderpacks", []):
+        path = CLIENT_CACHE / pack["filename"]
+        if not path.is_file():
+            raise SystemExit(
+                f"클라이언트 캐시에 셰이더 팩이 없다: {path}\n"
+                f"  {pack['url']} 를 받아 이 경로에 두고 다시 실행한다."
+            )
+        actual = file_hashes(path)
+        if actual["sha512"] != pack["sha512"] or actual["size"] != pack["size"]:
+            raise SystemExit(f"클라이언트 lock과 셰이더 팩이 일치하지 않는다: {pack['filename']}")
+        if pack["bundle_jar"] or not pack["url"].startswith(ALLOWED_DOWNLOAD_PREFIX):
+            raise SystemExit(
+                f"셰이더 팩은 Modrinth CDN 다운로드로만 넣는다(bundle_jar=false, CDN URL 필요): {pack['filename']}"
+            )
+        packs.append({
+            "title": pack["title"],
+            "filename": pack["filename"],
+            "path": f"shaderpacks/{pack['filename']}",
+            "source": pack["source"],
+            "project_slug": pack["project_slug"],
+            "version_number": pack["version_number"],
+            "url": pack["url"],
+            "size": actual["size"],
+            "sha1": actual["sha1"],
+            "sha512": actual["sha512"],
+            "sha256": actual["sha256"],
+            "license": pack["license"],
+            "bundle_jar": False,
+            "bundle_jar_reason": pack["bundle_jar_reason"],
+            "enabled_by_default": pack["enabled_by_default"],
+        })
+    return packs
+
+
+def render_options_txt():
+    """사역마 단축키 18개만 미지정으로 적은 최소 options.txt. 나머지 설정은 게임 기본값을 따른다.
+
+    그래픽·언어·마지막 접속 서버 같은 개인 설정은 넣지 않는다.
+    """
+    lines = [f"version:{OPTIONS_DATA_VERSION}"]
+    lines += [f"key_key.occultism.familiar.{name}:{UNBOUND_KEY}" for name in OCCULTISM_FAMILIARS]
+    return "\n".join(lines) + "\n"
+
+
+def source_bundle_entries(mods):
+    """아카이브에 담을 (로컬 파일, 아카이브 경로) 목록. JAR을 담는 로컬 빌드 모드의 소스만 고른다."""
+    entries = []
+    for mod in bundled_mods(mods):
+        bundle = mod.get("source_bundle")
+        if bundle is None:
+            continue
+        for entry in bundle["files"]:
+            entries.append((
+                REPO / bundle["directory"] / entry["filename"],
+                f"{bundle['archive_path']}/{entry['filename']}",
+            ))
+    return entries
 
 
 def jar_path(mod):
@@ -292,92 +422,131 @@ def check_dependency_closure(mods):
     return sorted(provided)
 
 
-def render_readme(server_lock, mods):
+def render_readme(server_lock, mods, shaderpacks):
     external = [mod for mod in mods if not mod["bundle_jar"]]
+    bundled_count = len(mods) - len(external)
+    iris = next(mod for mod in mods if mod["declared_mod_ids"] == ["iris"])
     lines = [
         f"# {PACK_NAME} {PACK_VERSION}",
         "",
         f"Aziran Minecraft `{server_lock['minecraft_version']}` NeoForge 서버에 접속하기 위한 클라이언트 모드 구성이다.",
         "서버와 공유하는 모드는 서버와 같은 파일을 담았고, 여기에 서버가 쓰지 않는 클라이언트 전용",
-        "최적화·편의 모드를 더했다. 서버 전용 모드와 서버 설정·월드·로그는 포함하지 않는다.",
+        "최적화·편의·셰이더 모드를 더했다. 서버 전용 모드와 서버 설정·월드·로그는 포함하지 않는다.",
+        "",
+        "## 먼저 읽을 것: ZIP 두 개에는 모든 파일이 들어 있지 않다",
+        "",
+        f"**`{manual_zip_name()}`과 `{multimc_zip_name()}`에는 아래 파일이 담겨 있지 않다.**",
+        "제작자 라이선스가 파일을 다시 배포하거나 모드팩 안에 직접 담는 것을 금지하고, 모드팩에는",
+        "CurseForge 또는 Modrinth에서 직접 내려받는 방식으로만 넣도록 허용하기 때문이다.",
+        "빠뜨린 것이 아니라 라이선스를 지키려고 뺀 것이다.",
         "",
     ]
-
-    if external:
-        names = ", ".join(mod["title"] for mod in external)
+    for mod in external:
+        lines.append(f"- 모드 {mod['title']} {mod['version_number']} (`mods/`)")
+    for pack in shaderpacks:
+        lines.append(f"- 셰이더 팩 {pack['title']} {pack['version_number']} (`shaderpacks/`)")
+    lines += [
+        "",
+        f"- **권장: `{mrpack_name()}`을 쓴다.** 런처가 설치 중에 Modrinth에서 위 파일을 직접 내려받으므로",
+        f"  라이선스 조건을 만족하면서 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰진다.",
+        "  MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있다.",
+        "  MultiMC 위키의 Import Instance 문서가 가져올 수 있는 형식으로 Modrinth `.mrpack`을 적고 있다",
+        "  (https://github.com/MultiMC/Launcher/wiki/Import-Instance).",
+        f"- ZIP 두 개를 쓰면 모드 {bundled_count}개만 설치되고 셰이더 팩은 없다. 나머지는 아래 절차로 직접 받아 넣는다.",
+        "",
+        "### 직접 받아 넣는 절차 (ZIP으로 설치할 때만)",
+        "",
+    ]
+    downloads = [(mod, "mod", "mods") for mod in external] + [(pack, "shader", "shaderpacks") for pack in shaderpacks]
+    for item, kind, folder in downloads:
         lines += [
-            f"## 먼저 읽을 것: {names}은 ZIP 두 개에 들어 있지 않다",
+            f"**{item['title']} {item['version_number']}**",
             "",
-            f"**{names}의 JAR은 `{manual_zip_name()}`과 `{multimc_zip_name()}`에 담겨 있지 않다.**",
-            "제작자 라이선스가 JAR을 다시 배포하거나 모드팩 안에 담는 것을 금지하고, 모드팩 사용은",
-            "설치·실행 과정에서 CurseForge 또는 Modrinth에서 직접 내려받을 때만 허용하기 때문이다.",
-            "빠뜨린 것이 아니라 라이선스를 지키려고 뺀 것이다.",
+            f"1. 공식 Modrinth 프로젝트에서 받는다: https://modrinth.com/{kind}/{item['project_slug']}",
+            f"   이 팩이 고정한 파일의 직접 링크는 {item['url']} 이다.",
+            "   CurseForge의 공식 프로젝트 페이지에서 같은 버전을 받아도 된다.",
+            "2. 받은 파일이 팩이 고정한 것과 같은지 대조한다.",
+            f"   - 파일 이름: `{item['filename']}`",
+            f"   - 크기: {item['size']} 바이트",
+            f"   - SHA-1: `{item['sha1']}`",
+            f"   - SHA-512: `{item['sha512']}`",
+            f"3. 게임 디렉터리(MultiMC라면 인스턴스의 `.minecraft`)의 `{folder}/` 폴더에 받은 파일을",
+            "   압축을 풀지 않고 그대로 넣는다. 폴더가 없으면 만든다.",
+            "4. 다른 곳에서 재배포된 사본은 쓰지 않는다. 라이선스가 금지한다.",
             "",
-            f"- **권장: `{mrpack_name()}`을 쓴다.** 런처가 설치 중에 Modrinth에서 이 모드를 직접",
-            f"  내려받으므로 라이선스 조건을 만족하면서 모드 {len(mods)}개가 모두 갖춰진다.",
-            "  MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있다.",
-            "  MultiMC 위키의 Import Instance 문서가 가져올 수 있는 형식으로 Modrinth `.mrpack`을 적고 있다",
-            "  (https://github.com/MultiMC/Launcher/wiki/Import-Instance).",
-            f"- ZIP 두 개를 쓰면 모드 {len(mods) - len(external)}개만 설치된다. 나머지는 아래 절차로 직접 받아 넣는다.",
-            "",
-            "### 직접 받아 넣는 절차 (ZIP으로 설치할 때만)",
+            f"   라이선스 근거: {item['license']['url']}",
             "",
         ]
-        for mod in external:
-            lines += [
-                f"**{mod['title']} {mod['version_number']}**",
-                "",
-                f"1. 공식 Modrinth 프로젝트에서 받는다: https://modrinth.com/mod/{mod['project_slug']}",
-                f"   이 팩이 고정한 파일의 직접 링크는 {mod['url']} 이다.",
-                "   CurseForge의 공식 프로젝트 페이지에서 같은 버전을 받아도 된다.",
-                "2. 받은 파일이 팩이 고정한 것과 같은지 대조한다.",
-                f"   - 파일 이름: `{mod['filename']}`",
-                f"   - 크기: {mod['size']} 바이트",
-                f"   - SHA-1: `{mod['sha1']}`",
-                f"   - SHA-512: `{mod['sha512']}`",
-                "3. 게임 디렉터리(MultiMC라면 인스턴스의 `.minecraft`)의 `mods/` 폴더에 그 JAR을 넣는다.",
-                "4. 다른 곳에서 재배포된 사본은 쓰지 않는다. 라이선스가 금지한다.",
-                "",
-                f"   라이선스 근거: {mod['license']['url']}",
-                "",
-            ]
 
     lines += [
-        "## 1.1.3 변경: Xaero's Minimap을 JourneyMap으로 교체",
+        "## 1.1.4 변경: 셰이더 구성 추가",
         "",
-        "1.1.2는 미니맵으로 Xaero's Minimap을 담았지만, 16개를 모두 켠 그 구성이 Windows에서",
-        "네이티브 종료 코드 `0xc0000005`(액세스 위반)로 크래시했다. 같은 인스턴스에서",
-        "`xaerominimap-neoforge-26.3-26.5.3.jar` **하나만** 비활성화하면 실행됐고, 1.1.1과 1.1.2의",
-        "최상위 모드 JAR 차이도 이 파일 하나뿐이었다(나머지 15개는 SHA-512까지 동일). 그래서 그",
-        "모드·드라이버·런타임 조합에서 크래시의 방아쇠는 Xaero's Minimap으로 확인됐다.",
+        "1.1.3의 모드 16개는 바이트 단위로 그대로 두고 아래를 더했다.",
         "",
-        "**왜** 네이티브 액세스 위반까지 갔는지는 규명하지 않았다. 모드 자체의 결함인지, 그 PC의",
-        "그래픽 드라이버·GPU와의 조합인지, NeoForge 26.3 베타나 다른 모드와의 상호작용인지 구분하지",
-        "않았다. 이 모드가 다른 환경에서도 같은 문제를 일으킨다는 뜻은 아니다.",
+        f"- **Iris {iris['version_number']}** — 셰이더 모드. Iris 공식 릴리스가 아니다. NeoForge 26.3 지원은",
+        f"  아직 병합되지 않은 Iris PR {iris['build']['pull_request']}에만 있어, 그 PR의 커밋",
+        f"  `{iris['build']['commit']}`을 수정 없이 로컬에서 빌드한 JAR을 담았다.",
+        "  Modrinth·CurseForge에 이 파일이 없으므로 `.mrpack`에도 JAR을 직접 넣었다.",
+        "  빌드에 쓴 대응 소스와 라이선스 전문을 모든 아카이브의 `sources/iris/`에 함께 담았다.",
+        "- **Sodium 0.9.2** — Iris의 필수 의존성이다. 1.1.0의 Windows 크래시(`0xc0000409`) 때문에 1.1.1부터",
+        "  빼 두었던 것과 **같은 파일**이다. 그 크래시의 원인은 규명하지 않았으므로 다시 날 수 있다.",
+        "- **Complementary Reimagined r5.9.3** — 셰이더 팩. `.mrpack`으로 설치하면 런처가 Modrinth에서",
+        "  받아 `shaderpacks/`에 넣는다. **기본으로 켜 두지 않는다.** 아래 절차로 직접 켠다.",
+        "- **`options.txt`** — Occultism 사역마 단축키 18개를 미지정으로 적은 최소 설정 파일. 아래 설명 참고.",
         "",
-        "미니맵 기능은 계속 필요하므로 1.1.3은 같은 자리에 JourneyMap을 넣었다. 고정한 버전은 아래",
-        f"\"포함 모드 {len(mods)}개\" 표에 있다. 모드 수는 {len(mods)}개로 1.1.2와 같고,",
-        "나머지 15개 JAR은 1.1.1·1.1.2와 바이트 단위로 동일하다.",
+        "### 셰이더 켜는 법",
         "",
-        "### Sodium은 계속 제외",
+        "1. 게임을 실행하고 `Options`(설정) → `Video Settings`(비디오 설정)로 간다.",
+        "2. `Shader Packs...`(셰이더 팩)을 누른다. 이 버튼은 Iris가 추가한다.",
+        "3. 목록에서 `ComplementaryReimagined_r5.9.3`을 골라 `Apply`(적용) 후 `Done`(완료)을 누른다.",
+        "4. 끄려면 같은 화면에서 셰이더를 `OFF`로 바꾼다. 셰이더를 켠 채 실행이 안 되면 인스턴스의",
+        "   `.minecraft/config/iris.properties`를 지우면 셰이더가 꺼진 상태로 돌아간다.",
         "",
-        "1.1.0 인스턴스에서 Sodium JAR만 비활성화하면 Windows MultiMC가 정상 실행되고 서버 접속까지",
-        "된다는 사용자 확인을 받았다. 그래서 1.1.1·1.1.2에 이어 1.1.3에서도 Sodium을 넣지 않는다.",
-        "크래시 로그에 남아 있던 네이티브 종료 코드 `0xc0000409`의 정확한 원인은 확정하지 못했다.",
-        "확인된 사실은 \"Sodium이 없으면 그 PC에서 실행·접속된다\"까지다.",
-        "Sodium을 뺐으므로 1.1.0에서 기대하던 렌더링 성능 향상은 없다. 프레임이 낮아질 수 있다.",
+        "셰이더는 그래픽 부하가 크다. 프레임이 낮으면 셰이더 설정 화면에서 품질 프로필을 낮추거나 끈다.",
         "",
-        "### JourneyMap은 서버에 설치하지 않는다",
+        "### Occultism 사역마 단축키 문제와 options.txt",
+        "",
+        "Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행은 사역마 단축키",
+        "18개를 `Type.KEYBOARD, -1`로 등록한다. 첫 실행을 마칠 때 이 값이 `options.txt`에",
+        "`key.keyboard.-1`로 저장되고, **두 번째 실행**에서 그 값을 읽은 게임이 `InputConstants.isKeyDown`의",
+        "`IndexOutOfBoundsException`으로 멈춘다. 이것은 Occultism의 상류 결함이며 이 팩이 고치지 못한다.",
+        "",
+        "이전 1.1.4 시험 인스턴스에서 실제로 이렇게 됐다. `options.txt`를 초기화한 첫 실행에서는 셰이더",
+        "적용과 서버 접속까지 성공했지만, 두 번째 실행이 위 오류로 실패했다.",
+        "",
+        "그래서 이 팩은 사역마 단축키 18개를 `key.keyboard.unknown`(미지정)으로 적은 최소 `options.txt`를",
+        "함께 담는다(`.mrpack`은 `client-overrides/options.txt`, 수동 ZIP은 `options.txt`, MultiMC ZIP은",
+        "`.minecraft/options.txt`). 파일에는 `version` 줄과 이 18줄만 있고, 그래픽·언어·마지막 접속 서버·",
+        "계정 같은 개인 설정은 없다. 나머지 설정은 게임 기본값으로 시작한다.",
+        "사용자가 기존 인스턴스의 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자",
+        "두 번 연속 실행과 서버 접속에 성공했고 `-1`이 다시 생기지 않았다.",
+        "",
+        "주의할 점:",
+        "",
+        "- 사역마 단축키는 미지정 상태로 시작한다. 쓰려면 `Controls`(조작) → `Key Binds`에서 원하는 키를 지정한다.",
+        "- 조작 화면에서 사역마 단축키를 **기본값으로 초기화(Reset)하지 않는다.** Occultism의 기본값이",
+        "  `-1`이라 다시 `key.keyboard.-1`이 저장되고 다음 실행에서 같은 오류가 난다.",
+        "- 이 `options.txt`는 **새 인스턴스**를 만들 때만 그대로 쓰인다. 이미 `options.txt`가 있는 인스턴스나",
+        "  게임 디렉터리에 설치하면 런처·설치 방법에 따라 기존 파일이 남아 이 설정이 적용되지 않을 수 있다.",
+        "",
+        "**이미 있는 인스턴스를 고치는 방법:** 게임을 끈 상태에서 인스턴스의 `.minecraft/options.txt`를",
+        "텍스트 편집기로 열어 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸고 저장한다.",
+        "다른 줄은 건드리지 않아도 된다. 이 팩의 `options.txt`로 통째로 덮어쓰면 기존 개인 설정이 사라진다.",
+        "",
+        "### JourneyMap (미니맵·지도)",
+        "",
+        "1.1.3부터 미니맵은 Xaero's Minimap 대신 JourneyMap이다. 게임에 들어가면 화면 구석에 미니맵이",
+        "보이고, 전체 지도는 JourneyMap 단축키(기본값 `J`, `Controls`에서 바꿀 수 있다)로 연다.",
+        "`.mrpack`으로 설치하면 런처가 Modrinth에서 JourneyMap을 받는다. ZIP으로 설치했다면 위 \"직접",
+        "받아 넣는 절차\"대로 넣어야 한다.",
         "",
         "Modrinth는 이 모드를 `client_side=optional`, `server_side=optional`로 표시한다. 지도 표시와",
-        "웨이포인트는 클라이언트만으로 동작하므로 이번 작업에서 서버 구성·서버 모드 디렉터리는 바꾸지",
-        "않았다. 서버에 넣지 않아도 접속과 지도 사용에는 문제가 없다.",
+        "웨이포인트는 클라이언트만으로 동작하므로 서버 구성·서버 모드 디렉터리는 바꾸지 않았다.",
+        "JourneyMap JAR은 `commonnetworking`을 필수 의존성으로 선언하지만, 내장 JAR",
+        "`common-networking-neoforge-26.3-1.1.1.jar`가 그 모드를 제공하므로 따로 설치하지 않는다.",
         "",
         "`.mrpack` 항목의 `env.server=unsupported`는 \"이 팩이 서버에 아무것도 설치하지 않는다\"는 뜻이며,",
         "모드 자체의 서버 지원 여부와는 다른 값이다.",
-        "",
-        "JourneyMap JAR은 `commonnetworking`을 필수 의존성으로 선언하지만, 내장 JAR",
-        "`common-networking-neoforge-26.3-1.1.1.jar`가 그 모드를 제공하므로 따로 설치하지 않는다.",
         "",
         "## 필요 환경",
         "",
@@ -394,38 +563,40 @@ def render_readme(server_lock, mods):
         "",
         f"`{mrpack_name()}`은 Modrinth 모드팩 형식이다. Modrinth App, Prism Launcher, ATLauncher,",
         "MultiMC 등 모드팩 가져오기를 지원하는 런처에서 파일을 열면 Minecraft와 NeoForge, 모드를",
-        f"함께 설치한다. 모드 {len(mods)}개가 모두 갖춰지는 방식은 이것뿐이다.",
-        "모드 대부분은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판만 팩 안에 들어 있다.",
-        "이전 버전(1.1.0·1.1.1·1.1.2) 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존",
-        "`mods/`를 정리하지 않으므로 덮어쓰면 이전 구성의 Sodium·Xaero JAR이 그대로 남는다.",
+        f"함께 설치한다. 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰지는 방식은 이것뿐이다.",
+        "모드 대부분과 셰이더 팩은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판과",
+        "Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`도 함께 설치된다.",
+        "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
+        "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
         "",
         "### 2. 수동 ZIP",
         "",
         f"`{manual_zip_name()}`은 런처를 쓰지 않는 설치용이다.",
-        f"모드 JAR {len(mods) - len(external)}개가 들어 있고, 위에서 안내한 모드는 직접 받아 넣어야 한다.",
+        f"모드 JAR {bundled_count}개와 `options.txt`가 들어 있고, 위에서 안내한 파일은 직접 받아 넣어야 한다.",
         "",
         "1. Minecraft 런처에 NeoForge "
         f"`{server_lock['loader_version']}` 설치 프로파일을 먼저 만든다.",
-        "2. 해당 프로파일의 게임 디렉터리를 연다(기본값은 `.minecraft`).",
-        "3. 이전 버전을 설치했던 디렉터리라면 `mods/sodium-neoforge-0.9.2+mc26.3.jar`와",
-        "   `mods/xaerominimap-neoforge-26.3-26.5.3.jar`를 먼저 지운다.",
+        "2. 해당 프로파일의 게임 디렉터리를 연다(기본값은 `.minecraft`). 가능하면 새 디렉터리를 쓴다.",
+        "3. 이전 버전을 설치했던 디렉터리라면 `mods/xaerominimap-neoforge-26.3-26.5.3.jar`를 먼저 지운다.",
         "4. ZIP 안의 `mods/` 폴더 내용을 게임 디렉터리의 `mods/` 폴더에 넣는다.",
-        "5. 위 \"직접 받아 넣는 절차\"대로 나머지 모드를 같은 `mods/` 폴더에 넣는다.",
-        "6. `manifest.json`의 SHA-1/SHA-512와 실제 파일을 대조해 무결성을 확인한다.",
-        "   `manifest.json`에는 ZIP에 담은 파일만 적혀 있다.",
+        "5. 게임 디렉터리에 `options.txt`가 **없으면** ZIP의 `options.txt`를 넣는다. **이미 있으면 덮어쓰지",
+        "   말고** 위 \"이미 있는 인스턴스를 고치는 방법\"대로 `key.keyboard.-1`만 바꾼다.",
+        "6. 위 \"직접 받아 넣는 절차\"대로 나머지 모드와 셰이더 팩을 넣는다.",
+        "7. `manifest.json`의 SHA-1/SHA-512와 실제 파일을 대조해 무결성을 확인한다.",
+        "   `manifest.json`에는 ZIP에 담은 모드 JAR만 적혀 있다.",
+        "",
+        "`sources/` 폴더는 Iris 대응 소스라 게임 디렉터리에 넣지 않아도 된다.",
         "",
         "### 3. MultiMC 인스턴스 ZIP",
         "",
         f"`{multimc_zip_name()}`은 MultiMC 인스턴스 내보내기 형식이다.",
-        f"모드 JAR {len(mods) - len(external)}개가 팩 안에 들어 있다.",
-        "**MultiMC를 쓴다면 이 ZIP 대신 `.mrpack`을 가져오는 쪽을 권한다.** `.mrpack`은 나머지 모드까지",
-        "런처가 받아 주므로 수작업이 없다.",
+        f"모드 JAR {bundled_count}개와 `.minecraft/options.txt`가 팩 안에 들어 있다.",
+        "**MultiMC를 쓴다면 이 ZIP 대신 `.mrpack`을 가져오는 쪽을 권한다.** `.mrpack`은 나머지 모드와",
+        "셰이더 팩까지 런처가 받아 주므로 수작업이 없다.",
         "",
         "이전 버전 인스턴스를 그대로 쓰지 말고 **새 인스턴스로 가져온다.** 가져오기는 기존 인스턴스의",
-        "`mods/`를 지우지 않으므로, 이전 인스턴스를 재사용하면 Sodium·Xaero JAR이 남아 이번 구성과 달라진다.",
-        "Sodium을 끄고 쓰던 1.1.0 인스턴스는 지우지 말고 남겨 둔다. 실행과 서버 접속이 함께 확인된 구성은",
-        "지금으로서는 그 인스턴스뿐이다. 가져온 인스턴스 이름은",
-        f"`{MULTIMC_INSTANCE_NAME}`이라 런처 목록에서 이전 인스턴스와 구분된다.",
+        "`mods/`를 지우지 않으므로, 이전 인스턴스를 재사용하면 이전 JAR이 남아 이번 구성과 달라진다.",
+        f"가져온 인스턴스 이름은 `{MULTIMC_INSTANCE_NAME}`이라 런처 목록에서 이전 인스턴스와 구분된다.",
         "",
         "1. MultiMC에서 `Add Instance`(인스턴스 추가)를 누른다.",
         "2. 왼쪽 목록에서 `Import from zip`(ZIP에서 가져오기)을 고른다.",
@@ -433,8 +604,8 @@ def render_readme(server_lock, mods):
         "4. 만들어진 인스턴스의 `Edit Instance` → `Settings` → `Java`에서 "
         f"Java {server_lock['java_version']} 실행 파일을 고른다. "
         "팩에는 Java 경로를 넣지 않았으므로 런처에서 직접 지정해야 한다.",
-        "5. `Edit Instance` → `Folder`로 인스턴스 폴더를 열고, `.minecraft/mods/`에 위 \"직접 받아 넣는",
-        "   절차\"대로 나머지 모드를 넣는다.",
+        "5. `Edit Instance` → `Folder`로 인스턴스 폴더를 열고, 위 \"직접 받아 넣는 절차\"대로",
+        "   `.minecraft/mods/`에 나머지 모드를, `.minecraft/shaderpacks/`에 셰이더 팩을 넣는다.",
         "6. 인스턴스를 실행한다.",
         "",
         f"Minecraft `{server_lock['minecraft_version']}`와 NeoForge "
@@ -442,7 +613,7 @@ def render_readme(server_lock, mods):
         "MultiMC가 가져오기 후 첫 실행 때 공식 메타데이터를 보고 게임 파일과 로더를 내려받으므로,",
         "인터넷 연결과 로그인한 Minecraft 계정이 필요하다. 계정 정보와 서버 주소는 팩에 넣지 않았다.",
         "",
-        "세 방식이 설치하는 모드 구성은 같다. 다만 ZIP 두 개는 위에서 안내한 모드를 직접 넣어야",
+        "세 방식이 설치하는 구성은 같다. 다만 ZIP 두 개는 위에서 안내한 파일을 직접 넣어야",
         "`.mrpack`과 같은 구성이 된다.",
         "",
         f"## 포함 모드 {len(mods)}개",
@@ -463,28 +634,51 @@ def render_readme(server_lock, mods):
 
     lines += [
         "",
+        "## 셰이더 팩",
+        "",
+        "| 셰이더 팩 | 버전 | 설치 위치 | 팩 포함 | 기본 상태 |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for pack in shaderpacks:
+        state = "켜짐" if pack["enabled_by_default"] else "꺼짐(직접 켠다)"
+        lines.append(
+            f"| {pack['title']} | {pack['version_number']} | `{pack['path']}` | "
+            f".mrpack 설치 중 Modrinth 다운로드 | {state} |"
+        )
+
+    lines += [
+        "",
         "JEI, Occultism, Modonomicon, Balm은 각각 `mezz_config`, `codedefinedgui`·`magicparticleslib`,",
         "`commonmark`, `kuma_api`를 JAR 안에 내장하므로 따로 설치하지 않는다.",
         "JourneyMap도 `commonnetworking`, `journeymap_api`, `pngj`를 내장한다.",
+        "Iris는 `glsl-transformer`, `jcpp`, `antlr4-runtime` 라이브러리를 내장한다.",
         "",
         "Lithium과 Clumps는 서버와 클라이언트 양쪽에서 동작하는 모드라 서버와 같은 파일을 함께 담는다.",
         "멀티플레이 동작은 이미 서버가 처리하며, 클라이언트 설치는 싱글플레이(통합 서버)에서 같은",
         "동작을 얻기 위한 것이다.",
         "",
-        "Mouse Tweaks와 ImmediatelyFast는 Modrinth가 `client_side=required`,",
+        "Mouse Tweaks, ImmediatelyFast, Sodium, Iris는 Modrinth가 `client_side=required`,",
         "`server_side=unsupported`로 표시한 클라이언트 전용 모드라 서버에는 설치하지 않는다.",
         "Mouse Tweaks는 같은 버전의 배포 파일 3개 중 실행용 primary JAR만 담고",
         "`-api.jar`·`-src.jar`는 제외한다.",
         "",
-        "## 모드 출처 표기",
+        "## 출처 표기",
         "",
         "이 팩은 CurseForge·Modrinth 밖에서 배포하는 비공개 모드팩이므로, 제작자가 요구하는 출처 링크를",
-        "여기에 둔다. 각 모드의 저작권은 제작자에게 있다.",
+        "여기에 둔다. 각 모드와 셰이더 팩의 저작권은 제작자에게 있다.",
         "",
         "- JourneyMap (Techbrew, Mysticdrew)",
         "  - 공식 사이트: http://journeymap.info/",
         "  - Modrinth: https://modrinth.com/mod/journeymap",
         "  - 라이선스: https://teamjm.github.io/journeymap-docs/6.0.x/about/licensing/",
+        "- Complementary Shaders - Reimagined (Complementary Development, EminGT)",
+        "  - 공식 사이트: https://www.complementary.dev/",
+        "  - Modrinth: https://modrinth.com/shader/complementary-reimagined",
+        "  - 라이선스: Complementary License Agreement 1.7 (셰이더 ZIP 안의 `License.txt`)",
+        "  - 이 팩은 셰이더 팩 파일을 수정하거나 직접 담지 않고, `.mrpack`이 Modrinth에서 받게 한다.",
+        "    이 팩에서 생기는 문제의 책임은 셰이더 제작자가 아니라 이 모드팩 운영자에게 있다.",
+        f"- Iris (coderbot, IMS212) — 로컬 빌드, 소스: {iris['build']['repository']}"
+        f" 커밋 `{iris['build']['commit']}`",
         "",
         "나머지 모드의 라이선스와 출처는 `LICENSES.md`에 있다.",
         "",
@@ -502,32 +696,41 @@ def render_readme(server_lock, mods):
         "블록·아이템 레지스트리도 추가하지 않는다. Structures와 Towns and Towers는 클래스 파일이",
         "하나도 없는 데이터팩 JAR이라 구조물 데이터를 서버가 만들어 보낸다.",
         "",
-        "Sodium은 1.1.1부터 넣지 않는다. 서버 전용이어서가 아니라 Windows 크래시 때문이다.",
-        "Xaero's Minimap은 1.1.3에서 뺐다. 같은 이유이며 JourneyMap이 그 자리를 대신한다.",
+        "Xaero's Minimap은 1.1.3에서 뺐다. 16개를 모두 켠 1.1.2가 Windows에서 `0xc0000005`로",
+        "크래시했고 그 JAR 하나만 끄면 실행됐기 때문이며(A/B 확인), JourneyMap이 그 자리를 대신한다.",
         "",
-        "## 확인하지 않은 사항",
+        "## 확인한 사항과 확인하지 않은 사항",
         "",
-        "- **1.1.3 구성으로 Windows에서 실행하거나 서버에 접속해 보지 않았다.** 파일 무결성·의존성·",
-        "  메타데이터만 리눅스에서 검증했다. JourneyMap이 1.1.2의 크래시를 해결한다는 확인은 아직 없다.",
-        "- 실행과 서버 접속이 함께 확인된 유일한 구성은 Sodium JAR을 꺼 둔 1.1.0 인스턴스다.",
+        "확인한 것:",
+        "",
+        "- 사용자의 이전 1.1.4 시험 인스턴스(Iris·Sodium·Complementary 포함)는 `options.txt`를 초기화한",
+        "  첫 실행에서 Complementary 셰이더 적용과 서버 접속에 성공했다. 두 번째 실행은 위의",
+        "  `key.keyboard.-1` 문제로 실패했다.",
+        "- 사용자가 그 인스턴스의 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자",
+        "  첫 실행과 두 번째 실행 모두 월드·서버 접속에 성공했고 `-1`이 다시 생기지 않았다.",
+        "- 리눅스에서 파일 무결성(크기·SHA-512), 모드 메타데이터의 필수 의존성, 아카이브 구성을 검증했다.",
+        "",
+        "확인하지 않은 것:",
+        "",
+        "- **이 1.1.4 아카이브로 새로 만든 인스턴스의 Windows 두 번 연속 실행은 아직 확인하지 않았다.**",
+        "- Iris는 미병합 PR의 로컬 빌드다. 빌드 당시 NeoForge 26.3.0.7-beta를 기준으로 컴파일했으며,",
+        "  공식 릴리스가 아니므로 다른 PC·드라이버에서의 안정성은 알 수 없다.",
+        "- Sodium이 1.1.0에서 일으킨 `0xc0000409` 크래시의 원인은 규명하지 않았다. 다른 PC에서 재발할 수 있다.",
         "- 1.1.2의 `0xc0000005` 크래시는 A/B로 방아쇠가 Xaero's Minimap임을 확인했을 뿐, 네이티브",
-        "  실패 메커니즘은 규명하지 않았다. 모드 결함인지 드라이버·GPU·NeoForge 베타와의 조합인지",
-        "  구분하지 않았고, 다른 환경에서도 같은 크래시가 난다는 뜻이 아니다.",
-        "- 1.1.0의 `0xc0000409` 크래시 원인도 규명하지 않았다. 두 크래시가 같은 뿌리인지 모른다.",
-        "- JourneyMap의 지도·웨이포인트 동작과 다른 모드와의 렌더링 충돌 여부를 확인하지 않았다.",
+        "  실패 메커니즘은 규명하지 않았다.",
         "- `.mrpack`을 MultiMC로 실제 가져와 보지 않았다. MultiMC 위키가 `.mrpack` 가져오기를",
-        "  지원 형식으로 적고 있다는 문서 근거까지만 확인했고, 위키는 최소 버전을 명시하지 않는다.",
+        "  지원 형식으로 적고 있다는 문서 근거까지만 확인했다.",
         "- MultiMC 인스턴스 ZIP은 아카이브 구조와 컴포넌트 UID·버전을 파일 수준에서만 확인했다.",
         "- NeoForge 26.3.0.8-beta와 일부 베타 모드(JEI, Curios, Farmer's Delight 이식판)의",
         "  런타임 안정성은 확인되지 않았다.",
-        "- Lithium·ImmediatelyFast·Mouse Tweaks의 실제 성능 개선 효과는 확인하지 않았다.",
+        "- Lithium·ImmediatelyFast·Mouse Tweaks·Sodium의 실제 성능 개선 효과는 측정하지 않았다.",
         "",
         "라이선스와 출처 표기는 `LICENSES.md`를 참고한다.",
     ]
     return "\n".join(lines) + "\n"
 
 
-def render_licenses(mods):
+def render_licenses(mods, shaderpacks):
     lines = [
         "# 라이선스와 출처 표기",
         "",
@@ -545,6 +748,10 @@ def render_licenses(mods):
             lines.append(f"- 원본 배포: {mod['url']}")
         elif mod["project_slug"]:
             lines.append(f"- 프로젝트: {mod['project_slug']}")
+        if mod.get("build"):
+            build = mod["build"]
+            lines.append(f"- 빌드 원본: {build['repository']} 커밋 `{build['commit']}` ({build['pull_request']})")
+            lines.append(f"- 빌드 비고: {build['note']}")
         if lic["url"]:
             lines.append(f"- 근거: {lic['url']}")
         if lic["note"]:
@@ -560,7 +767,30 @@ def render_licenses(mods):
             )
             if mod.get("bundle_jar_reason"):
                 lines.append(f"- 제외 근거: {mod['bundle_jar_reason']}")
+        bundle = mod.get("source_bundle")
+        if bundle:
+            lines.append(
+                f"- 대응 소스: JAR을 담은 모든 아카이브(.mrpack·수동 ZIP·MultiMC ZIP)의 "
+                f"`{bundle['archive_path']}/`에 함께 담는다. {bundle['note']}"
+            )
+            for entry in bundle["files"]:
+                lines.append(f"  - `{entry['filename']}` ({entry['size']} 바이트, SHA-256 `{entry['sha256']}`)")
         lines.append("")
+    for pack in shaderpacks:
+        lic = pack["license"]
+        lines += [
+            f"## {pack['title']} {pack['version_number']} (셰이더 팩)",
+            "",
+            f"- 라이선스: {lic['name']} (`{lic['id']}`)",
+            f"- 원본 배포: {pack['url']}",
+            f"- 근거: {lic['url']}",
+            f"- 비고: {lic['note']}",
+            f"- 배포 범위: {lic['distribution_note']}",
+            "- 팩 포함 방식: 파일을 담지 않는다. `.mrpack`이 Modrinth CDN 다운로드 항목"
+            f"(`{pack['path']}`)으로만 지정하며, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 들어 있지 않다.",
+            f"- 제외 근거: {pack['bundle_jar_reason']}",
+            "",
+        ]
     return "\n".join(lines)
 
 
@@ -597,7 +827,7 @@ def render_manifest(mods):
     }
 
 
-def build_mrpack(server_lock, mods, readme, licenses):
+def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt):
     index = {
         "formatVersion": 1,
         "game": "minecraft",
@@ -621,31 +851,47 @@ def build_mrpack(server_lock, mods, readme, licenses):
             "downloads": [mod["url"]],
             "fileSize": mod["size"],
         })
+    # 셰이더 팩은 라이선스상 팩에 담지 않고 런처가 설치 중에 Modrinth CDN에서 받게 한다.
+    for pack in shaderpacks:
+        index["files"].append({
+            "path": pack["path"],
+            "hashes": {"sha1": pack["sha1"], "sha512": pack["sha512"]},
+            "env": {"client": "required", "server": "unsupported"},
+            "downloads": [pack["url"]],
+            "fileSize": pack["size"],
+        })
 
     out = DIST / mrpack_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("modrinth.index.json", json.dumps(index, ensure_ascii=False, indent=2) + "\n")
         zf.writestr("README.md", readme)
         zf.writestr("LICENSES.md", licenses)
+        zf.writestr("client-overrides/options.txt", options_txt)
         for mod in mods:
             if mod["mrpack_delivery"] == "client-overrides":
                 zf.write(jar_path(mod), f"client-overrides/mods/{mod['filename']}")
+        # 대응 소스는 게임 디렉터리에 설치하지 않도록 overrides 밖(팩 루트)에 둔다.
+        for source, archive_path in source_bundle_entries(mods):
+            zf.write(source, archive_path)
     return out, index
 
 
-def build_manual_zip(mods, readme, licenses):
+def build_manual_zip(mods, readme, licenses, options_txt):
     manifest = render_manifest(mods)
     out = DIST / manual_zip_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("README.md", readme)
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+        zf.writestr("options.txt", options_txt)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f"mods/{mod['filename']}")
+        for source, archive_path in source_bundle_entries(mods):
+            zf.write(source, archive_path)
     return out, manifest
 
 
-def build_multimc_zip(server_lock, mods, readme, licenses):
+def build_multimc_zip(server_lock, mods, readme, licenses, options_txt):
     """MultiMC 인스턴스 내보내기 형식으로 묶는다.
 
     Minecraft와 NeoForge는 파일로 담지 않고 mmc-pack.json의 컴포넌트로만 지정한다.
@@ -696,8 +942,12 @@ def build_multimc_zip(server_lock, mods, readme, licenses):
         zf.writestr("README.md", readme)
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+        zf.writestr(".minecraft/options.txt", options_txt)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f".minecraft/mods/{mod['filename']}")
+        # 소스는 인스턴스 폴더 루트에 둔다. .minecraft 밖이라 게임이 읽지 않는다.
+        for source, archive_path in source_bundle_entries(mods):
+            zf.write(source, archive_path)
     return out, pack
 
 
@@ -744,7 +994,7 @@ def prune_old_multimc_zips():
     return [path.name for path in stale]
 
 
-def write_client_lock(server_lock, mods, provided_mod_ids, archives):
+def write_client_lock(server_lock, mods, shaderpacks, provided_mod_ids, archives):
     lock = {
         "pack_name": PACK_NAME,
         "pack_version": PACK_VERSION,
@@ -767,6 +1017,20 @@ def write_client_lock(server_lock, mods, provided_mod_ids, archives):
             }
             for mod in mods if not mod["bundle_jar"]
         ],
+        "shaderpacks": shaderpacks,
+        "seeded_options": {
+            "archive_paths": {
+                mrpack_name(): "client-overrides/options.txt",
+                manual_zip_name(): "options.txt",
+                multimc_zip_name(): ".minecraft/options.txt",
+            },
+            "version": OPTIONS_DATA_VERSION,
+            "unbound_key_mappings": [f"key_key.occultism.familiar.{name}" for name in OCCULTISM_FAMILIARS],
+            "value": UNBOUND_KEY,
+            "reason": "Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행이 사역마 단축키를 "
+                      "Type.KEYBOARD, -1로 등록해 key.keyboard.-1이 저장되고 다음 실행에서 "
+                      "InputConstants.isKeyDown이 IndexOutOfBoundsException으로 실패하는 상류 결함의 우회.",
+        },
         "provided_mod_ids": provided_mod_ids,
         "excluded": [{"title": t, "reason": EXCLUSIONS[t]} for t in sorted(EXCLUSIONS)],
         "archives": archives,
@@ -777,7 +1041,8 @@ def write_client_lock(server_lock, mods, provided_mod_ids, archives):
 
 def main():
     server_lock, shared_mods = load_client_mods()
-    _, extra_mods = load_client_extras()
+    extra_lock, extra_mods = load_client_extras()
+    shaderpacks = load_shaderpacks(extra_lock)
     mods = shared_mods + extra_mods
 
     duplicate_ids = sorted(
@@ -791,11 +1056,12 @@ def main():
 
     DIST.mkdir(exist_ok=True)
 
-    readme = render_readme(server_lock, mods)
-    licenses = render_licenses(mods)
-    mrpack_path, index = build_mrpack(server_lock, mods, readme, licenses)
-    zip_path, manifest = build_manual_zip(mods, readme, licenses)
-    multimc_path, _ = build_multimc_zip(server_lock, mods, readme, licenses)
+    readme = render_readme(server_lock, mods, shaderpacks)
+    licenses = render_licenses(mods, shaderpacks)
+    options_txt = render_options_txt()
+    mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt)
+    zip_path, manifest = build_manual_zip(mods, readme, licenses, options_txt)
+    multimc_path, _ = build_multimc_zip(server_lock, mods, readme, licenses, options_txt)
 
     archives = {}
     for path in (mrpack_path, zip_path, multimc_path):
@@ -810,15 +1076,18 @@ def main():
         "".join(f"{archives[name]['sha256']}  {name}\n" for name in sorted(archives)),
         encoding="utf-8",
     )
-    write_client_lock(server_lock, mods, provided, archives)
+    write_client_lock(server_lock, mods, shaderpacks, provided, archives)
 
     external = [mod for mod in mods if not mod["bundle_jar"]]
+    overrides = [mod for mod in mods if mod["mrpack_delivery"] == "client-overrides"]
     print(f"모드 {len(mods)}개(서버 공통 {len(shared_mods)}개, 클라이언트 전용 {len(extra_mods)}개), "
-          f"mrpack files {len(index['files'])}개, "
-          f"client-overrides {len(mods) - len(index['files'])}개")
+          f"셰이더 팩 {len(shaderpacks)}개, mrpack files {len(index['files'])}개, "
+          f"client-overrides 모드 {len(overrides)}개")
     print(f"JAR을 담은 아카이브(수동 ZIP·MultiMC ZIP) 모드 {len(mods) - len(external)}개")
     for mod in external:
         print(f"라이선스상 JAR을 담지 않는다(설치 중 Modrinth에서 받음): {mod['filename']}")
+    for pack in shaderpacks:
+        print(f"라이선스상 셰이더 팩을 담지 않는다(설치 중 Modrinth에서 받음): {pack['filename']}")
     for name, info in sorted(archives.items()):
         print(f"{name}: {info['size']} bytes sha256={info['sha256']}")
     for name in removed_zips:

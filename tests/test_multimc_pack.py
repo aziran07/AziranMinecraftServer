@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class MultiMCPackTests(unittest.TestCase):
     def test_instance_and_mods(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        path = ROOT / 'dist/aziran-26.3-client-1.1.3-multimc.zip'
+        path = ROOT / 'dist/aziran-26.3-client-1.1.4-multimc.zip'
         self.assertEqual(list((ROOT / 'dist').glob('aziran-26.3-client-*-multimc.zip')), [path])
         with zipfile.ZipFile(path) as z:
             self.assertIsNone(z.testzip())
@@ -29,14 +29,14 @@ class MultiMCPackTests(unittest.TestCase):
             cfg = configparser.ConfigParser()
             cfg.read_string('[instance]\n' + z.read('instance.cfg').decode())
             self.assertEqual(cfg['instance']['InstanceType'], 'OneSix')
-            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.3')
+            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.4')
             for key in ('JavaPath', 'PreLaunchCommand', 'PostExitCommand', 'WrapperCommand'):
                 self.assertFalse(cfg['instance'].get(key, ''))
-            jars = {n for n in names if n.endswith('.jar')}
+            jars = {n for n in names if n.startswith('.minecraft/mods/') and n.endswith('.jar')}
             journey_name = 'journeymap-neoforge-26.3-6.0.9.jar'
             self.assertEqual(jars, {'.minecraft/mods/' + m['filename'] for m in lock['mods'] if m['filename'] != journey_name})
-            self.assertEqual(len(jars), 15)
-            self.assertFalse(any('sodium' in name.lower() for name in jars))
+            self.assertEqual(len(jars), 17)
+            self.assertTrue(any('sodium' in name.lower() for name in jars))
             self.assertFalse(any('xaerominimap' in name.lower() for name in jars))
             instructions = z.read('README.md').decode()
             self.assertIn('JourneyMap', instructions)
@@ -54,7 +54,8 @@ class MultiMCPackTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha512(data).hexdigest(), mod['sha512'])
             self.assertIn('README.md', names)
             self.assertIn('LICENSES.md', names)
-            self.assertTrue(all(n in jars or n in {'mmc-pack.json', 'instance.cfg', 'README.md', 'LICENSES.md', 'manifest.json'} for n in names))
+            self.assertIn('sources/iris/Iris-10d3598cd96b0566497b66efe66256f468cd977e-source.tar.gz', names)
+            self.assertTrue(all(n in jars or n.startswith('sources/iris/') or n in {'mmc-pack.json', 'instance.cfg', 'README.md', 'LICENSES.md', 'manifest.json', '.minecraft/options.txt'} for n in names))
 
 
 if __name__ == '__main__':
