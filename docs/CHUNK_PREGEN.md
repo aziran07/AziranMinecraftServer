@@ -46,7 +46,8 @@
 - `server-data-26.3-neoforge/` 전체를 `/home/pilon1945/aziran-26.3-protected-backups/pre-chunky-2026-09-23-0536.tar`로 백업했다. 크기 301,342,720바이트, SHA-256 `6a3fa086925c47b867c41cff1579c897284dc41ede8367ca9c22620ed57ad168`. `tar -tf`로 `world/level.dat`, `server.properties`, `config/chunky/config.json` 포함을 확인했다. 기존 자동 삭제 대상 `minecraft_backups/` 밖에 보관한다.
 - 기능 브랜치의 Compose 파일을 메인 체크아웃의 프로젝트 디렉터리·`.env`에 적용하고, 스크립트 마운트만 기능 worktree의 파일로 지정했다. 서버는 `pause-when-empty-seconds=-1`, `healthy`, 재시작 0회, 접속자 0명으로 기동했다.
 - 컨트롤러가 네더 반경 1000을 14:37:02 KST에 시작해 14:37:34 KST에 완료로 기록했고, 오버월드 반경 8000을 14:37:35 KST에 시작했다. 14:37경 RCON `chunky progress`에서 오버월드 진행률 1.00%를 확인했다. 엔드는 아직 시작하지 않았다. 이후 진행 상태는 `docker logs aziran-chunky-idle-pregen`, `docker exec aziran-minecraft-26-3 rcon-cli 'chunky progress'`, `chunky-idle-state/chunky_idle_state.json`으로 확인한다.
-- 실제 플레이어 `Aziran_`의 접속을 `list`에서 1명으로 확인했고, 컨트롤러는 14:43:41 KST에 `minecraft:overworld`를 pause했다고 기록했다. RCON `chunky progress`는 `No tasks running.`을 반환했다. 약 20초 뒤에도 접속자 1명, 실행 중 작업 없음, 서버 `healthy`·재시작 0회를 재확인했다. Chunky 작업 파일은 `cancelled=false`로 저장돼 재개 가능한 상태다. 접속 순간부터 pause 완료까지의 정확한 지연과 퇴장 후 자동 재개는 이 확인에서 측정하지 않았다.
+- 실제 플레이어 `Aziran_`의 접속을 `list`에서 1명으로 확인했고, 컨트롤러는 14:43:41 KST에 `minecraft:overworld`를 pause했다고 기록했다. RCON `chunky progress`는 `No tasks running.`을 반환했다. 약 20초 뒤에도 접속자 1명, 실행 중 작업 없음, 서버 `healthy`·재시작 0회를 재확인했다. Chunky 작업 파일은 `cancelled=false`로 저장돼 재개 가능한 상태였다. 접속 순간부터 pause 완료까지의 정확한 지연은 측정하지 않았다.
+- 플레이어 퇴장 후 `list`에서 0명을 확인했고 처음에는 계속 `No tasks running.`이었다. 컨트롤러가 14:45:47 KST에 오버월드 작업을 재개한 뒤 RCON `chunky progress`가 실행 중 작업과 진행률 7.34%를 보고했다. 정확한 퇴장 시각을 기록하지 않았으므로 30초 지연의 오차는 측정하지 않았다.
 
 ## 무인 프리젠 컨트롤러
 
