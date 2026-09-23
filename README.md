@@ -51,7 +51,7 @@ docker compose ps
 
 ## 클라이언트 모드팩
 
-현재 후보 버전은 `1.1.4`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 18개와 셰이더 팩 1개로 구성했습니다. 서버와 공유하는 모드 13개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris 5개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.3`의 모드 16개는 바이트 단위로 그대로이고, 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더했습니다. `1.1.4`는 이 변경을 병합한 뒤 GitHub **사전 릴리스(prerelease)** 태그 [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)로 `.mrpack`과 설치 안내·라이선스 문서·체크섬을 함께 공개합니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris를 담았고, 패키지로 새로 만든 인스턴스의 Windows 두 번 연속 실행을 아직 확인하지 않았기 때문입니다.**
+현재 버전은 `1.1.4`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 18개와 셰이더 팩 1개로 구성했습니다. 서버와 공유하는 모드 13개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris 5개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.3`의 모드 16개는 바이트 단위로 그대로이고, 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더했습니다. `1.1.4`는 GitHub **사전 릴리스(prerelease)** 태그 [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)로 `.mrpack`과 설치 안내·라이선스 문서·체크섬을 함께 공개했고, 접속 안내 사이트(GitHub Pages)도 이 Release를 가리킵니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.**
 
 - 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.4.mrpack)
 - MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.4-multimc.zip)
@@ -76,6 +76,8 @@ docker compose ps
 
 사용자의 이전 1.1.4 시험 인스턴스는 `options.txt`를 초기화한 첫 실행에서 Complementary 셰이더 적용과 서버 접속에 성공했습니다. 실패한 것은 두 번째 실행이며, 원인은 아래 Occultism 단축키 문제입니다.
 
+사용자가 배포한 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔습니다. 이 보고는 두 번의 실행 성공만 다루며, 그 두 실행에서의 서버 접속과 셰이더 적용 여부는 보고에 없습니다.
+
 ### Occultism 사역마 단축키 우회(options.txt)
 
 Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행은 사역마 단축키 18개를 `Type.KEYBOARD, -1`로 등록합니다. 첫 실행 뒤 `options.txt`에 `key.keyboard.-1`로 저장되고, 두 번째 실행에서 `InputConstants.isKeyDown`이 `IndexOutOfBoundsException`으로 실패합니다. 이 상류 결함은 팩이 고치지 못합니다.
@@ -93,7 +95,7 @@ Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행
 
 MultiMC 인스턴스 ZIP의 인스턴스 이름은 `Aziran 26.3 Client 1.1.4`입니다. Minecraft `26.3`과 NeoForge `26.3.0.8-beta`는 `mmc-pack.json`의 컴포넌트로만 지정해 런처가 공식 메타데이터에서 내려받으므로 첫 실행에 인터넷 연결과 로그인한 계정이 필요합니다. Java `25` 경로는 `Edit Instance` → `Settings` → `Java`에서 직접 지정합니다.
 
-클라이언트 전용 모드와 셰이더 팩의 고정 목록은 [mods-26.3-client-extra.lock.json](mods-26.3-client-extra.lock.json)이며, JAR·셰이더 팩·Iris 소스 번들은 Git에서 제외한 `client-mods-cache/`에 둡니다. 생성 파일은 `dist/`에 있으며 Git에는 포함하지 않습니다. `python3 scripts/build_client_pack.py`로 다시 생성합니다. 파일 무결성·의존성·아카이브 구성은 리눅스에서 검증했고, **`1.1.4` 아카이브로 새로 만든 인스턴스의 Windows 두 번 연속 실행은 아직 확인하지 않았습니다.**
+클라이언트 전용 모드와 셰이더 팩의 고정 목록은 [mods-26.3-client-extra.lock.json](mods-26.3-client-extra.lock.json)이며, JAR·셰이더 팩·Iris 소스 번들은 Git에서 제외한 `client-mods-cache/`에 둡니다. 생성 파일은 `dist/`에 있으며 Git에는 포함하지 않습니다. `python3 scripts/build_client_pack.py`로 다시 생성합니다. 파일 무결성·의존성·아카이브 구성은 리눅스에서 검증했고, `1.1.4` 팩으로 새로 만든 인스턴스의 Windows 두 번 연속 실행 성공은 사용자 보고로 확인했습니다(서버 접속·셰이더 적용 여부는 그 보고에 없음).
 
 ## 기존 참고 자료
 

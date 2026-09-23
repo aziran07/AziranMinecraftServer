@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.4`의 `.mrpack`과 설치·라이선스 문서 (1.1.4는 GitHub 사전 릴리스(prerelease)로 공개한다. 실험 단계 Iris를 담았고 패키지로 새로 만든 인스턴스의 Windows 두 번 연속 실행을 확인하지 않았기 때문이다. 사이트 배포는 이 Release를 만든 뒤에 하며, 그 전에 배포하면 다운로드 링크가 동작하지 않는다)
+- 다운로드: GitHub Release `client-1.1.4`의 `.mrpack`과 설치·라이선스 문서 (1.1.4는 GitHub 사전 릴리스(prerelease)로 공개했고 사이트도 배포했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
@@ -19,8 +19,9 @@ Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인�
 멀티플레이에서 `mc.aziran.uk` 추가 순서로 안내한다. `.mrpack`을 압축 해제하거나 기존 모드
 폴더에 덮어쓰지 않는다. 팩은 Minecraft 26.3, NeoForge 26.3.0.8-beta, Java 25를 사용한다.
 
-팩 1.1.4 아카이브로 새로 만든 인스턴스의 Windows 두 번 연속 실행은 아직 확인하지 않았다.
-사용자의 이전 1.1.4 시험 인스턴스는 첫 실행에서 셰이더 적용과 서버 접속에 성공했고, 두 번째
+사용자가 배포한 팩 1.1.4로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고
+보고했다. 이 보고는 실행 성공만 다루며 그 두 실행의 서버 접속·셰이더 적용 여부는 포함하지 않는다.
+그 전 사용자의 1.1.4 시험 인스턴스는 첫 실행에서 셰이더 적용과 서버 접속에 성공했고, 두 번째
 실행은 Occultism 사역마 단축키(`key.keyboard.-1`) 문제로 실패했다. 기존 인스턴스 복사본에서
 그 값을 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·접속에 성공했다. 안내 페이지의 다운로드
 제공과 파일 검증은 게임 실행 검증을 뜻하지 않는다. JourneyMap JAR과 Complementary Reimagined
