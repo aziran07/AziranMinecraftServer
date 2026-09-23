@@ -48,6 +48,7 @@
 - 컨트롤러가 네더 반경 1000을 14:37:02 KST에 시작해 14:37:34 KST에 완료로 기록했고, 오버월드 반경 8000을 14:37:35 KST에 시작했다. 14:37경 RCON `chunky progress`에서 오버월드 진행률 1.00%를 확인했다. 엔드는 아직 시작하지 않았다. 이후 진행 상태는 `docker logs aziran-chunky-idle-pregen`, `docker exec aziran-minecraft-26-3 rcon-cli 'chunky progress'`, `chunky-idle-state/chunky_idle_state.json`으로 확인한다.
 - 실제 플레이어 `Aziran_`의 접속을 `list`에서 1명으로 확인했고, 컨트롤러는 14:43:41 KST에 `minecraft:overworld`를 pause했다고 기록했다. RCON `chunky progress`는 `No tasks running.`을 반환했다. 약 20초 뒤에도 접속자 1명, 실행 중 작업 없음, 서버 `healthy`·재시작 0회를 재확인했다. Chunky 작업 파일은 `cancelled=false`로 저장돼 재개 가능한 상태였다. 접속 순간부터 pause 완료까지의 정확한 지연은 측정하지 않았다.
 - 플레이어 퇴장 후 `list`에서 0명을 확인했고 처음에는 계속 `No tasks running.`이었다. 컨트롤러가 14:45:47 KST에 오버월드 작업을 재개한 뒤 RCON `chunky progress`가 실행 중 작업과 진행률 7.34%를 보고했다. 정확한 퇴장 시각을 기록하지 않았으므로 30초 지연의 오차는 측정하지 않았다.
+- 14:52:26 KST에 폴링 간격 변경(생성 중 1초, 대기 중 60초)을 적용하기 위해 컨트롤러만 재시작했다. 종료 시 오버월드 작업을 pause하고 14:52:27 KST에 접속자 0명을 확인한 뒤 같은 작업을 continue한 로그를 확인했다. 서버는 `healthy`·재시작 0회를 유지했고, RCON 진행률은 15.40%였다. 변경 후 실제 접속·퇴장에 따른 60초 확인 간격은 아직 실측하지 않았다.
 
 ## 무인 프리젠 컨트롤러
 
