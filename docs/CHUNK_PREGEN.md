@@ -44,7 +44,7 @@
 
 - 시작 직전 접속자 0명, Chunky 실행 작업 없음 확인 후 서버를 정상 중지했다.
 - `server-data-26.3-neoforge/` 전체를 `/home/pilon1945/aziran-26.3-protected-backups/pre-chunky-2026-09-23-0536.tar`로 백업했다. 크기 301,342,720바이트, SHA-256 `6a3fa086925c47b867c41cff1579c897284dc41ede8367ca9c22620ed57ad168`. `tar -tf`로 `world/level.dat`, `server.properties`, `config/chunky/config.json` 포함을 확인했다. 기존 자동 삭제 대상 `minecraft_backups/` 밖에 보관한다.
-- 기능 브랜치의 Compose 파일을 메인 체크아웃의 프로젝트 디렉터리·`.env`에 적용하고, 스크립트 마운트만 기능 worktree의 파일로 지정했다. 서버는 `pause-when-empty-seconds=-1`, `healthy`, 재시작 0회, 접속자 0명으로 기동했다.
+- 기능 브랜치의 Compose 파일을 메인 체크아웃의 프로젝트 디렉터리·`.env`에 적용하고, 스크립트 마운트만 기능 worktree의 파일로 지정했다. (당시 임시 방식이며, 이후 운영 폴더가 PR 브랜치를 직접 체크아웃하도록 바꿔 이 방식과 `CHUNKY_IDLE_CONTROLLER_SCRIPT` 변수는 제거했다.) 서버는 `pause-when-empty-seconds=-1`, `healthy`, 재시작 0회, 접속자 0명으로 기동했다.
 - 컨트롤러가 네더 반경 1000을 14:37:02 KST에 시작해 14:37:34 KST에 완료로 기록했고, 오버월드 반경 8000을 14:37:35 KST에 시작했다. 14:37경 RCON `chunky progress`에서 오버월드 진행률 1.00%를 확인했다. 엔드는 아직 시작하지 않았다. 이후 진행 상태는 `docker logs aziran-chunky-idle-pregen`, `docker exec aziran-minecraft-26-3 rcon-cli 'chunky progress'`, `chunky-idle-state/chunky_idle_state.json`으로 확인한다.
 - 실제 플레이어 `Aziran_`의 접속을 `list`에서 1명으로 확인했고, 컨트롤러는 14:43:41 KST에 `minecraft:overworld`를 pause했다고 기록했다. RCON `chunky progress`는 `No tasks running.`을 반환했다. 약 20초 뒤에도 접속자 1명, 실행 중 작업 없음, 서버 `healthy`·재시작 0회를 재확인했다. Chunky 작업 파일은 `cancelled=false`로 저장돼 재개 가능한 상태였다. 접속 순간부터 pause 완료까지의 정확한 지연은 측정하지 않았다.
 - 플레이어 퇴장 후 `list`에서 0명을 확인했고 처음에는 계속 `No tasks running.`이었다. 컨트롤러가 14:45:47 KST에 오버월드 작업을 재개한 뒤 RCON `chunky progress`가 실행 중 작업과 진행률 7.34%를 보고했다. 정확한 퇴장 시각을 기록하지 않았으므로 30초 지연의 오차는 측정하지 않았다.
@@ -108,29 +108,15 @@ Chunky는 작업이 끝나거나 취소되면 둘 다 작업 파일에 `cancelle
 배포 전 확인: 백업, 디스크 여유(오버월드 8000은 이전 800의 100배 면적), `.env`의 `RCON_PASSWORD`.
 
 - 백업은 기존 `mc_backup.sh`와 `minecraft_backups/`를 쓰지 않는다. 그 스크립트는 해당 디렉터리의 파일을 삭제한다. 26.3용 별도 보호 경로를 먼저 정한다.
-- Compose 상대 경로(`./server-data-26.3-neoforge`, `./chunky-idle-state`, 기본 스크립트 경로)는 `--project-directory` 기준이다. 기능 worktree를 프로젝트 디렉터리로 쓰지 않고, 실제 서버 데이터가 있는 메인 체크아웃(`/home/pilon1945/AziranMinecraftServer`)과 그 `.env`를 쓴다.
-- 컨트롤러 스크립트 마운트 경로는 `CHUNKY_IDLE_CONTROLLER_SCRIPT`로 바꿀 수 있고 기본값은 `./scripts/chunky_idle_controller.py`다. PR 병합 전에는 스크립트가 기능 worktree에만 있으므로, 메인 체크아웃에 파일을 만들지 않고 이 변수로 worktree의 스크립트를 가리킨다. 병합 후에는 변수 없이 메인 체크아웃에서 실행한다.
-
-PR 병합 전 후보 배포(기능 worktree의 Compose 설정과 스크립트, 메인 체크아웃의 데이터와 `.env`):
-
-```sh
-MAIN=/home/pilon1945/AziranMinecraftServer
-FEATURE=/home/pilon1945/AziranMinecraftServer-chunky-idle-pregen
-mkdir -p "$MAIN/chunky-idle-state"   # 컨테이너 사용자 1000:1000이 쓸 수 있어야 한다
-export CHUNKY_IDLE_CONTROLLER_SCRIPT="$FEATURE/scripts/chunky_idle_controller.py"
-compose() { docker compose --project-directory "$MAIN" --env-file "$MAIN/.env" -f "$FEATURE/docker-compose.yml" "$@"; }
-compose config --quiet
-compose up -d minecraft                    # PAUSE_WHEN_EMPTY_SECONDS=-1 반영(컨테이너 재생성)
-compose up -d --no-deps chunky-idle-pregen
-compose logs -f chunky-idle-pregen
-```
-
-병합 후 배포(메인 체크아웃에서):
+- 운영 폴더 `/home/pilon1945/AziranMinecraftServer`가 PR 브랜치 `chunky-idle-pregen`을 체크아웃한 상태에서 그대로 배포한다. Compose 파일, 컨트롤러 스크립트(`./scripts/chunky_idle_controller.py`), 서버 데이터, `.env`가 모두 이 폴더에 있으므로 별도 worktree나 경로 변수 없이 일반 `docker compose` 명령을 쓴다. 병합 후에도 같은 폴더에서 같은 명령을 쓴다.
+- Compose 상대 경로(`./server-data-26.3-neoforge`, `./chunky-idle-state`, `./scripts/chunky_idle_controller.py`)는 이 폴더 기준이다. 다른 worktree나 clone에서 실행하면 서버 데이터와 `.env`가 없으므로 그곳에서 배포하지 않는다.
+- 컨트롤러는 서버 이미지를 재사용하므로 이미지의 HEALTHCHECK(`mc-health`, 컨테이너 내부 `localhost:25565` 검사)를 상속한다. 사이드카에는 Minecraft 서버가 없어 항상 실패하므로 `chunky-idle-pregen` 서비스에서만 `healthcheck: disable: true`로 끈다. 그래서 `docker ps`에 health 표시가 없다. 컨트롤러 상태는 exit 코드(`restart: on-failure`), `RestartCount`, `docker compose logs chunky-idle-pregen`으로 확인한다.
 
 ```sh
 cd /home/pilon1945/AziranMinecraftServer
-mkdir -p chunky-idle-state
-docker compose up -d minecraft
+mkdir -p chunky-idle-state   # 컨테이너 사용자 1000:1000이 쓸 수 있어야 한다
+docker compose config --quiet
+docker compose up -d minecraft                    # PAUSE_WHEN_EMPTY_SECONDS=-1 반영(변경 시 컨테이너 재생성)
 docker compose up -d --no-deps chunky-idle-pregen
 docker compose logs -f chunky-idle-pregen
 ```

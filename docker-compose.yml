@@ -74,8 +74,7 @@ services:
     entrypoint: ["python3", "-u", "/controller/chunky_idle_controller.py"]
     user: "1000:1000"
     volumes:
-      # 병합 전에는 CHUNKY_IDLE_CONTROLLER_SCRIPT로 기능 worktree의 스크립트를 지정한다.
-      - ${CHUNKY_IDLE_CONTROLLER_SCRIPT:-./scripts/chunky_idle_controller.py}:/controller/chunky_idle_controller.py:ro
+      - ./scripts/chunky_idle_controller.py:/controller/chunky_idle_controller.py:ro
       - ./server-data-26.3-neoforge/config/chunky:/chunky:ro
       - ./server-data-26.3-neoforge/logs:/server-logs:ro
       - ./chunky-idle-state:/state
@@ -87,6 +86,11 @@ services:
     depends_on:
       - minecraft
     restart: on-failure
+    # 이미지에서 상속한 HEALTHCHECK(mc-health)는 컨테이너 안의 localhost:25565
+    # Minecraft 서버를 검사한다. 이 사이드카는 서버가 아니라 항상 실패하므로 그
+    # 검사만 끈다. 컨트롤러 오류는 exit 1 → restart: on-failure와 로그로 드러난다.
+    healthcheck:
+      disable: true
     networks:
       - aziran-mc-network
 
