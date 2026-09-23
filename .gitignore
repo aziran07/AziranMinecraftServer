@@ -9,5 +9,6 @@ logs
 /minecraft_backups
 /server-data-26.3
 /server-data-26.3-neoforge
+/chunky-idle-state
 /dist
 /client-mods-cache
