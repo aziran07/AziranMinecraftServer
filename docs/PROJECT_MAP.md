@@ -2,6 +2,12 @@
 
 2026-09-22에 저장소 설정과 로컬 파일 목록을 확인한 결과입니다. 실행 중인 서비스의 정상 동작을 보증하는 문서가 아닙니다. 기능 변경 시 해당 절과 검증 기준을 함께 갱신합니다.
 
+## 현재 활성 서비스와 안내 웹사이트
+
+Compose에서 활성화한 서비스는 Minecraft와 내부 웹 RCON 두 개다. Portainer·Grafana·Prometheus·cAdvisor·Nginx 정의는 주석으로 보존한다. 아래 관리 서비스·Nginx 구조 설명은 복원 가능한 기존 구성의 기록이며 현재 실행 상태를 뜻하지 않는다.
+
+`https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 안내 테스트는 `tests/test_join_guide.py`다. 다운로드는 GitHub Release `client-1.1.3`을 사용한다. 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
+
 ## 26.3 준비 변경
 
 현재 브랜치의 Minecraft 구성은 Java 25, Minecraft 26.3, NeoForge `26.3.0.8-beta`와 `server-data-26.3-neoforge/`를 사용하도록 준비한다. 26.3 계열 NeoForge는 베타 채널만 배포되므로 Compose의 `NEOFORGE_VERSION`에 정확한 버전을 고정한다. 고정 모드 목록은 `mods-26.3.lock.json`, 설치 및 검증 상태는 [모드 설치 안내](MODS_26_3.md), 로더 결정 근거는 [로더 비교](LOADER_COMPARISON_26_3.md)에 기록한다.
@@ -16,7 +22,7 @@
 
 ## 범위와 구조
 
-7개 서비스로 구성된 Docker Compose 운영 저장소입니다. 애플리케이션 소스, 자체 모드 소스, 패키지 빌드 설정, 자동화 테스트, CI 파이프라인은 현재 추적 파일에서 확인되지 않았습니다.
+서비스 7개의 정의를 보존한 Docker Compose 운영 저장소이며 현재 2개만 활성화합니다. 클라이언트 팩 빌더와 검증 테스트, 정적 접속 안내 웹사이트 및 배포 워크플로도 관리합니다.
 
 ```text
 docker-compose.yml               서비스·이미지·환경변수·볼륨·네트워크

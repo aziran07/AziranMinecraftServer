@@ -4,6 +4,10 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 
 게임 서버와 웹 관리·모니터링 서비스 구성은 Docker Compose로 관리합니다. 자체 게임 로직 소스는 없으며, 서비스 구성은 이 저장소에서, 게임 기능은 외부 모드와 로컬 서버 데이터에서 관리합니다.
 
+접속 안내 웹사이트는 **https://aziran.uk**, 게임 서버 주소는 **`mc.aziran.uk`**입니다. 웹사이트에서 클라이언트 `.mrpack`을 다운로드하고 설치 순서를 확인할 수 있습니다. 웹사이트 소스와 배포 구성은 [웹사이트 운영 안내](docs/JOIN_GUIDE.md)를 참고하세요.
+
+현재 Compose는 **Minecraft와 웹 RCON만 활성화**합니다. Portainer·Grafana·Prometheus·cAdvisor·Nginx는 주석 처리되어 있습니다. 웹 RCON은 Docker 내부에서만 접근하며 공개 웹사이트에는 관리 기능을 제공하지 않습니다.
+
 ## 작업 시작
 
 1. [AGENTS.md](AGENTS.md): Codex/Claude 역할, Orca 협업 절차, 데이터 보호·검증 규칙.
@@ -22,9 +26,9 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 ## 실행 전 확인
 
 - Docker와 Docker Compose 플러그인이 필요합니다.
-- `.env`와 `nginx/cert.pem`, `nginx/key.pem`을 별도로 준비해야 합니다. 필요한 변수 이름은 프로젝트 지도에 있습니다.
+- `.env`를 별도로 준비해야 합니다. 필요한 변수 이름은 프로젝트 지도에 있습니다. `nginx/cert.pem`, `nginx/key.pem`은 주석 처리된 기존 Nginx를 복원할 때만 필요합니다.
 - 모드, 월드, Grafana 대시보드 등 영속 데이터는 Git에 포함되지 않습니다. 새 clone만으로 기존 운영 서버를 재현할 수 없습니다. 모드 JAR은 `mods-26.3.lock.json`의 URL과 해시로 다시 받을 수 있습니다. Fabric 준비 당시의 목록은 `mods-26.3-fabric-historical.lock.json`에 보존돼 있습니다.
-- Compose는 호스트의 `80`, `443`, `25565`, `8123` TCP 포트를 사용합니다.
+- 활성 Compose 서비스는 호스트의 `25565` TCP 포트만 게시합니다. 안내 웹사이트는 GitHub Pages에서 HTTPS로 제공합니다.
 
 설정 검사:
 
