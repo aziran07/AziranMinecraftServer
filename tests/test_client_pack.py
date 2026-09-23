@@ -14,6 +14,7 @@ EXPECTED = {
     'balm', 'cookingforblockheads', 'curios', 'farmersdelight', 'geckolib',
     'jade', 'jei', 'modonomicon', 'occultism', 'packetfixer', 'toms_storage',
     'lithium', 'mousetweaks', 'clumps', 'immediatelyfast', 'journeymap',
+    'sodium', 'iris',
 }
 
 
@@ -32,10 +33,10 @@ class ClientPackTests(unittest.TestCase):
 
     def test_artifacts_match_requested_mods_and_dependencies(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        self.assertEqual(lock['pack_version'], '1.1.3')
-        self.assertEqual(lock['mod_count'], 16)
+        self.assertEqual(lock['pack_version'], '1.1.4')
+        self.assertEqual(lock['mod_count'], 18)
         self.assertEqual(lock['shared_with_server_count'], 13)
-        self.assertEqual(lock['client_only_count'], 3)
+        self.assertEqual(lock['client_only_count'], 5)
         self.assertEqual(lock['minecraft_version'], '26.3')
         self.assertEqual(lock['loader_version'], '26.3.0.8-beta')
         mods = {m['filename']: m for m in lock['mods']}
@@ -46,10 +47,12 @@ class ClientPackTests(unittest.TestCase):
             'MouseTweaks-neoforge-mc26.3-2.31.jar': '93e7ac34bbc15de635073722054b11fed3981e0f39954286e8a57214ce5ce007e5562882cb81cd230c8ea49970970c84548cfc598332c539777986090b090798',
             'ImmediatelyFast-NeoForge-1.17.1+26.3.jar': '6fddcf7e9de2bf179bdd18cc317fa1cc50ea9c3a40b06a0e0673ecb1dba29fb2ac2743ada361e32f52c2c1f333043795a5149b8b89ee467665c2b734e7d5d951',
             'journeymap-neoforge-26.3-6.0.9.jar': '1ed0fc68d17e5134d55111aeea256cac523097eb2c899c11b4ead7f611058983ff54277a0dbcfe5a422a0bd77c05591a677be3bf13b7c927d0f4cfdfbe4d440b',
+            'sodium-neoforge-0.9.2+mc26.3.jar': 'f5b62730bbee7d116a83c765b8e7cdb660da97ab7f122f180293eda3e56b5ca4d701b0bf18c36f087e9a7349f8ec113f1f8c0d462a8893c551a2f3e163bd0cb8',
+            'iris-neoforge-1.11.6-snapshot+mc26.3-local.jar': '995f160829bc183e7b4acfe6ca149706b6f1a8e7a991d271312d1a92c8ac4cd26553f5be3772ce3e3247709a72f2ef2a050472a0d81d7891e792308d3211a803',
         })
         for name, mod in mods.items():
             self.assertEqual(mod['sha512'], trusted[name])
-        manual = ROOT / 'dist/aziran-26.3-client-1.1.3-manual.zip'
+        manual = ROOT / 'dist/aziran-26.3-client-1.1.4-manual.zip'
         journey_name = 'journeymap-neoforge-26.3-6.0.9.jar'
         provided = {'minecraft', 'neoforge'}
         required = set()
@@ -76,13 +79,15 @@ class ClientPackTests(unittest.TestCase):
             names = archive.namelist()
             self.assertEqual(len(names), len(set(names)))
             self.assertTrue(all(not n.startswith('/') and '..' not in Path(n).parts for n in names))
-            jars = [n for n in names if n.endswith('.jar')]
+            jars = [n for n in names if n.startswith('mods/') and n.endswith('.jar')]
             self.assertEqual({Path(n).name for n in jars}, set(mods) - {journey_name})
-            self.assertEqual(len(jars), 15)
+            self.assertEqual(len(jars), 17)
             instructions = archive.read('README.md').decode()
             self.assertIn('JourneyMap', instructions)
             self.assertIn(mods[journey_name]['url'], instructions)
             self.assertTrue(all(n.startswith('mods/') for n in jars))
+            self.assertIn('sources/iris/Iris-10d3598cd96b0566497b66efe66256f468cd977e-source.tar.gz', names)
+            self.assertIn('sources/iris/glsl-transformer-3.0.0-pre3-sources.jar', names)
             for name in jars:
                 data = archive.read(name)
                 mod = mods[Path(name).name]
@@ -95,13 +100,14 @@ class ClientPackTests(unittest.TestCase):
         inspect(journey_data, top=True)
         self.assertEqual(top_ids, EXPECTED)
         self.assertFalse(required - provided, f'Missing dependencies: {required - provided}')
-        self.assertNotIn('sodium-neoforge-0.9.2+mc26.3.jar', mods)
+        self.assertIn('sodium-neoforge-0.9.2+mc26.3.jar', mods)
+        self.assertIn('iris-neoforge-1.11.6-snapshot+mc26.3-local.jar', mods)
         self.assertIn('MouseTweaks-neoforge-mc26.3-2.31.jar', mods)
         self.assertIn('ImmediatelyFast-NeoForge-1.17.1+26.3.jar', mods)
         self.assertIn(journey_name, mods)
         self.assertFalse(any('xaerominimap' in name for name in mods))
 
-        with zipfile.ZipFile(ROOT / 'dist/aziran-26.3-client-1.1.3.mrpack') as archive:
+        with zipfile.ZipFile(ROOT / 'dist/aziran-26.3-client-1.1.4.mrpack') as archive:
             self.assertIsNone(archive.testzip())
             index = json.loads(archive.read('modrinth.index.json'))
             self.assertEqual(index['dependencies'], {'minecraft': '26.3', 'neoforge': '26.3.0.8-beta'})
@@ -109,8 +115,15 @@ class ClientPackTests(unittest.TestCase):
             self.assertEqual(index['game'], 'minecraft')
             paths = [f['path'] for f in index['files']]
             self.assertEqual(len(paths), len(set(paths)))
-            got = {Path(p).name for p in paths}
+            shader_path = 'shaderpacks/ComplementaryReimagined_r5.9.3.zip'
+            self.assertIn(shader_path, paths)
+            shader = next(entry for entry in index['files'] if entry['path'] == shader_path)
+            self.assertEqual(shader['hashes']['sha1'], '838139b54cddb56b2e83cd260d8efd960ac536d6')
+            self.assertTrue(all(u.startswith('https://cdn.modrinth.com/') for u in shader['downloads']))
+            got = {Path(p).name for p in paths if p != shader_path}
             for entry in index['files']:
+                if entry['path'] == shader_path:
+                    continue
                 mod = mods[Path(entry['path']).name]
                 self.assertEqual(entry['fileSize'], mod['size'])
                 self.assertEqual(entry['hashes'], {a: mod[a] for a in ('sha1', 'sha512')})
@@ -121,12 +134,14 @@ class ClientPackTests(unittest.TestCase):
                 ['https://cdn.modrinth.com/data/lfHFW1mp/versions/OCuB6UWq/journeymap-neoforge-26.3-6.0.9.jar'],
             )
             for name in archive.namelist():
-                if name.endswith('.jar'):
+                if name.startswith('client-overrides/mods/') and name.endswith('.jar'):
                     self.assertTrue(name.startswith('client-overrides/mods/'))
                     self.assertNotEqual(Path(name).name, journey_name)
                     got.add(Path(name).name)
                     self.assertEqual(hashlib.sha512(archive.read(name)).hexdigest(), mods[Path(name).name]['sha512'])
             self.assertEqual(got, set(mods))
+            self.assertIn('sources/iris/Iris-10d3598cd96b0566497b66efe66256f468cd977e-source.tar.gz', archive.namelist())
+            self.assertNotIn('client-overrides/shaderpacks/ComplementaryReimagined_r5.9.3.zip', archive.namelist())
 
 
 if __name__ == '__main__':

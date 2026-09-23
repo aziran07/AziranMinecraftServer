@@ -94,7 +94,7 @@ Modrinth의 Occultism 배포 메타데이터는 Curios를 **필수** 의존성�
 | Farmer's Delight Refabricated | Fabric 전용 이식판. NeoForge 구성에서는 위 CurseForge 이식판으로 대체 |
 | Architectury, PolyLib, Resourceful Lib, MidnightLib | NeoForge 26.3 배포는 있으나 이번 구성의 어떤 모드도 필수 의존성으로 요구하지 않아 제외 |
 | Dynmap, Neruina, Compact Storage, Wider Ender Chests, Handcrafted, Macaw's 시리즈, Terralith, Structory/Towers, Nullscape, The Bumblezone, Explorify, Croptopia, Create 계열, FTB 계열 | 조회한 배포처에 26.3 파일 없음 |
-| Sodium, ImmediatelyFast, Mouse Tweaks | 클라이언트 전용(Modrinth `server_side=unsupported`). 서버에는 설치하지 않는다. ImmediatelyFast·Mouse Tweaks는 클라이언트 모드팩에 담고, Sodium은 Windows 크래시 때문에 클라이언트 팩 `1.1.1`부터 계속 뺐다 |
+| Sodium, ImmediatelyFast, Mouse Tweaks | 클라이언트 전용(Modrinth `server_side=unsupported`). 서버에는 설치하지 않는다. ImmediatelyFast·Mouse Tweaks는 클라이언트 모드팩에 담는다. Sodium은 Windows 크래시 때문에 `1.1.1`~`1.1.3`에서 뺐고, `1.1.4`에서 Iris 필수 의존성으로 되돌렸다. Iris(로컬 빌드)도 클라이언트 전용이다 |
 | Xaero's Minimap | 클라이언트 모드팩 `1.1.2`에만 담았던 클라이언트 전용 모드. Windows 크래시(`0xc0000005`)의 방아쇠로 A/B 확인돼 `1.1.3`에서 뺐다. 서버에는 처음부터 설치하지 않았다 |
 | JourneyMap | 클라이언트 모드팩 `1.1.3`에서 Xaero's Minimap을 대신하는 클라이언트 전용 모드. Modrinth는 `server_side=optional`로 표시하며 지도 표시는 클라이언트만으로 동작하므로 서버에는 설치하지 않았다. 라이선스상 JAR을 재배포할 수 없어 `.mrpack`의 Modrinth 다운로드 항목으로만 설치한다 |
 | Indium, Mod Menu | Fabric 전용. 26.3 NeoForge 배포 없음. Indium은 Sodium 0.6 이상과 호환되지 않으며 이 Sodium 빌드가 `indium`을 대신 제공한다 |
@@ -128,12 +128,15 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 `1.1.3`은 모드 16개를 담는다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
+클라이언트 팩 후보 `1.1.4`는 모드 18개와 셰이더 팩 1개를 담는다(GitHub Release 공개 전). 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
 모드는 두 갈래다.
 
 - **서버 공통 13개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Tom's Simple Storage. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
-- **클라이언트 전용 3개**: 서버에 설치하지 않는 모드다. 입력 고정 목록은 [mods-26.3-client-extra.lock.json](../mods-26.3-client-extra.lock.json)이고 JAR은 Git에서 제외한 `client-mods-cache/`에 둔다. ImmediatelyFast `1.17.1+26.3-neoforge`, Mouse Tweaks `26.3-2.31-neoforge`, JourneyMap `26.3-6.0.9+neoforge`.
+- **클라이언트 전용 5개**: 서버에 설치하지 않는 모드다. 입력 고정 목록은 [mods-26.3-client-extra.lock.json](../mods-26.3-client-extra.lock.json)이고 JAR은 Git에서 제외한 `client-mods-cache/`에 둔다. ImmediatelyFast `1.17.1+26.3-neoforge`, Mouse Tweaks `26.3-2.31-neoforge`, JourneyMap `26.3-6.0.9+neoforge`, Sodium `mc26.3-0.9.2-neoforge`, Iris `1.11.6-snapshot+mc26.3-local`(PR #3354 커밋 `10d3598c…` 로컬 빌드).
+- **셰이더 팩 1개**: Complementary Reimagined `r5.9.3`. 입력 lock의 `shaderpacks`에 두며 `.mrpack`의 Modrinth CDN 다운로드 항목으로만 설치한다. 기본으로 켜지 않는다.
+
+`1.1.4`의 Iris 대응 소스 번들, Sodium 복귀 근거, Occultism 사역마 단축키용 `options.txt` 우회는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md)에 적었다.
 
 서버에만 두고 제외한 7개: Almanac, Chunky, Cristel Lib, Let Me Despawn, Structures, Towns and Towers, spark. 제외 근거는 각 모드의 Modrinth `client_side` 값과 JAR 검사 결과다. Structures와 Towns and Towers는 클래스 파일이 0개인 데이터팩 JAR이고, 제외한 7개 중 NeoForge 네트워크 페이로드를 등록하는 모드는 없다. Lithium과 Clumps는 1.0.0에서 "서버 측 동작"으로 제외했으나, 클라이언트에서도 동작하는 모드라 1.1.0부터 서버와 같은 파일을 함께 담는다. 둘 다 이미 서버에 설치돼 있어 서버 구성은 바꾸지 않았다.
 
@@ -149,11 +152,13 @@ Modrinth 프로젝트 `lfHFW1mp`의 버전 `OCuB6UWq`(`journeymap-neoforge-26.3-
 
 빌더는 입력 lock의 `bundle_jar=false` 표시를 읽어 이 동작을 결정한다. `bundle_jar=false`인데 Modrinth CDN URL이 없으면 설치 경로가 없으므로 빌드를 중단한다. 생성된 고정 목록에는 `bundled_jar_count`와 `external_download_only` 항목으로 남는다.
 
-### Sodium 제외 유지
+### Sodium 제외 기록 (`1.1.1`~`1.1.3`)
+
+`1.1.4`는 Iris 필수 의존성으로 같은 Sodium 파일을 되돌렸다. 아래는 제외했던 기간의 기록이다.
 
 `1.1.1`은 `1.1.0`에서 Sodium `mc26.3-0.9.2-neoforge`만 뺀 구성이었고, `1.1.2`·`1.1.3`도 Sodium을 넣지 않는다. 사용자가 `1.1.0` 인스턴스에서 Sodium JAR만 비활성화한 뒤 Windows MultiMC 실행과 서버 접속에 성공했다고 알려 왔기 때문이다. 다만 크래시 로그에 남았던 네이티브 종료 코드 `0xc0000409`의 정확한 원인은 확정하지 못했다. 로그에는 Sodium의 Nvidia 드라이버 워크어라운드가 `IllegalStateException: Command line is already modified`로 실패한 기록이 있었지만, 그 예외가 종료의 직접 원인인지 드라이버·런처·다른 요소와의 조합이 관여했는지는 알 수 없다. 확인된 사실은 "Sodium이 없으면 해당 PC에서 실행·접속된다"까지다. 입력 lock에서는 항목을 지우고 `removed`에 근거와 이후 관찰 결과를 남겼다. 사용자는 이전 인스턴스를 재사용하지 말고 새 MultiMC 인스턴스로 가져와야 이전 Sodium JAR이 남지 않는다.
 
-Farmer's Delight만 CurseForge 배포라 Modrinth CDN 화이트리스트를 쓸 수 없어 `.mrpack`의 `client-overrides/mods/`에 직접 담는다. 나머지 15개는 런처가 Modrinth CDN에서 받는다.
+Farmer's Delight는 CurseForge 배포라 Modrinth CDN 화이트리스트를 쓸 수 없고, Iris는 공식 배포처에 없는 로컬 빌드라 둘 다 `.mrpack`의 `client-overrides/mods/`에 직접 담는다. 나머지 16개 모드와 셰이더 팩은 런처가 Modrinth CDN에서 받는다.
 
 빌더는 패키징 전에 두 lock의 크기·SHA-512를 실제 JAR과 대조하고, 서버 공통 모드와 클라이언트 전용 모드의 모드 ID 충돌도 검사한다.
 

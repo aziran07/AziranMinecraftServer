@@ -6,21 +6,8 @@
   "java_version": 25,
   "cache_directory": "client-mods-cache",
   "cache_note": "JAR은 Git에 포함하지 않는다. 아래 url에서 cache_directory/filename으로 받으면 빌더가 size·sha512를 대조한다.",
-  "mod_count": 3,
+  "mod_count": 5,
   "removed": [
-    {
-      "title": "Sodium",
-      "project_slug": "sodium",
-      "version_number": "mc26.3-0.9.2-neoforge",
-      "filename": "sodium-neoforge-0.9.2+mc26.3.jar",
-      "removed_in_pack_version": "1.1.1",
-      "reason": "Windows MultiMC 크래시 로그에서 Sodium의 Nvidia 워크어라운드가 IllegalStateException \"Command line is already modified\"로 실패하고 곧바로 네이티브 종료 코드 0xc0000409가 기록됐다. 원인을 확정하지 못했으므로 런타임 수정 대신 팩에서 빼고 나머지 구성으로 재현 여부를 가리는 진단 격리다.",
-      "still_excluded_in": [
-        "1.1.2",
-        "1.1.3"
-      ],
-      "status_note": "사용자가 1.1.0 인스턴스에서 Sodium JAR만 비활성화한 뒤 Windows MultiMC 실행과 서버 접속에 성공했다고 알려 왔다. 나머지 구성으로는 크래시가 재현되지 않는다는 뜻이므로 1.1.2에 이어 1.1.3에서도 계속 뺀다. 다만 이것으로 네이티브 종료 코드의 정확한 원인이 확정되지는 않는다."
-    },
     {
       "title": "Xaero's Minimap",
       "project_slug": "xaeros-minimap",
@@ -185,6 +172,218 @@
         "note": "JAR의 neoforge.mods.toml이 license=\"All rights reserved\"를 선언하고 루트 license.txt가 \"may not be altered, file-hosted, re-packaged, reverse-engineered, or distributed in part or in whole without express written permission\"이라고 적는다. Modrinth 프로젝트 메타데이터도 LicenseRef-All-Rights-Reserved로 같다.",
         "distribution_note": "공식 라이선스 문서가 허용하는 것: \"Create a modpack containing JourneyMap, as long as JourneyMap is downloaded from CurseForge or Modrinth as part of the modpack installation or launch process.\" 금지하는 것: \"Re-host, redistribute or bundle the mod in any way, including as part of a larger distribution such as a modpack.\" 따라서 .mrpack은 Modrinth CDN에서 내려받는 files 항목으로만 JourneyMap을 지정하고, JAR을 담는 수동 ZIP·MultiMC 인스턴스 ZIP에서는 제외한다."
       }
+    },
+    {
+      "title": "Sodium",
+      "source": "modrinth",
+      "project_slug": "sodium",
+      "project_id": "AANobbMI",
+      "version_id": "VHtnT9Q4",
+      "version_number": "mc26.3-0.9.2-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-15T16:04:10.867760Z",
+      "filename": "sodium-neoforge-0.9.2+mc26.3.jar",
+      "url": "https://cdn.modrinth.com/data/AANobbMI/versions/VHtnT9Q4/sodium-neoforge-0.9.2%2Bmc26.3.jar",
+      "size": 1208169,
+      "sha1": "9015607e5ae2c5b9692ebf05113f9caca6ec41bf",
+      "sha512": "f5b62730bbee7d116a83c765b8e7cdb660da97ab7f122f180293eda3e56b5ca4d701b0bf18c36f087e9a7349f8ec113f1f8c0d462a8893c551a2f3e163bd0cb8",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only",
+      "client_side": "required",
+      "server_side": "unsupported",
+      "declared_mod_ids": [
+        "sodium"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.1.2.10-beta,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "net.caffeinemc.sodium-neoforge-0.9.2+mc26.3-mod.jar",
+          "declared_mod_ids": [
+            "sodium"
+          ]
+        }
+      ],
+      "has_fabric_metadata": false,
+      "client_reason": "Iris의 필수 의존성인 렌더링 엔진. 클라이언트 전용이라 서버에는 설치하지 않는다.",
+      "license": {
+        "id": "LicenseRef-Polyform-Shield-1.0.0",
+        "name": "PolyForm Shield License 1.0.0",
+        "url": "https://github.com/CaffeineMC/sodium/blob/dev/LICENSE.md",
+        "note": "JAR의 neoforge.mods.toml이 license=\"Polyform-Shield-1.0.0\"을 선언하고 루트 LICENSE.md에 전문이 들어 있다. Modrinth 프로젝트 메타데이터도 LicenseRef-Polyform-Shield-1.0.0이다.",
+        "distribution_note": "PolyForm Shield 1.0.0의 Distribution License가 사본 배포를 허용하고, Notices 조항은 받는 사람이 라이선스 전문이나 URL을 함께 받도록 요구한다. 원본 JAR을 수정 없이 담으며 JAR 루트의 LICENSE.md가 그 조건을 충족한다."
+      }
+    },
+    {
+      "title": "Iris",
+      "source": "local-build",
+      "project_slug": "iris",
+      "version_number": "1.11.6-snapshot+mc26.3-local",
+      "version_type": "experimental",
+      "filename": "iris-neoforge-1.11.6-snapshot+mc26.3-local.jar",
+      "url": null,
+      "size": 2802547,
+      "sha1": "4bec2667658cfa7bdaec76065d801d981ec5b40c",
+      "sha512": "995f160829bc183e7b4acfe6ca149706b6f1a8e7a991d271312d1a92c8ac4cd26553f5be3772ce3e3247709a72f2ef2a050472a0d81d7891e792308d3211a803",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only",
+      "client_side": "required",
+      "server_side": "unsupported",
+      "build": {
+        "repository": "https://github.com/IrisShaders/Iris",
+        "pull_request": "https://github.com/IrisShaders/Iris/pull/3354",
+        "commit": "10d3598cd96b0566497b66efe66256f468cd977e",
+        "note": "Iris 공식 릴리스가 아니다. 미병합 PR #3354의 위 커밋을 수정 없이 JDK 25로 로컬 빌드한 NeoForge JAR이며, 빌드 당시 NeoForge 26.3.0.7-beta를 기준으로 컴파일했다. Modrinth·CurseForge에 이 파일이 없으므로 .mrpack에서도 client-overrides로 JAR을 담는다."
+      },
+      "declared_mod_ids": [
+        "iris"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[1.21.3,)"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[21.3.9-beta,)"
+        },
+        {
+          "mod_id": "sodium",
+          "version_range": "[0.6,)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "antlr4-runtime-4.13.1.jar",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "glsl-transformer-3.0.0-pre3.jar",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "jcpp-1.4.14.jar",
+          "declared_mod_ids": []
+        }
+      ],
+      "has_fabric_metadata": false,
+      "client_reason": "셰이더 팩(Complementary Reimagined)을 쓰기 위한 셰이더 모드. 클라이언트 전용이라 서버에는 설치하지 않는다.",
+      "license": {
+        "id": "LGPL-3.0-only",
+        "name": "GNU LGPL v3.0 only",
+        "url": "https://github.com/IrisShaders/Iris/blob/10d3598cd96b0566497b66efe66256f468cd977e/LICENSE",
+        "note": "JAR의 neoforge.mods.toml이 license=\"LGPL-3.0-only\"를 선언한다. 내장 라이브러리 중 glsl-transformer 3.0.0-pre3은 AGPL-3.0, jcpp 1.4.14는 Apache-2.0, antlr4-runtime 4.13.1은 BSD-3-Clause다(Iris 소스의 LICENSE-DEPENDENCIES 참고).",
+        "distribution_note": "공식 배포처에 없는 로컬 빌드를 목적 코드로 배포하므로 LGPL-3.0·AGPL-3.0의 대응 소스 제공 조건에 따라, JAR을 담는 모든 아카이브에 sources/iris/의 소스 번들(Iris 커밋 소스, 내장 라이브러리 소스 JAR, 라이선스 전문)을 함께 담는다."
+      },
+      "source_bundle": {
+        "directory": "client-mods-cache/iris-source",
+        "archive_path": "sources/iris",
+        "note": "Iris-<commit>-source.tar.gz는 GitHub의 해당 커밋 아카이브와 압축 해제 내용이 같다(gzip 바이트는 다를 수 있다). 소스 JAR 3개는 Iris JAR에 내장된 같은 버전 라이브러리의 소스다.",
+        "files": [
+          {
+            "filename": "AGPL-3.0.txt",
+            "size": 34523,
+            "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+          },
+          {
+            "filename": "Apache-2.0.txt",
+            "size": 10850,
+            "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+          },
+          {
+            "filename": "GPL-3.0.txt",
+            "size": 35149,
+            "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+          },
+          {
+            "filename": "Iris-10d3598cd96b0566497b66efe66256f468cd977e-source.tar.gz",
+            "size": 1170893,
+            "sha256": "ab4d93a356b798a3fdc3a7dd14ee03528ffdbd8ebca9e0e613f46ba9ee7f5b27"
+          },
+          {
+            "filename": "LGPL-3.0.txt",
+            "size": 7652,
+            "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+          },
+          {
+            "filename": "antlr4-runtime-4.13.1-sources.jar",
+            "size": 314203,
+            "sha256": "0239ef67bc775e654b2f447f3819d3366fb245ddfc623b8b6fd534907472d178"
+          },
+          {
+            "filename": "antlr4-runtime-BSD-3-Clause.txt",
+            "size": 1480,
+            "sha256": "3db1fb3ee79a4b4f9918fc4d0f6133bf18a3cf787f126cd22f8aa9b862281c0c"
+          },
+          {
+            "filename": "glsl-transformer-3.0.0-pre3-sources.jar",
+            "size": 576985,
+            "sha256": "82274b7fa24db657176a71e12181f49e93863be50b578e903bc0e0451812a817"
+          },
+          {
+            "filename": "jcpp-1.4.14-sources.jar",
+            "size": 59810,
+            "sha256": "d7e5689dc4cbbd5ab3ecc0fc791e8e21e0e3f82c14612c34f7be30726f609a0c"
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "restored": [
+    {
+      "title": "Sodium",
+      "filename": "sodium-neoforge-0.9.2+mc26.3.jar",
+      "removed_in_pack_version": "1.1.1",
+      "restored_in_pack_version": "1.1.4",
+      "original_removal_reason": "Windows MultiMC 크래시 로그에서 Sodium의 Nvidia 워크어라운드가 IllegalStateException \"Command line is already modified\"로 실패하고 곧바로 네이티브 종료 코드 0xc0000409가 기록됐다. 원인을 확정하지 못했으므로 런타임 수정 대신 팩에서 빼고 나머지 구성으로 재현 여부를 가리는 진단 격리다.",
+      "reason": "Iris 셰이더 모드가 Sodium을 필수 의존성(sodium [0.6,))으로 선언하므로 1.1.1에서 뺀 같은 파일을 1.1.4에서 다시 넣는다. 1.1.0 Windows 크래시(0xc0000409, Sodium Nvidia 워크어라운드의 IllegalStateException)의 원인은 여전히 규명하지 않았으므로 같은 크래시가 재발할 수 있다. 1.1.4 구성의 Windows 실행 결과는 아직 확인하지 않았다."
+    }
+  ],
+  "shaderpacks": [
+    {
+      "title": "Complementary Shaders - Reimagined",
+      "source": "modrinth",
+      "project_slug": "complementary-reimagined",
+      "project_id": "HVnmMxH1",
+      "version_id": "Bqen1mJX",
+      "version_number": "r5.9.3",
+      "version_type": "release",
+      "date_published": "2026-09-15T06:35:41.918796Z",
+      "filename": "ComplementaryReimagined_r5.9.3.zip",
+      "url": "https://cdn.modrinth.com/data/HVnmMxH1/versions/Bqen1mJX/ComplementaryReimagined_r5.9.3.zip",
+      "size": 553397,
+      "sha1": "838139b54cddb56b2e83cd260d8efd960ac536d6",
+      "sha512": "45304b1d7862afdb2177b7e6226fc9c6737911d17a4ad46cc9c519ca4deb935f05072cd337cd8b19a15bb8062b57b54eceec7bdee4cd572d94858e2946d37d85",
+      "loaders": [
+        "iris",
+        "optifine"
+      ],
+      "client_reason": "Iris로 켜는 셰이더 팩. 기본으로 켜 두지 않으며 사용자가 비디오 설정에서 고른다.",
+      "enabled_by_default": false,
+      "bundle_jar": false,
+      "bundle_jar_reason": "Complementary License Agreement 1.7의 1.2.d가 모드팩에는 Modrinth·CurseForge의 기존 시스템으로만 넣도록 하고 직접 파일 업로드 재배포를 금지한다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목(shaderpacks/)으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시 검증용이다.",
+      "license": {
+        "id": "LicenseRef-Custom",
+        "name": "Complementary License Agreement 1.7",
+        "url": "https://github.com/ComplementaryDevelopment/ComplementaryReimagined/blob/main/License.txt",
+        "note": "셰이더 ZIP 루트의 License.txt가 Complementary License Agreement 1.7이다. 1.2.a는 기본으로 켜 둘 때만 설명 페이지의 출처 표기를 요구하고, 1.2.c는 내용 수정을 금지한다. 이 팩은 기본으로 켜지 않고 파일을 수정하지 않으며, 그래도 README에 출처를 적는다.",
+        "distribution_note": "1.2.d: \"This Pack must be added to the Modpack by using Modrinth or CurseForge's existing systems ... It is not allowed to redistribute This Pack using a direct file upload.\""
+      }
+    }
+  ],
+  "shaderpack_count": 1
 }
