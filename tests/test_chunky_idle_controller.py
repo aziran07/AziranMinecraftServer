@@ -1,6 +1,8 @@
 """Contract tests for the player-count gate used by Chunky pre-generation."""
 
 import unittest
+from contextlib import redirect_stderr
+from io import StringIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -13,6 +15,7 @@ from scripts.chunky_idle_controller import (
     log_marker,
     parse_player_count,
     parse_running_worlds,
+    parse_args,
 )
 
 
@@ -75,6 +78,20 @@ class ProgressResponseTests(unittest.TestCase):
     def test_unrecognized_progress_is_an_error(self):
         with self.assertRaises(ValueError):
             parse_running_worlds("command failed")
+
+
+class PollingArgsTests(unittest.TestCase):
+    def test_default_intervals(self):
+        args = parse_args([])
+        self.assertEqual(args.poll_interval, 1)
+        self.assertEqual(args.idle_poll_interval, 60)
+
+    def test_invalid_intervals_are_rejected(self):
+        for flag in ("--poll-interval", "--idle-poll-interval"):
+            for value in ("0", "-1", "nan", "inf"):
+                with self.subTest(flag=flag, value=value):
+                    with redirect_stderr(StringIO()), self.assertRaises(SystemExit):
+                        parse_args([flag, value])
 
 
 class CompletionLogTests(unittest.TestCase):
@@ -277,6 +294,21 @@ class ControllerGateTests(unittest.TestCase):
         with self.assertRaises(ControllerError):
             controller.step()
         self.assertEqual(rcon.commands, ["list", "chunky progress"])
+
+    def test_active_task_keeps_fast_player_checks(self):
+        self.state.active = {"world": "minecraft:the_nether", "phase": "started"}
+        controller, _ = self.make_controller({})
+        self.assertEqual(controller.next_poll_interval(1, 60), 1)
+
+    def test_paused_task_uses_slow_resume_checks(self):
+        self.state.active = {"world": "minecraft:the_nether", "phase": "started"}
+        controller, _ = self.make_controller({})
+        controller.pause_confirmed = True
+        self.assertEqual(controller.next_poll_interval(1, 60), 60)
+
+    def test_no_task_uses_slow_start_checks(self):
+        controller, _ = self.make_controller({})
+        self.assertEqual(controller.next_poll_interval(1, 60), 60)
 
 
 if __name__ == "__main__":

@@ -196,4 +196,4 @@ Orca 명령은 이 문서에 고정하지 않습니다. 작업 시 설치된 `or
 
 ## Chunky 무인 프리젠
 
-`scripts/chunky_idle_controller.py`와 Compose 서비스 `chunky-idle-pregen`이 접속자 0명일 때만 네더 1000 → 오버월드 8000 → 엔드 8000 순으로 Chunky 프리젠을 진행한다. 캠페인 동안 `minecraft` 서비스에 `PAUSE_WHEN_EMPTY_SECONDS=-1`을 둔다. 상태는 `chunky-idle-state/`(Git 제외), 검증은 `python3 -m unittest tests.test_chunky_idle_controller -v`. 동작·완료 판정·운영 절차는 [CHUNK_PREGEN.md](CHUNK_PREGEN.md#무인-프리젠-컨트롤러)에 있다.
+`scripts/chunky_idle_controller.py`와 Compose 서비스 `chunky-idle-pregen`이 접속자 0명일 때만 네더 1000 → 오버월드 8000 → 엔드 8000 순으로 Chunky 프리젠을 진행한다. 작업 진행 중에는 1초(`--poll-interval`), 플레이어 때문에 pause됐거나 시작 대기 중에는 60초(`--idle-poll-interval`)마다 접속자를 확인하므로 재개는 퇴장 후 최대 약 60초 걸린다. 캠페인 동안 `minecraft` 서비스에 `PAUSE_WHEN_EMPTY_SECONDS=-1`을 둔다. 상태는 `chunky-idle-state/`(Git 제외), 검증은 `python3 -m unittest tests.test_chunky_idle_controller -v`. 동작·완료 판정·운영 절차는 [CHUNK_PREGEN.md](CHUNK_PREGEN.md#무인-프리젠-컨트롤러)에 있다.

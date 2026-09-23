@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Run the Chunky pre-generation campaign only while no players are online.
 
-The controller polls `list` over RCON about once per second. With zero players
-it starts or continues the current Chunky target; as soon as a player is seen it
-pauses the task (`chunky pause <world>`). Start and continue are sent as
+The controller polls `list` over RCON. While a campaign task may be generating
+it polls about once per second; once the task is confirmed paused for players,
+or before the first start, it polls once a minute. With zero players it starts
+or continues the current Chunky target; as soon as a player is seen it pauses
+the task (`chunky pause <world>`). Start and continue are sent as
 `execute unless entity @a run ...`, so the server checks again for players right
 before running them; a blank reply means a player arrived and nothing ran.
 Targets run one after another and the next target only starts after the current
@@ -39,6 +41,7 @@ TARGETS = (
 
 STATE_VERSION = 1
 DEFAULT_POLL_INTERVAL_SECONDS = 1.0
+DEFAULT_IDLE_POLL_INTERVAL_SECONDS = 60.0
 DEFAULT_RESUME_DELAY_SECONDS = 30.0
 # A finished task is saved (cancelled=true) right after the finish message is
 # logged. Allow this long for the log line to show up before failing.
@@ -335,6 +338,16 @@ class Controller:
             raise ControllerError(f"Chunky task file for {world} no longer matches the started target: {task}")
         return True
 
+    def next_poll_interval(self, active_seconds, idle_seconds):
+        """Poll fast only while a campaign task may be generating.
+
+        A paused task or a target not started yet only waits for the server to
+        empty, so it is checked at the slower idle cadence.
+        """
+        if self.state.active is not None and not self.pause_confirmed:
+            return active_seconds
+        return idle_seconds
+
     def player_arrived(self, action, world):
         self.last_player_seen = self.clock()
         log.info("did not %s %s: a player joined right before the command", action, world)
@@ -438,12 +451,30 @@ def handle_sigterm(signum, frame):
     raise KeyboardInterrupt
 
 
+def positive_seconds(text):
+    value = float(text)
+    if not value > 0 or value == float("inf"):
+        raise argparse.ArgumentTypeError(f"must be a positive number of seconds: {text}")
+    return value
+
+
 def parse_args(argv):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--state-file", default="/state/chunky_idle_state.json")
     parser.add_argument("--chunky-dir", default="/chunky", help="the server's config/chunky directory")
     parser.add_argument("--server-log", default="/server-logs/latest.log")
-    parser.add_argument("--poll-interval", type=float, default=DEFAULT_POLL_INTERVAL_SECONDS)
+    parser.add_argument(
+        "--poll-interval",
+        type=positive_seconds,
+        default=DEFAULT_POLL_INTERVAL_SECONDS,
+        help="seconds between player checks while a campaign task may be generating",
+    )
+    parser.add_argument(
+        "--idle-poll-interval",
+        type=positive_seconds,
+        default=DEFAULT_IDLE_POLL_INTERVAL_SECONDS,
+        help="seconds between player checks while the task is paused for players or not started yet",
+    )
     parser.add_argument(
         "--resume-delay",
         type=float,
@@ -499,7 +530,8 @@ def main(argv=None):
                 elif now - last_failure_log >= RCON_FAILURE_LOG_INTERVAL_SECONDS:
                     last_failure_log = now
                     log.error("RCON still failing after %.0fs: %s", now - rcon_failing_since, error)
-            time.sleep(max(0.0, args.poll_interval - (time.monotonic() - cycle_started)))
+            interval = controller.next_poll_interval(args.poll_interval, args.idle_poll_interval)
+            time.sleep(max(0.0, interval - (time.monotonic() - cycle_started)))
     except (ControllerError, ValueError, RconAuthError, OSError) as error:
         log.error("stopping: %s", error)
         controller.pause_on_exit()
