@@ -1,6 +1,7 @@
 """Check the public join guide's installation contract and local links."""
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import unittest
 from urllib.parse import unquote, urlsplit
 
@@ -8,6 +9,7 @@ from urllib.parse import unquote, urlsplit
 SITE = Path(__file__).resolve().parents[1] / 'site'
 PACK_URL = ('https://github.com/aziran07/AziranMinecraftServer/releases/download/'
             'client-1.1.4/aziran-26.3-client-1.1.4.mrpack')
+OCCULTISM_URL = 'https://www.curseforge.com/minecraft/mc-mods/occultism'
 
 
 class Page(HTMLParser):
@@ -28,6 +30,20 @@ class JoinGuideTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.page = Page((SITE / 'index.html').read_text())
+
+    def assert_local_resources_exist(self, page):
+        for tag, attrs in page.tags:
+            for key in ('src', 'href'):
+                value = attrs.get(key)
+                if not value or value.startswith('#'):
+                    continue
+                url = urlsplit(value)
+                self.assertNotEqual(url.scheme, 'http', value)
+                if url.scheme or url.netloc:
+                    continue
+                path = (SITE / unquote(url.path).lstrip('/')).resolve()
+                self.assertTrue(path.is_relative_to(SITE.resolve()), value)
+                self.assertTrue(path.is_file(), value)
 
     def test_installation_details_and_download(self):
         text = ' '.join(self.page.text)
@@ -50,23 +66,56 @@ class JoinGuideTests(unittest.TestCase):
         self.assertTrue(any(attrs.get('aria-live') in ('polite', 'assertive')
                             for _, attrs in tags))
 
+    def test_java_preparation_is_part_of_installation_steps(self):
+        source = (SITE / 'index.html').read_text()
+        steps = re.search(r'<section\b[^>]*\bid="steps"[^>]*>(.*?)</section>',
+                          source, re.DOTALL)
+        self.assertIsNotNone(steps)
+        step_html = steps.group(1)
+        self.assertEqual(step_html.count('class="step"'), 4)
+        self.assertIn('id="java"', step_html)
+        self.assertIn('Java 25', step_html)
+        self.assertIn('https://prismlauncher.org/wiki/getting-started/installing-java/',
+                      step_html)
+        self.assertIn('설치되어 있', step_html)
+        self.assertIn('설치할 필요', step_html)
+        self.assertRegex(step_html, r'<img\b[^>]*\bsrc="prism-java-settings\.png"'
+                                    r'[^>]*\balt="[^"]+"')
+        self.assertNotRegex(source, r'<section\b[^>]*\bid="java"')
+
     def test_local_resources_and_publication_boundary(self):
-        for tag, attrs in self.page.tags:
-            for key in ('src', 'href'):
-                value = attrs.get(key)
-                if not value or value.startswith('#'):
-                    continue
-                url = urlsplit(value)
-                self.assertNotEqual(url.scheme, 'http', value)
-                if url.scheme or url.netloc:
-                    continue
-                path = (SITE / unquote(url.path).lstrip('/')).resolve()
-                self.assertTrue(path.is_relative_to(SITE.resolve()), value)
-                self.assertTrue(path.is_file(), value)
+        self.assert_local_resources_exist(self.page)
         self.assertEqual((SITE / 'CNAME').read_text().strip(), 'aziran.uk')
         self.assertTrue((SITE / '.nojekyll').is_file())
         forbidden = {'.env', 'key.pem', 'cert.pem', 'server.properties', 'ops.json'}
         self.assertFalse([p.name for p in SITE.rglob('*') if p.name in forbidden])
+
+    def test_occultism_guide_is_linked_from_home(self):
+        links = [attrs.get('href') for tag, attrs in self.page.tags if tag == 'a']
+        self.assertIn('occultism.html', links)
+        self.assertIn('Occultism', ' '.join(self.page.text))
+
+    def test_public_web_map_is_linked_and_explained(self):
+        source = (SITE / 'index.html').read_text()
+        links = [attrs.get('href') for tag, attrs in self.page.tags if tag == 'a']
+        self.assertIn('https://mcmap.aziran.uk/', links)
+        self.assertIn('#webmap', links)
+        self.assertRegex(source, r'<section\b[^>]*\bid="webmap"')
+        self.assertIn('BlueMap', source)
+
+    def test_occultism_guide_has_verified_first_steps_and_sources(self):
+        guide = Page((SITE / 'occultism.html').read_text())
+        text = ' '.join(guide.text)
+        for required in ('Occultism', "Demon's Dream", 'Dictionary of Spirits'):
+            self.assertIn(required, text)
+        links = [attrs.get('href') for tag, attrs in guide.tags if tag == 'a']
+        self.assertIn(OCCULTISM_URL, links)
+        self.assertIn('index.html', links)
+        self.assertTrue(any(tag == 'html' and attrs.get('lang') == 'ko'
+                            for tag, attrs in guide.tags))
+        self.assertEqual(sum(tag == 'h1' for tag, _ in guide.tags), 1)
+        self.assertTrue(any(tag == 'main' for tag, _ in guide.tags))
+        self.assert_local_resources_exist(guide)
 
 
 if __name__ == '__main__':
