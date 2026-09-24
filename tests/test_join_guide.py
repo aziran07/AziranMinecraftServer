@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlsplit
 
 SITE = Path(__file__).resolve().parents[1] / 'site'
 PACK_URL = ('https://github.com/aziran07/AziranMinecraftServer/releases/download/'
-            'client-1.1.4/aziran-26.3-client-1.1.4.mrpack')
+            'client-1.1.5/aziran-26.3-client-1.1.5.mrpack')
 OCCULTISM_URL = 'https://www.curseforge.com/minecraft/mc-mods/occultism'
 
 
@@ -47,12 +47,13 @@ class JoinGuideTests(unittest.TestCase):
 
     def test_installation_details_and_download(self):
         text = ' '.join(self.page.text)
-        for required in ('mc.aziran.uk', '26.3', '1.1.4', 'Java', '25', 'Prism',
+        for required in ('mc.aziran.uk', '26.3', '1.1.5', 'Java', '25', 'Prism',
                          'ComplementaryReimagined_r5.9.3', 'key.keyboard.unknown'):
             self.assertIn(required, text)
         links = [attrs.get('href') for tag, attrs in self.page.tags if tag == 'a']
         self.assertIn(PACK_URL, links)
         self.assertIn('https://prismlauncher.org/download/', links)
+        self.assertIn('서버가 이미 들어 있습니다', text)
         self.assertTrue(any('확인' in part for part in self.page.text))
 
     def test_accessibility_basics(self):
