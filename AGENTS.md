@@ -2,6 +2,17 @@
 
 These instructions apply throughout this repository.
 
+## Branches and Working Directory
+
+- When the user asks to create a branch, create and check it out in the current repository directory with Git. Keep using that same directory for the work.
+- Do not create a Git worktree, an Orca worktree, or another project folder for a branch request. Create a separate worktree only when the user explicitly asks for one.
+- When switching branches, check for uncommitted work first and preserve it.
+
+## UI Design Reference
+
+- For changes to `site/`, use the root `DESIGN.md` as the visual reference for the Nintendo.com (2001) inspired style. Apply its layout, color, typography, and chrome principles to this project's own content and identity.
+- `DESIGN.md` comes from `https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/nintendo-2001/DESIGN.md`. Its MIT license is preserved in `docs/VOLTAGENT_AWESOME_DESIGN_MD_LICENSE`.
+
 ## Responsibilities
 
 - **Codex owns analysis, architecture, design, task decomposition, acceptance criteria, automated test authoring and maintenance, review, and independent verification.** Codex coordinates the work and reports the final outcome to the user.
