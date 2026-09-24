@@ -54,7 +54,7 @@ class JoinGuideTests(unittest.TestCase):
         self.assertIn(PACK_URL, links)
         self.assertIn('https://prismlauncher.org/download/', links)
         self.assertIn('서버가 이미 들어 있습니다', text)
-        self.assertTrue(any('확인' in part for part in self.page.text))
+        self.assertIn('문제가 생기면 오류 내용을 알려 주세요', text)
 
     def test_accessibility_basics(self):
         tags = self.page.tags
