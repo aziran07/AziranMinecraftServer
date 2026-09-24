@@ -20,7 +20,7 @@
 
 ## 설치 명세
 
-20개 JAR을 설치했다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 21개 항목에 해당하는 JAR 21개를 설치했다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24 추가 설치했다([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
 ### 사용자가 지정한 모드
 
@@ -118,13 +118,13 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 남은 준비 사항
 
-- 실제 기동 검증을 하지 않았다. 특히 베타 아티팩트(NeoForge 26.3.0.8-beta, JEI, Curios, Farmer's Delight 이식판)의 런타임 안정성은 확인되지 않았다.
-- 기동 시 Occultism의 Curios 연동 폴백 메시지를 로그에서 확인해야 한다.
+- 서버 기동과 BlueMap 배포는 확인했다. 베타 아티팩트(NeoForge 26.3.0.8-beta, JEI, Curios, Farmer's Delight 이식판)의 장기 런타임 안정성은 확인되지 않았다.
+- 기동 로그에서 Occultism의 Curios 연동 폴백 메시지를 확인했다([BlueMap 배포 안내](BLUEMAP.md#검증-기록)).
 - Structures의 구조물이 26.3 월드에서 실제로 생성되는지 확인해야 한다. 파일 검증만으로는 판단할 수 없다.
 - 기존 `mc_backup.sh`는 `server-data/world`를 대상으로 한다. `server-data-26.3-neoforge/`용 백업 정책이 없다.
-- Dynmap을 설치하지 않았으므로 Nginx의 `8123` 지도 경로는 새 서버에서 동작하지 않는다.
+- Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Almanac·Let Me Despawn 등 서버 전용 모드는 제외하며 서버의 20개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Almanac·Let Me Despawn·BlueMap 등 서버 전용 모드는 제외하며 서버의 21개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
 

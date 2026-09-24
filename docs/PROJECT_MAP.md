@@ -4,7 +4,9 @@
 
 ## 현재 활성 서비스와 안내 웹사이트
 
-Compose에서 활성화한 서비스는 Minecraft와 내부 웹 RCON 두 개다. Portainer·Grafana·Prometheus·cAdvisor·Nginx 정의는 주석으로 보존한다. 아래 관리 서비스·Nginx 구조 설명은 복원 가능한 기존 구성의 기록이며 현재 실행 상태를 뜻하지 않는다.
+Compose에서 실행 중인 서비스는 Minecraft, 내부 웹 RCON, 지도 HTTPS 원본 `webmap-nginx`다. Portainer·Grafana·Prometheus·cAdvisor·Nginx 정의는 주석으로 보존한다. 아래 관리 서비스·Nginx 구조 설명은 복원 가능한 기존 구성의 기록이며 현재 실행 상태를 뜻하지 않는다. Chunky 무인 프리젠 사이드카는 아래 Chunky 절을 참고한다.
+
+웹 지도는 BlueMap `5.27-neoforge` JAR을 운영 서버에 설치했다(2026-09-24, 오프라인 백업 확인 후). BlueMap은 Compose 네트워크의 `http://minecraft:8100`에서 HTTP 200으로 응답하며 렌더링이 진행 중이다. `8100`은 호스트에 게시하지 않는다. 공개 경로는 Cloudflare 프록시 `A` 레코드 `mcmap` → 호스트 `443`의 `webmap-nginx`(Let's Encrypt `mcmap.aziran.uk` 인증서, `nginx/webmap.conf`) → `http://minecraft:8100`이다. 2026-09-24 `mcmap` DNS 레코드를 만들고 공개 HTTPS 200을 확인했다. 원본 인증서는 2026-12-23 만료이며 자동 갱신이 없어 수동 DNS-01 갱신이 필요하다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류로 폐기했다. 남은 절차는 [BlueMap 배포 안내](BLUEMAP.md)를 따른다. 주석 처리된 기존 Nginx는 복원하지 않는다. 옛 Dynmap `8123` 경로는 1.21 서버의 기록이며 26.3 구성에서 제거했다.
 
 `https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 안내 테스트는 `tests/test_join_guide.py`다. 다운로드는 GitHub Release `client-1.1.4`를 가리킨다(실험 단계 Iris 때문에 GitHub 사전 릴리스로 공개했고, 사이트는 Release 생성 후 배포했다). 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
 
@@ -22,15 +24,16 @@ Compose에서 활성화한 서비스는 Minecraft와 내부 웹 RCON 두 개다.
 
 ## 범위와 구조
 
-서비스 7개의 정의를 보존한 Docker Compose 운영 저장소이며 현재 2개만 활성화합니다. 클라이언트 팩 빌더와 검증 테스트, 정적 접속 안내 웹사이트 및 배포 워크플로도 관리합니다.
+Docker Compose 운영 저장소이며 활성 서비스 4개(`minecraft`, `chunky-idle-pregen`, `webmap-nginx`, `rcon`)와 주석 처리된 서비스 5개의 정의를 둡니다. 클라이언트 팩 빌더와 검증 테스트, 정적 접속 안내 웹사이트 및 배포 워크플로도 관리합니다.
 
 ```text
 docker-compose.yml               서비스·이미지·환경변수·볼륨·네트워크
-nginx/Dockerfile                  프록시 이미지와 인증서 복사
+nginx/webmap.conf                 지도 HTTPS 원본(webmap-nginx) server 블록
+nginx/Dockerfile                  프록시 이미지와 인증서 복사(비활성 Nginx)
 nginx/nginx.conf                  HTTP/stream 진입점과 로그
 nginx/templates/
   default.conf.template          HTTP(S) 도메인과 WebSocket 라우팅
-  minecraft.conf.template        게임·지도 TCP 라우팅
+  minecraft.conf.template        게임 TCP 라우팅(비활성 Nginx)
 prometheus.yml                   cAdvisor 수집 주기와 대상
 mc_backup.sh                     월드 tar 백업과 오래된 파일 삭제
 .gitignore                       비밀정보·운영 데이터 제외
@@ -46,7 +49,8 @@ CLAUDE.md                        Claude 작업 진입점
 | 게임 기본 정책 | 같은 서비스의 `environment` | 난이도 `hard`, 비행 허용, 업적 알림, EULA 동의, `Asia/Seoul` |
 | 월드·모드 저장 | 같은 서비스의 `volumes` | 호스트 `./server-data-26.3-neoforge` → 컨테이너 `/data`; 설치 모드는 `mods-26.3.lock.json`, 기존 데이터는 아래 로컬 데이터 절 참고 |
 | 게임 TCP 접속 | `services.minecraft.ports` | 호스트 `25565` → 컨테이너 `aziran-minecraft-26-3:25565` 직접 게시. Nginx는 더 이상 `25565`를 게시하지 않으므로 `minecraft.conf.template`의 게임 stream은 현재 경로에서 사용되지 않습니다 |
-| 웹 지도 | 두 Nginx 템플릿, 로컬 `server-data/mods/`·`server-data/dynmap/` | TCP `8123` → `minecraft:8123`; HTTP 도메인은 Nginx 내부 `localhost:8123` stream listener 경유 |
+| 웹 지도 | `services.minecraft.expose`, `mods-26.3.lock.json`의 BlueMap, [BLUEMAP.md](BLUEMAP.md); 배포 후 `server-data-26.3-neoforge/config/bluemap/`·`bluemap/` | BlueMap 내장 웹서버 `8100`을 Compose 네트워크에만 연다(호스트 미게시). JAR 설치됨(2026-09-24), 내부 HTTP 200·렌더링 진행 중 |
+| 지도 HTTPS 공개 | `services.webmap-nginx`, `nginx/webmap.conf`, `nginx/cert.pem`·`key.pem`(Git 제외), Cloudflare DNS의 `mcmap` 프록시 `A` | `nginx:1.30-alpine`(다이제스트 고정)이 호스트 `443`만 게시하고 `mcmap.aziran.uk` SNI만 받아 Let's Encrypt 인증서로 TLS 종료 후 `http://minecraft:8100`으로 프록시. 다른 SNI는 핸드셰이크 거절. 설정·인증서는 읽기 전용 마운트. 공개 HTTPS 확인됨(2026-09-24). 인증서 2026-12-23 만료, 수동 갱신(docs/BLUEMAP.md) |
 | RCON 활성화 | `services.minecraft.environment` | RCON 활성화와 `${RCON_PASSWORD}` 전달 |
 | 웹 RCON 관리 | `services.rcon`, `default.conf.template` | `itzg/rcon`, 웹 `4326`, WebSocket `4327`, Minecraft에 내부 연결 |
 | Docker 관리 UI | `services.portainer`, `default.conf.template` | Portainer HTTPS `9443`; 호스트 Docker socket 마운트로 Docker 접근 |
@@ -59,14 +63,16 @@ CLAUDE.md                        Claude 작업 진입점
 
 ## 요청 흐름과 도메인
 
-모든 서비스는 Compose의 `aziran-mc-network` bridge 네트워크를 사용합니다. 호스트에 포트를 게시하는 서비스는 Nginx와 Minecraft입니다. 게임 `25565`는 Minecraft 컨테이너가 직접 게시하고, Nginx는 `80`·`443`·`8123`만 게시합니다. 나머지 서비스의 `expose`는 호스트 포트 게시가 아닙니다.
+모든 서비스는 Compose의 `aziran-mc-network` bridge 네트워크를 사용합니다. 현재 호스트에 포트를 게시하는 서비스는 Minecraft(게임 `25565`)와 `webmap-nginx`(지도 HTTPS `443`)입니다. 지도는 Cloudflare 엣지가 프록시 `A` 레코드로 서버 `443`에 연결하며, `mcmap` DNS 레코드와 공개 HTTPS 200을 확인했습니다(2026-09-24). 호스트 `80`·`3733`은 이 저장소와 무관한 다른 Nginx가 쓰므로 비활성 Nginx(`80`·`443`)는 그대로 복원할 수 없습니다. 나머지 서비스의 `expose`는 호스트 포트 게시가 아닙니다.
 
 ```mermaid
 flowchart LR
     Player[게임 클라이언트] -->|TCP 25565| MC[Minecraft + 로컬 모드]
     Browser[웹 브라우저] -->|HTTP 80 / HTTPS 443| N[Nginx]
-    Map[지도 직접 접속] -->|TCP 8123| N
-    N -->|8123| MC
+    Map[지도 브라우저] -->|HTTPS mcmap.aziran.uk| CF[Cloudflare 엣지]
+    CF -->|HTTPS 443<br/>공개 인증서 strict| WN[webmap-nginx]
+    WN -->|HTTP 8100| MC
+    N -->|HTTP 8100| MC
     N -->|4326 / 4327| R[RCON Web]
     R -->|내부 RCON| MC
     N -->|HTTPS 9443| P[Portainer]
@@ -78,13 +84,13 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 
 | 도메인 | HTTP :80 | HTTPS :443 대상 |
 | --- | --- | --- |
-| `mcmap.aziran.uk` | 지도 프록시 | `http://localhost:8123` |
-| `www.aziran.uk`, `aziran.uk` | HTTPS 리다이렉트 | `http://localhost:8123` |
+| `mcmap.aziran.uk` | 지도 프록시 | `http://minecraft:8100` |
+| `www.aziran.uk`, `aziran.uk` | HTTPS 리다이렉트 | `http://minecraft:8100` |
 | `grafana.aziran.uk` | HTTPS 리다이렉트 | `http://grafana:3000` |
 | `portainer.aziran.uk` | HTTPS 리다이렉트 | `https://portainer:9443` |
 | `minecraft-rcon.aziran.uk` | HTTPS 리다이렉트 | `/` → `http://rcon:4326`, `/websocket-req` → `http://rcon:4327` |
 
-지도 프록시의 `localhost`는 Nginx 컨테이너 자신을 의미합니다. 동일 컨테이너의 stream 설정이 `8123`을 받아 Minecraft로 전달하므로, 이 설정을 바꿀 때 두 템플릿을 함께 확인합니다. DNS 설정과 인증서 발급·갱신 자동화는 저장소에 없습니다.
+Nginx 도메인 표는 비활성 구성을 복원할 때의 경로입니다. `mcmap.aziran.uk`는 비활성 Nginx가 아니라 별도 `webmap-nginx`(`nginx/webmap.conf`)가 처리합니다. 비활성 Nginx를 복원한다면 호스트 `443`과 `mcmap` server 블록이 `webmap-nginx`와 겹치지 않게 다시 정해야 합니다. 지도 프록시는 Compose 네트워크의 `minecraft:8100`(BlueMap)으로 바로 보내며, 옛 Dynmap용 `8123` stream listener는 제거했습니다. `www.aziran.uk`/`aziran.uk`는 현재 GitHub Pages 안내 사이트이므로 Nginx 복원 전에 이 server 블록을 다시 정해야 합니다. DNS 설정과 인증서 발급·갱신 자동화는 저장소에 없습니다. `webmap-nginx` 인증서의 수동 갱신 절차는 [BlueMap 배포 안내](BLUEMAP.md#수동-갱신-만료-30일-전-2026-11-23-무렵까지)에 있습니다.
 
 ## 환경변수와 로컬 의존성
 
@@ -98,12 +104,12 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 | `WSS_URL` | `RWA_WEBSOCKET_URL_SSL` |
 | `WS_URL` | `RWA_WEBSOCKET_URL` |
 
-`CF_API_KEY`와 `CURSEFORGE_FILES`는 주석 안에만 있습니다. 해당 모드 자동 설치 설정은 활성화되어 있지 않습니다. Compose에는 필수 변수 누락을 즉시 차단하는 `${VAR:?…}` 검증이 없습니다. `config --quiet` 성공만으로 값의 적합성을 판정하지 않습니다.
+`CF_API_KEY`와 `CURSEFORGE_FILES`는 주석 안에만 있습니다. 해당 모드 자동 설치 설정은 활성화되어 있지 않습니다. 변수에는 누락 검증이 없습니다. `docker compose config`(인자 없음)는 암호를 평문 출력하므로 `--quiet`로만 검사합니다. `config --quiet` 성공만으로 값의 적합성을 판정하지 않습니다.
 
 | 로컬 경로 | 역할·주의 |
 | --- | --- |
 | `.env` | 자격 증명과 배포별 URL; Git 제외 |
-| `nginx/cert.pem`, `nginx/key.pem` | Dockerfile의 필수 입력; Git 제외, 현 로컬에 파일 존재. 키는 이미지에 복사되므로 이미지 공유 범위에 주의 |
+| `nginx/cert.pem`, `nginx/key.pem` | Let's Encrypt 인증서 fullchain(`mcmap.aziran.uk`, 2026-12-23 만료, 수동 DNS-01 갱신)과 키; Git 제외. certbot 상태는 `~/.config/letsencrypt` 등 저장소 밖. `webmap-nginx`가 읽기 전용으로 마운트한다. 두 파일 `600`, 교체는 `cp` 덮어쓰기(파일 단위 마운트). 비활성 Nginx의 Dockerfile은 이미지에 복사하므로 그 이미지를 공유하지 않는다 |
 | `server-data/` | 기존 1.21 Minecraft 영속 데이터; Git 제외 |
 | `server-data-26.3/` | 26.3 Fabric 준비 당시 설치한 모드; 보존용, Git 제외 |
 | `server-data-26.3-neoforge/` | 현재 Compose가 사용하는 26.3 NeoForge 데이터 경로; Git 제외 |
@@ -121,7 +127,7 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 
 | 영역 | 발견된 주요 모드 | 관련 탐색 위치 |
 | --- | --- | --- |
-| 지도 | Dynmap `3.7-beta-6` | `server-data/dynmap/`, Nginx의 `8123` 경로 |
+| 지도 | Dynmap `3.7-beta-6` (1.21 기록. 26.3은 BlueMap) | `server-data/dynmap/`; 옛 `8123` 경로는 제거됨 |
 | 팀·청크·편의 명령 | FTB Teams, FTB Chunks, FTB Essentials | `server-data/world/ftbteams/`, `world/ftbchunks/`, `world/ftbessentials/`, `world/serverconfig/`, `defaultconfigs/`, `config/ftbessentials.snbt` |
 | 지형·구조물·차원 | Terralith, Structory, Structory Towers, Nullscape, The Bumblezone | `server-data/mods/`, `config/the_bumblezone.json`, `world/` |
 | 기술·저장 | TechReborn, RebornCore, Tom's Storage, Compact Storage, Wider Ender Chests | `config/techreborn/`, `config/reborncore/`, `config/toms_storage.json` |
@@ -152,7 +158,7 @@ Grafana와 Prometheus의 데이터 소스 연결은 추적된 설정에 없으�
 | 작업 | 함께 검토할 영역 | 최소 검증·관찰 기준 |
 | --- | --- | --- |
 | 버전·메모리·모드 변경 | Compose Minecraft, `mods-26.3.lock.json`, 로컬 모드 호환성·월드 영향 | Compose 설정 검사; 각 JAR의 크기·해시·ZIP 무결성과 로더 메타데이터의 필수 의존성·버전 범위 대조; 합의된 실행 환경에서 서버 기동·모드 로드·게임 접속 확인 |
-| 도메인·TLS·지도 경로 변경 | 두 템플릿, `nginx.conf`, Dockerfile, 게시 포트 | 실제 빌드 이미지의 `nginx -t`; 도메인별 리다이렉트·TLS·지도·게임 접속 확인 |
+| 도메인·TLS·지도 경로 변경 | `services.webmap-nginx`, `nginx/webmap.conf`, Cloudflare DNS(`mcmap` 프록시 `A`)·SSL 모드, 두 템플릿, `nginx.conf`, Dockerfile, `expose`·게시 포트, `config/bluemap/webserver.conf` 포트 | `python3 -m unittest tests.test_bluemap_deployment -v`; `docker compose config --quiet`; `webmap-nginx`의 `nginx -t`; 도메인별 TLS·지도·게임 접속 확인. 지도 배포는 [BLUEMAP.md](BLUEMAP.md)의 백업·HTTP·렌더·로컬 HTTPS 원본·공개 주소 확인 |
 | 웹 RCON 변경 | Minecraft/RCON 환경변수, HTTP·WebSocket 경로 | 설정 검사; 실제 로그인·WebSocket 연결·허용된 조회 명령 확인 |
 | 모니터링 변경 | cAdvisor, Prometheus, Grafana | 대상 버전의 `promtool check config`; 실제 scrape 상태·지표·대시보드 조회 확인 |
 | 백업 변경 | 백업 스크립트, 저장·보존·복원 정책 | `bash -n`; 격리된 임시 데이터로 성공·실패·보존 경계·복원 결과 검증. 운영 백업 스크립트를 테스트 삼아 실행하지 않음 |
