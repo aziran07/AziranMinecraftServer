@@ -6,7 +6,9 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 
 접속 안내 웹사이트는 **https://aziran.uk**, 게임 서버 주소는 **`mc.aziran.uk`**입니다. 웹사이트에서 클라이언트 `.mrpack`을 다운로드하고 설치 순서를 확인할 수 있습니다. 웹사이트 소스와 배포 구성은 [웹사이트 운영 안내](docs/JOIN_GUIDE.md)를 참고하세요.
 
-현재 Compose는 **Minecraft와 웹 RCON만 활성화**합니다. Portainer·Grafana·Prometheus·cAdvisor·Nginx는 주석 처리되어 있습니다. 웹 RCON은 Docker 내부에서만 접근하며 공개 웹사이트에는 관리 기능을 제공하지 않습니다.
+현재 Compose는 **Minecraft, 웹 RCON, 지도 HTTPS 원본(`webmap-nginx`)을 실행**합니다(Chunky 무인 프리젠 사이드카는 별도 캠페인용). Portainer·Grafana·Prometheus·cAdvisor·Nginx는 주석 처리되어 있습니다. 웹 RCON은 Docker 내부에서만 접근하며 공개 웹사이트에는 관리 기능을 제공하지 않습니다.
+
+웹 지도는 26.3 서버에 BlueMap `5.27-neoforge` JAR을 설치해 운영 중입니다(2026-09-24, 오프라인 백업 확인 후 설치). 서버는 healthy·재시작 0회이며 BlueMap은 Compose 네트워크의 `minecraft:8100`에서 HTTP 200으로 응답하고 렌더링이 진행 중입니다. `8100`은 호스트에 게시하지 않습니다. 공개 주소 **https://mcmap.aziran.uk**는 Cloudflare 프록시(주황 구름) `A` 레코드 → 서버 호스트 `443`의 `webmap-nginx`(Let's Encrypt `mcmap.aziran.uk` 인증서로 TLS 종료) → `minecraft:8100` 경로로 공개합니다. 2026-09-24 DNS 레코드를 만들고 공개 HTTPS 200을 확인했습니다. 원본 인증서는 **2026-12-23에 만료되며 자동 갱신이 없어** 그 전에 수동 DNS-01로 갱신해야 합니다(Cloudflare Origin 인증서는 `526`으로 거부돼 교체). (이전 계획이던 Cloudflare Tunnel은 터널 생성 API 인증 오류로 만들지 못해 폐기했습니다.) 남은 절차는 [BlueMap 배포 안내](docs/BLUEMAP.md)를 따릅니다. 옛 1.21 서버의 Dynmap(`8123`)은 26.3에서 사용하지 않습니다.
 
 ## 작업 시작
 
@@ -18,7 +20,8 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 | --- | --- |
 | 게임 버전·메모리·난이도, 서비스 구성 | [docker-compose.yml](docker-compose.yml) |
 | 도메인·HTTPS·관리 UI·WebSocket | [default.conf.template](nginx/templates/default.conf.template) |
-| 게임 접속·지도 TCP 전달 | [minecraft.conf.template](nginx/templates/minecraft.conf.template) |
+| 웹 지도(BlueMap)·HTTPS 원본·배포·롤백 | [docs/BLUEMAP.md](docs/BLUEMAP.md) |
+| 게임 TCP 전달(비활성 Nginx) | [minecraft.conf.template](nginx/templates/minecraft.conf.template) |
 | 컨테이너 지표 수집 | [prometheus.yml](prometheus.yml) |
 | 월드 백업·보존 기간 | [mc_backup.sh](mc_backup.sh) |
 | 설치 모드·버전·해시 고정 | [mods-26.3.lock.json](mods-26.3.lock.json) |
@@ -26,9 +29,9 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 ## 실행 전 확인
 
 - Docker와 Docker Compose 플러그인이 필요합니다.
-- `.env`를 별도로 준비해야 합니다. 필요한 변수 이름은 프로젝트 지도에 있습니다. `nginx/cert.pem`, `nginx/key.pem`은 주석 처리된 기존 Nginx를 복원할 때만 필요합니다.
+- `.env`를 별도로 준비해야 합니다. 필요한 변수 이름은 프로젝트 지도에 있습니다. `nginx/cert.pem`, `nginx/key.pem`(Git 제외 Let's Encrypt 인증서 fullchain·키)은 `webmap-nginx`가 읽기 전용으로 마운트하므로 필요합니다. 보관·수동 갱신 절차는 [BlueMap 배포 안내](docs/BLUEMAP.md#원본-인증서-관리)를 따릅니다.
 - 모드, 월드, Grafana 대시보드 등 영속 데이터는 Git에 포함되지 않습니다. 새 clone만으로 기존 운영 서버를 재현할 수 없습니다. 모드 JAR은 `mods-26.3.lock.json`의 URL과 해시로 다시 받을 수 있습니다. Fabric 준비 당시의 목록은 `mods-26.3-fabric-historical.lock.json`에 보존돼 있습니다.
-- 활성 Compose 서비스는 호스트의 `25565` TCP 포트만 게시합니다. 안내 웹사이트는 GitHub Pages에서 HTTPS로 제공합니다.
+- 활성 Compose 서비스는 호스트의 `25565`(게임, `minecraft`)와 `443`(지도 HTTPS, `webmap-nginx`) TCP 포트만 게시합니다. 호스트 `80`·`3733`은 이 저장소와 무관한 다른 Nginx가 씁니다. 안내 웹사이트는 GitHub Pages에서 HTTPS로 제공합니다.
 
 설정 검사:
 
@@ -45,7 +48,7 @@ docker compose up -d --no-deps minecraft   # 게임 서버만 시작 (컨테이�
 docker compose ps
 ```
 
-게임 `25565`는 Minecraft 컨테이너가 직접 게시합니다. Nginx는 `80`·`443`·`8123`만 게시하므로 게임 접속에 Nginx를 거치지 않습니다.
+게임 `25565`는 Minecraft 컨테이너가 직접 게시합니다. 지도 `8100`은 Compose 네트워크에만 열려 있습니다. 지도 HTTPS 원본은 `webmap-nginx`가 호스트 `443`만 게시해 `https://mcmap.aziran.uk` → `http://minecraft:8100`으로 넘깁니다(`docker compose up -d --no-deps webmap-nginx`, 설정 `nginx/webmap.conf`). 주석 처리된 기존 Nginx(`80`/`443`)는 복원하지 않습니다(호스트 `80` 사용 중, `www`/apex는 GitHub Pages).
 
 백업 스크립트는 오래된 백업을 삭제하므로 검사용으로 실행하지 않습니다. 현재 동작과 확인된 제약은 프로젝트 지도를 참고하세요.
 

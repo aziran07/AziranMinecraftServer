@@ -23,7 +23,7 @@ server {
     server_name mcmap.aziran.uk;
 
     location / {
-        proxy_pass http://localhost:8123;
+        proxy_pass http://minecraft:8100;
     }
 }
 
@@ -42,7 +42,7 @@ server {
     server_name www.aziran.uk aziran.uk;
 
     location / {
-        proxy_pass http://localhost:8123;
+        proxy_pass http://minecraft:8100;
     }
     # location / {
     #     add_header Content-Type text/html;

@@ -3,9 +3,3 @@ server {
 
     proxy_pass minecraft:25565;
 }
-
-server {
-    listen 8123;
-
-    proxy_pass minecraft:8123;
-}

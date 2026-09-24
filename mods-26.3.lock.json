@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 20,
+  "mod_count": 21,
   "mods": [
     {
       "title": "Almanac",
@@ -117,6 +117,64 @@
           "declared_mod_ids": [
             "kuma_api"
           ]
+        }
+      ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "BlueMap",
+      "source": "modrinth",
+      "project_slug": "bluemap",
+      "project_id": "swbUV1cr",
+      "version_id": "1EXOwqA2",
+      "version_number": "5.27-neoforge",
+      "version_type": "release",
+      "date_published": "2026-09-16T07:21:01.428348Z",
+      "filename": "bluemap-5.27-neoforge.jar",
+      "url": "https://cdn.modrinth.com/data/swbUV1cr/versions/1EXOwqA2/bluemap-5.27-neoforge.jar",
+      "size": 7000336,
+      "sha1": "90507749a09c3fc2039147a4b388c2e53dd157a5",
+      "sha512": "10d4739243996b40d20330a78582ef405715351fb50b543194595da8cea8f9bbf9ee6d7aba8586653f42a7f6113c9f0e04b5bf61e42ac5a47c3152ea0c4b7c82",
+      "game_versions": [
+        "26.1",
+        "26.1.1",
+        "26.1.2",
+        "26.2",
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "server_side": "required",
+      "client_side": "unsupported",
+      "declared_mod_ids": [
+        "bluemap"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": null
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": null
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "bluenbt-3.5.1.jar",
+          "path": "META-INF/jarjar/bluenbt-3.5.1.jar",
+          "size": 94968,
+          "sha512": "2f47ae300999b9dc1e67e4d896e437ad430edc1a458870017999e05fd6742b41d31d6a21e8b4a262d5549cd499a496735340e694c1e767eb87a066bf503a990f",
+          "declared_mod_ids": []
+        },
+        {
+          "filename": "flow-math-1.0.3.jar",
+          "path": "META-INF/jarjar/flow-math-1.0.3.jar",
+          "size": 167837,
+          "sha512": "8371fa3236f0e92fd82c981af7f652fc0485cf207ec32f74412ca4a0148976f6ac0fdb140a57751efc7e4082e458fbc8a1ec39a75c68860ab809bd4abfb6b4c7",
+          "declared_mod_ids": []
         }
       ],
       "has_fabric_metadata": false
