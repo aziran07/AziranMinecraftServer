@@ -128,7 +128,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 후보 `1.1.4`는 모드 18개와 셰이더 팩 1개를 담는다(GitHub Release 공개 전). 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
+현재 클라이언트 팩 `1.1.5`는 `1.1.4`와 같은 모드 18개와 셰이더 팩 1개에 기본 멀티플레이 목록 `servers.dat`(`mc.aziran.uk`)를 더해 담으며, GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)로 공개되어 있다. `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.4`는 사전 릴리스 `client-1.1.4`로 공개되어 있다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
 모드는 두 갈래다.
 

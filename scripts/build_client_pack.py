@@ -21,10 +21,14 @@ MultiMC 인스턴스 ZIP에서는 빠진다. 대신 README가 공식 배포처�
 
 세 아카이브 모두 Occultism 사역마 단축키만 미지정으로 적은 최소 options.txt를 담는다.
 OCCULTISM_FAMILIARS의 설명을 참고한다.
+
+세 아카이브 모두 멀티플레이 목록에 Aziran 서버 하나만 적은 servers.dat도 담는다.
+render_servers_dat의 설명을 참고한다.
 """
 
 import hashlib
 import json
+import struct
 import shutil
 import subprocess
 import zipfile
@@ -39,11 +43,16 @@ CLIENT_LOCK = REPO / "mods-26.3-client.lock.json"
 DIST = REPO / "dist"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.4"
+PACK_VERSION = "1.1.5"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을 산출물에도 남긴다.
+# 1.1.5 구성과 그 바탕인 1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을
+# 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버"
+    "(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 "
+    "이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 "
+    "아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. "
     "1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 "
     "10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 "
     "넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 "
@@ -55,7 +64,9 @@ RELEASE_NOTE = (
     "ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 "
     "상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 "
     "적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 "
-    "바꾼 뒤 두 번 연속 실행·접속에 성공했다. 이 팩으로 새로 만든 인스턴스의 두 번 실행 확인은 아직 없다."
+    "바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 "
+    "인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 "
+    "보고에 없다)."
 )
 
 # Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행은 사역마마다 단축키를
@@ -87,6 +98,10 @@ OCCULTISM_FAMILIARS = [
 # Minecraft 26.3이 options.txt에 쓰는 데이터 버전. 이보다 낮으면 게임이 옛 형식으로 보고 변환한다.
 OPTIONS_DATA_VERSION = 5023
 UNBOUND_KEY = "key.keyboard.unknown"
+
+# 새 인스턴스의 멀티플레이 목록에 미리 넣어 두는 서버 항목.
+SERVER_LIST_NAME = "Aziran"
+SERVER_LIST_ADDRESS = "mc.aziran.uk"
 
 # 서버와 공유하는 모드 중 클라이언트에도 설치할 모드. 서버 lock의 title을 키로 쓴다.
 CLIENT_TITLES = [
@@ -378,6 +393,31 @@ def render_options_txt():
     return "\n".join(lines) + "\n"
 
 
+def nbt_string(value):
+    """NBT 문자열 본문: 부호 없는 2바이트 빅엔디언 길이 + UTF-8 바이트."""
+    data = value.encode("utf-8")
+    return struct.pack(">H", len(data)) + data
+
+
+def render_servers_dat():
+    """멀티플레이 목록에 Aziran 서버 하나만 적은 servers.dat.
+
+    Minecraft가 쓰는 것과 같은 압축하지 않은 NBT다. 이름 없는 루트 compound 안에 compound 목록
+    `servers`가 있고, 각 항목은 문자열 `name`과 `ip`만 가진다. 다른 서버나 개인 설정은 넣지 않는다.
+    """
+    entry = (
+        b"\x08" + nbt_string("name") + nbt_string(SERVER_LIST_NAME)
+        + b"\x08" + nbt_string("ip") + nbt_string(SERVER_LIST_ADDRESS)
+        + b"\x00"
+    )
+    return (
+        b"\x0a" + nbt_string("")
+        + b"\x09" + nbt_string("servers") + b"\x0a" + struct.pack(">i", 1)
+        + entry
+        + b"\x00"
+    )
+
+
 def source_bundle_entries(mods):
     """아카이브에 담을 (로컬 파일, 아카이브 경로) 목록. JAR을 담는 로컬 빌드 모드의 소스만 고른다."""
     entries = []
@@ -480,6 +520,12 @@ def render_readme(server_lock, mods, shaderpacks):
         ]
 
     lines += [
+        "## 1.1.5 변경: 기본 멀티플레이 서버 목록 추가",
+        "",
+        "모드 18개와 셰이더 팩 1개는 1.1.4와 같다. 멀티플레이 목록에",
+        f"`{SERVER_LIST_NAME}`(`{SERVER_LIST_ADDRESS}`) 서버 하나만 적은 `servers.dat`만 더했다.",
+        "새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있다. 아래 설명 참고.",
+        "",
         "## 1.1.4 변경: 셰이더 구성 추가",
         "",
         "1.1.3의 모드 16개는 바이트 단위로 그대로 두고 아래를 더했다.",
@@ -534,6 +580,19 @@ def render_readme(server_lock, mods, shaderpacks):
         "텍스트 편집기로 열어 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸고 저장한다.",
         "다른 줄은 건드리지 않아도 된다. 이 팩의 `options.txt`로 통째로 덮어쓰면 기존 개인 설정이 사라진다.",
         "",
+        "### 멀티플레이 서버 목록(servers.dat)",
+        "",
+        f"이 팩은 멀티플레이 목록에 `{SERVER_LIST_NAME}` 서버(주소 `{SERVER_LIST_ADDRESS}`) 하나만 적은",
+        "`servers.dat`를 함께 담는다(`.mrpack`은 `client-overrides/servers.dat`, 수동 ZIP은 `servers.dat`,",
+        "MultiMC ZIP은 `.minecraft/servers.dat`). 새 인스턴스에서 게임을 켜고 `Multiplayer`(멀티플레이)로",
+        "들어가면 이 서버가 이미 목록에 있으므로 주소를 직접 입력하지 않아도 된다.",
+        "",
+        "- 이 파일은 **새로 만드는 인스턴스**에만 적용된다. 이미 만들어 둔 인스턴스나 게임 디렉터리의",
+        "  서버 목록은 이 팩이 소급해서 바꾸지 않는다. 기존 인스턴스에서는 `Add Server`(서버 추가)로",
+        f"  `{SERVER_LIST_ADDRESS}`를 직접 추가한다.",
+        "- 수동으로 설치할 때 게임 디렉터리에 `servers.dat`가 이미 있으면 **덮어쓰지 않는다.** 덮어쓰면",
+        "  기존에 저장해 둔 다른 서버 목록이 모두 사라진다.",
+        "",
         "### JourneyMap (미니맵·지도)",
         "",
         "1.1.3부터 미니맵은 Xaero's Minimap 대신 JourneyMap이다. 게임에 들어가면 화면 구석에 미니맵이",
@@ -566,14 +625,18 @@ def render_readme(server_lock, mods, shaderpacks):
         "MultiMC 등 모드팩 가져오기를 지원하는 런처에서 파일을 열면 Minecraft와 NeoForge, 모드를",
         f"함께 설치한다. 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰지는 방식은 이것뿐이다.",
         "모드 대부분과 셰이더 팩은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판과",
-        "Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`도 함께 설치된다.",
+        "Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`와 Aziran 서버를 적은",
+        "`servers.dat`도 함께 설치된다.",
         "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
         "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
+        "런처에 따라 기존 인스턴스에 덮어쓸 때 `servers.dat`가 팩의 파일로 바뀌어 저장해 둔 서버 목록이",
+        "사라질 수도 있다.",
         "",
         "### 2. 수동 ZIP",
         "",
         f"`{manual_zip_name()}`은 런처를 쓰지 않는 설치용이다.",
-        f"모드 JAR {bundled_count}개와 `options.txt`가 들어 있고, 위에서 안내한 파일은 직접 받아 넣어야 한다.",
+        f"모드 JAR {bundled_count}개와 `options.txt`, `servers.dat`가 들어 있고, 위에서 안내한 파일은 직접 받아",
+        "넣어야 한다.",
         "",
         "1. Minecraft 런처에 NeoForge "
         f"`{server_lock['loader_version']}` 설치 프로파일을 먼저 만든다.",
@@ -582,8 +645,11 @@ def render_readme(server_lock, mods, shaderpacks):
         "4. ZIP 안의 `mods/` 폴더 내용을 게임 디렉터리의 `mods/` 폴더에 넣는다.",
         "5. 게임 디렉터리에 `options.txt`가 **없으면** ZIP의 `options.txt`를 넣는다. **이미 있으면 덮어쓰지",
         "   말고** 위 \"이미 있는 인스턴스를 고치는 방법\"대로 `key.keyboard.-1`만 바꾼다.",
-        "6. 위 \"직접 받아 넣는 절차\"대로 나머지 모드와 셰이더 팩을 넣는다.",
-        "7. `manifest.json`의 SHA-1/SHA-512와 실제 파일을 대조해 무결성을 확인한다.",
+        "6. 게임 디렉터리에 `servers.dat`가 **없으면** ZIP의 `servers.dat`를 넣는다. **이미 있으면 덮어쓰지",
+        f"   말고** 게임의 멀티플레이 화면에서 `{SERVER_LIST_ADDRESS}`를 직접 추가한다. 덮어쓰면 기존 서버 목록이",
+        "   사라진다.",
+        "7. 위 \"직접 받아 넣는 절차\"대로 나머지 모드와 셰이더 팩을 넣는다.",
+        "8. `manifest.json`의 SHA-1/SHA-512와 실제 파일을 대조해 무결성을 확인한다.",
         "   `manifest.json`에는 ZIP에 담은 모드 JAR만 적혀 있다.",
         "",
         "`sources/` 폴더는 Iris 대응 소스라 게임 디렉터리에 넣지 않아도 된다.",
@@ -591,7 +657,7 @@ def render_readme(server_lock, mods, shaderpacks):
         "### 3. MultiMC 인스턴스 ZIP",
         "",
         f"`{multimc_zip_name()}`은 MultiMC 인스턴스 내보내기 형식이다.",
-        f"모드 JAR {bundled_count}개와 `.minecraft/options.txt`가 팩 안에 들어 있다.",
+        f"모드 JAR {bundled_count}개와 `.minecraft/options.txt`, `.minecraft/servers.dat`가 팩 안에 들어 있다.",
         "**MultiMC를 쓴다면 이 ZIP 대신 `.mrpack`을 가져오는 쪽을 권한다.** `.mrpack`은 나머지 모드와",
         "셰이더 팩까지 런처가 받아 주므로 수작업이 없다.",
         "",
@@ -612,7 +678,8 @@ def render_readme(server_lock, mods, shaderpacks):
         f"Minecraft `{server_lock['minecraft_version']}`와 NeoForge "
         f"`{server_lock['loader_version']}`는 팩에 담지 않고 인스턴스 정의(`mmc-pack.json`)로만 지정했다.",
         "MultiMC가 가져오기 후 첫 실행 때 공식 메타데이터를 보고 게임 파일과 로더를 내려받으므로,",
-        "인터넷 연결과 로그인한 Minecraft 계정이 필요하다. 계정 정보와 서버 주소는 팩에 넣지 않았다.",
+        "인터넷 연결과 로그인한 Minecraft 계정이 필요하다. 계정 정보는 팩에 넣지 않았다. 서버 주소는",
+        "인스턴스 설정이 아니라 `.minecraft/servers.dat`의 멀티플레이 목록으로만 들어 있다.",
         "",
         "세 방식이 설치하는 구성은 같다. 다만 ZIP 두 개는 위에서 안내한 파일을 직접 넣어야",
         "`.mrpack`과 같은 구성이 된다.",
@@ -709,11 +776,15 @@ def render_readme(server_lock, mods, shaderpacks):
         "  `key.keyboard.-1` 문제로 실패했다.",
         "- 사용자가 그 인스턴스의 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자",
         "  첫 실행과 두 번째 실행 모두 월드·서버 접속에 성공했고 `-1`이 다시 생기지 않았다.",
+        "- 사용자가 공개한 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고",
+        "  알려 왔다. 그 보고는 실행 성공만 다루며, 두 실행의 서버 접속과 셰이더 적용 여부는 보고에 없다.",
         "- 리눅스에서 파일 무결성(크기·SHA-512), 모드 메타데이터의 필수 의존성, 아카이브 구성을 검증했다.",
+        f"- 세 아카이브의 `servers.dat`가 `{SERVER_LIST_ADDRESS}` 서버 하나만 담은 NBT인지 파일 수준에서 검증했다.",
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.4 아카이브로 새로 만든 인스턴스의 Windows 두 번 연속 실행은 아직 확인하지 않았다.**",
+        "- **이 1.1.5 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 멀티플레이 화면에 서버가",
+        "  실제로 보이는지도 게임에서 확인하지 않았다. 1.1.5는 1.1.4와 모드·셰이더 파일이 같다.",
         "- Iris는 미병합 PR의 로컬 빌드다. 빌드 당시 NeoForge 26.3.0.7-beta를 기준으로 컴파일했으며,",
         "  공식 릴리스가 아니므로 다른 PC·드라이버에서의 안정성은 알 수 없다.",
         "- Sodium이 1.1.0에서 일으킨 `0xc0000409` 크래시의 원인은 규명하지 않았다. 다른 PC에서 재발할 수 있다.",
@@ -828,7 +899,7 @@ def render_manifest(mods):
     }
 
 
-def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt):
+def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt, servers_dat):
     index = {
         "formatVersion": 1,
         "game": "minecraft",
@@ -868,6 +939,7 @@ def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt):
         zf.writestr("README.md", readme)
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("client-overrides/options.txt", options_txt)
+        zf.writestr("client-overrides/servers.dat", servers_dat)
         for mod in mods:
             if mod["mrpack_delivery"] == "client-overrides":
                 zf.write(jar_path(mod), f"client-overrides/mods/{mod['filename']}")
@@ -877,7 +949,7 @@ def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt):
     return out, index
 
 
-def build_manual_zip(mods, readme, licenses, options_txt):
+def build_manual_zip(mods, readme, licenses, options_txt, servers_dat):
     manifest = render_manifest(mods)
     out = DIST / manual_zip_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -885,6 +957,7 @@ def build_manual_zip(mods, readme, licenses, options_txt):
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
         zf.writestr("options.txt", options_txt)
+        zf.writestr("servers.dat", servers_dat)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f"mods/{mod['filename']}")
         for source, archive_path in source_bundle_entries(mods):
@@ -892,12 +965,13 @@ def build_manual_zip(mods, readme, licenses, options_txt):
     return out, manifest
 
 
-def build_multimc_zip(server_lock, mods, readme, licenses, options_txt):
+def build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_dat):
     """MultiMC 인스턴스 내보내기 형식으로 묶는다.
 
     Minecraft와 NeoForge는 파일로 담지 않고 mmc-pack.json의 컴포넌트로만 지정한다.
     MultiMC가 공식 메타데이터에서 해당 버전을 찾아 직접 내려받는다.
-    어느 PC에서 풀어도 같게 동작하도록 Java 경로·계정·서버 주소·실행 훅은 넣지 않는다.
+    어느 PC에서 풀어도 같게 동작하도록 Java 경로·계정·실행 훅은 넣지 않는다.
+    서버 주소는 인스턴스 설정이 아니라 .minecraft/servers.dat의 멀티플레이 목록으로만 넣는다.
     JAR 재배포가 금지된 모드는 담지 않으므로 이 ZIP만으로는 팩 구성이 완성되지 않는다.
     README가 해당 모드를 공식 배포처에서 받아 넣는 절차를 안내한다.
     """
@@ -944,6 +1018,7 @@ def build_multimc_zip(server_lock, mods, readme, licenses, options_txt):
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
         zf.writestr(".minecraft/options.txt", options_txt)
+        zf.writestr(".minecraft/servers.dat", servers_dat)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f".minecraft/mods/{mod['filename']}")
         # 소스는 인스턴스 폴더 루트에 둔다. .minecraft 밖이라 게임이 읽지 않는다.
@@ -1032,6 +1107,15 @@ def write_client_lock(server_lock, mods, shaderpacks, provided_mod_ids, archives
                       "Type.KEYBOARD, -1로 등록해 key.keyboard.-1이 저장되고 다음 실행에서 "
                       "InputConstants.isKeyDown이 IndexOutOfBoundsException으로 실패하는 상류 결함의 우회.",
         },
+        "seeded_servers": {
+            "archive_paths": {
+                mrpack_name(): "client-overrides/servers.dat",
+                manual_zip_name(): "servers.dat",
+                multimc_zip_name(): ".minecraft/servers.dat",
+            },
+            "format": "압축하지 않은 NBT",
+            "servers": [{"name": SERVER_LIST_NAME, "ip": SERVER_LIST_ADDRESS}],
+        },
         "provided_mod_ids": provided_mod_ids,
         "excluded": [{"title": t, "reason": EXCLUSIONS[t]} for t in sorted(EXCLUSIONS)],
         "archives": archives,
@@ -1060,9 +1144,11 @@ def main():
     readme = render_readme(server_lock, mods, shaderpacks)
     licenses = render_licenses(mods, shaderpacks)
     options_txt = render_options_txt()
-    mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt)
-    zip_path, manifest = build_manual_zip(mods, readme, licenses, options_txt)
-    multimc_path, _ = build_multimc_zip(server_lock, mods, readme, licenses, options_txt)
+    servers_dat = render_servers_dat()
+    mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, readme, licenses,
+                                      options_txt, servers_dat)
+    zip_path, manifest = build_manual_zip(mods, readme, licenses, options_txt, servers_dat)
+    multimc_path, _ = build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_dat)
 
     archives = {}
     for path in (mrpack_path, zip_path, multimc_path):

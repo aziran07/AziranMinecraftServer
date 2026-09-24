@@ -9,7 +9,10 @@
 
 아래 "이번에 추가한 모드"는 팩 `1.1.0` 기준에 `1.1.2`·`1.1.3`에서 더한 모드를 합쳐 적었다.
 `1.1.3`은 여기서 Sodium과 Xaero's Minimap을 빼고 JourneyMap을 더한 모드 16개였다.
-현재 `1.1.4`(GitHub 사전 릴리스 `client-1.1.4`)는 `1.1.3`에 Sodium을 되돌리고 Iris 로컬 빌드를 더한 모드 18개와 셰이더 팩 1개다.
+`1.1.4`(GitHub 사전 릴리스 `client-1.1.4`)는 `1.1.3`에 Sodium을 되돌리고 Iris 로컬 빌드를 더한 모드 18개와 셰이더 팩 1개다.
+현재 버전 `1.1.5`(GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5))는 모드·셰이더 구성이 `1.1.4`와 같고, 새 인스턴스의
+멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버 하나만 적은 `servers.dat`를 더했다. 모드 호환성 판단은 바뀌지 않는다.
+`1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
 
 ## 1.1.4: 셰이더(Iris·Sodium·Complementary Reimagined)와 options.txt 우회
 

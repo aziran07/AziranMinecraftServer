@@ -54,11 +54,13 @@ docker compose ps
 
 ## 클라이언트 모드팩
 
-현재 버전은 `1.1.4`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 18개와 셰이더 팩 1개로 구성했습니다. 서버와 공유하는 모드 13개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris 5개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.3`의 모드 16개는 바이트 단위로 그대로이고, 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더했습니다. `1.1.4`는 GitHub **사전 릴리스(prerelease)** 태그 [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)로 `.mrpack`과 설치 안내·라이선스 문서·체크섬을 함께 공개했고, 접속 안내 사이트(GitHub Pages)도 이 Release를 가리킵니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.**
+현재 버전은 `1.1.5`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 18개와 셰이더 팩 1개로 구성했습니다. 서버와 공유하는 모드 13개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris 5개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
 
-- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.4.mrpack)
-- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.4-multimc.zip)
-- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.4-manual.zip)
+`1.1.5`는 GitHub **사전 릴리스(prerelease)** [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)로 공개되어 있으며, 접속 안내 사이트(GitHub Pages)는 이 Release의 `.mrpack`을 가리킵니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.** 이전 버전 `1.1.4`는 사전 릴리스 [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)에 `.mrpack`과 설치 안내·라이선스 문서·체크섬으로 공개되어 있고 그대로 둡니다.
+
+- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.5.mrpack)
+- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.5-multimc.zip)
+- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.5-manual.zip)
 - [설치 안내](dist/README.md), [라이선스](dist/LICENSES.md), [고정 목록](mods-26.3-client.lock.json)
 - [클라이언트 모드 호환성 검토](docs/CLIENT_MOD_COMPATIBILITY_26_3.md)
 
@@ -70,6 +72,10 @@ docker compose ps
 - Complementary Reimagined `r5.9.3` — Complementary License Agreement 1.7의 1.2.d가 Modrinth·CurseForge 시스템으로만 모드팩에 넣도록 하고 직접 파일 업로드 재배포를 금지합니다.
 
 **`.mrpack`을 쓰는 쪽을 권합니다.** 런처가 설치 중에 Modrinth CDN에서 두 파일을 받으므로 모드 18개와 셰이더 팩이 모두 갖춰집니다. MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있습니다([MultiMC 위키](https://github.com/MultiMC/Launcher/wiki/Import-Instance), 실제 가져오기는 시험하지 않았습니다). ZIP 두 개를 쓰면 모드 17개만 설치되며, 팩 안 `README.md`가 두 파일을 공식 배포처에서 받아 `mods/`와 `shaderpacks/`에 넣는 절차와 SHA-512를 안내합니다.
+
+### 1.1.5: 기본 멀티플레이 서버 목록
+
+모드 18개와 셰이더 팩 1개는 `1.1.4`와 같은 파일입니다. 새로 만든 인스턴스의 멀티플레이 화면에 `mc.aziran.uk`가 이미 들어 있도록 `servers.dat`만 더했습니다. 자세한 내용은 아래 [멀티플레이 서버 목록](#멀티플레이-서버-목록serversdat)을 참고하세요. `1.1.5` 아카이브로 새로 만든 인스턴스는 아직 게임에서 실행해 보지 않았습니다.
 
 ### 1.1.4: 셰이더(Iris + Sodium + Complementary Reimagined)
 
@@ -85,10 +91,18 @@ docker compose ps
 
 Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행은 사역마 단축키 18개를 `Type.KEYBOARD, -1`로 등록합니다. 첫 실행 뒤 `options.txt`에 `key.keyboard.-1`로 저장되고, 두 번째 실행에서 `InputConstants.isKeyDown`이 `IndexOutOfBoundsException`으로 실패합니다. 이 상류 결함은 팩이 고치지 못합니다.
 
-그래서 `1.1.4`는 `version:5023`과 사역마 단축키 18개를 `key.keyboard.unknown`(미지정)으로 적은 최소 `options.txt`를 담습니다(`.mrpack`의 `client-overrides/options.txt`, 수동 ZIP의 `options.txt`, MultiMC ZIP의 `.minecraft/options.txt`). 그래픽·언어·마지막 접속 서버·계정 같은 개인 설정은 넣지 않았습니다. 사용자가 기존 인스턴스 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·서버 접속에 성공했고 `-1`이 다시 생기지 않았습니다.
+그래서 `1.1.4`부터 팩은 `version:5023`과 사역마 단축키 18개를 `key.keyboard.unknown`(미지정)으로 적은 최소 `options.txt`를 담습니다(`.mrpack`의 `client-overrides/options.txt`, 수동 ZIP의 `options.txt`, MultiMC ZIP의 `.minecraft/options.txt`). 그래픽·언어·마지막 접속 서버·계정 같은 개인 설정은 넣지 않았습니다. 사용자가 기존 인스턴스 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·서버 접속에 성공했고 `-1`이 다시 생기지 않았습니다.
 
 - 이 `options.txt`는 **새 인스턴스**에서만 그대로 쓰입니다. 이미 `options.txt`가 있는 인스턴스·게임 디렉터리에는 기존 파일이 남아 적용되지 않을 수 있습니다. 그런 경우 게임을 끈 상태에서 `.minecraft/options.txt`의 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꿉니다. 통째로 덮어쓰면 개인 설정이 사라집니다.
 - 조작 설정에서 사역마 단축키를 기본값으로 초기화하면 다시 `-1`이 저장되어 같은 오류가 납니다.
+
+### 멀티플레이 서버 목록(servers.dat)
+
+빌더는 멀티플레이 목록에 `Aziran` 서버(주소 `mc.aziran.uk`) 하나만 적은 압축하지 않은 NBT `servers.dat`를 세 아카이브에 담습니다(`.mrpack`의 `client-overrides/servers.dat`, 수동 ZIP의 `servers.dat`, MultiMC ZIP의 `.minecraft/servers.dat`). 새 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있습니다.
+
+- 이미 만든 인스턴스나 게임 디렉터리의 서버 목록은 소급해서 바뀌지 않습니다. 기존 인스턴스에서는 `mc.aziran.uk`를 직접 추가합니다.
+- 수동 설치 때 게임 디렉터리에 `servers.dat`가 **없을 때만** 복사합니다. 이미 있으면 덮어쓰지 않습니다. 덮어쓰면 저장해 둔 다른 서버 목록이 사라집니다.
+- 이 파일은 `1.1.5`부터 들어 있습니다. 이미 공개한 GitHub Release `client-1.1.4`의 파일에는 없습니다.
 
 ### 설치 시 주의
 
@@ -96,9 +110,9 @@ Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행
 
 빌더는 옛 구성을 실수로 다시 가져오는 일을 막기 위해 `dist/`에 **이번 버전의 MultiMC 인스턴스 ZIP만 남기고 이전 버전 인스턴스 ZIP은 데스크톱 휴지통으로 보냅니다.** 영구 삭제가 아니라 `gio trash`를 쓰므로 파일 관리자나 `gio trash --restore`로 되돌릴 수 있습니다. `gio`가 없거나 실패하면 빌드를 중단합니다. 이전 버전의 `.mrpack`과 수동 ZIP은 그대로 둡니다. **런처에 이미 가져와 둔 인스턴스는 영향을 받지 않습니다.**
 
-MultiMC 인스턴스 ZIP의 인스턴스 이름은 `Aziran 26.3 Client 1.1.4`입니다. Minecraft `26.3`과 NeoForge `26.3.0.8-beta`는 `mmc-pack.json`의 컴포넌트로만 지정해 런처가 공식 메타데이터에서 내려받으므로 첫 실행에 인터넷 연결과 로그인한 계정이 필요합니다. Java `25` 경로는 `Edit Instance` → `Settings` → `Java`에서 직접 지정합니다.
+MultiMC 인스턴스 ZIP의 인스턴스 이름은 `Aziran 26.3 Client 1.1.5`입니다. Minecraft `26.3`과 NeoForge `26.3.0.8-beta`는 `mmc-pack.json`의 컴포넌트로만 지정해 런처가 공식 메타데이터에서 내려받으므로 첫 실행에 인터넷 연결과 로그인한 계정이 필요합니다. Java `25` 경로는 `Edit Instance` → `Settings` → `Java`에서 직접 지정합니다.
 
-클라이언트 전용 모드와 셰이더 팩의 고정 목록은 [mods-26.3-client-extra.lock.json](mods-26.3-client-extra.lock.json)이며, JAR·셰이더 팩·Iris 소스 번들은 Git에서 제외한 `client-mods-cache/`에 둡니다. 생성 파일은 `dist/`에 있으며 Git에는 포함하지 않습니다. `python3 scripts/build_client_pack.py`로 다시 생성합니다. 파일 무결성·의존성·아카이브 구성은 리눅스에서 검증했고, `1.1.4` 팩으로 새로 만든 인스턴스의 Windows 두 번 연속 실행 성공은 사용자 보고로 확인했습니다(서버 접속·셰이더 적용 여부는 그 보고에 없음).
+클라이언트 전용 모드와 셰이더 팩의 고정 목록은 [mods-26.3-client-extra.lock.json](mods-26.3-client-extra.lock.json)이며, JAR·셰이더 팩·Iris 소스 번들은 Git에서 제외한 `client-mods-cache/`에 둡니다. 생성 파일은 `dist/`에 있으며 Git에는 포함하지 않습니다. `python3 scripts/build_client_pack.py`로 다시 생성합니다. 파일 무결성·의존성·아카이브 구성은 리눅스에서 검증했고, `1.1.4` 팩으로 새로 만든 인스턴스의 Windows 두 번 연속 실행 성공은 사용자 보고로 확인했습니다(서버 접속·셰이더 적용 여부는 그 보고에 없음). `1.1.5`는 `servers.dat` 구성만 파일 수준에서 검증했고, 게임 실행은 확인하지 않았습니다.
 
 ## 기존 참고 자료
 

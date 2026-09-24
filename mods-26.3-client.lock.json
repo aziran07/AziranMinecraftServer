@@ -1,11 +1,11 @@
 {
   "pack_name": "Aziran 26.3 Client",
-  "pack_version": "1.1.4",
+  "pack_version": "1.1.5",
   "minecraft_version": "26.3",
   "loader": "neoforge",
   "loader_version": "26.3.0.8-beta",
   "java_version": 25,
-  "release_note": "1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 이 팩으로 새로 만든 인스턴스의 두 번 실행 확인은 아직 없다.",
+  "release_note": "1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
   "source_locks": [
     "mods-26.3.lock.json",
     "mods-26.3-client-extra.lock.json"
@@ -49,9 +49,9 @@
   ],
   "seeded_options": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.4.mrpack": "client-overrides/options.txt",
-      "aziran-26.3-client-1.1.4-manual.zip": "options.txt",
-      "aziran-26.3-client-1.1.4-multimc.zip": ".minecraft/options.txt"
+      "aziran-26.3-client-1.1.5.mrpack": "client-overrides/options.txt",
+      "aziran-26.3-client-1.1.5-manual.zip": "options.txt",
+      "aziran-26.3-client-1.1.5-multimc.zip": ".minecraft/options.txt"
     },
     "version": 5023,
     "unbound_key_mappings": [
@@ -76,6 +76,20 @@
     ],
     "value": "key.keyboard.unknown",
     "reason": "Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행이 사역마 단축키를 Type.KEYBOARD, -1로 등록해 key.keyboard.-1이 저장되고 다음 실행에서 InputConstants.isKeyDown이 IndexOutOfBoundsException으로 실패하는 상류 결함의 우회."
+  },
+  "seeded_servers": {
+    "archive_paths": {
+      "aziran-26.3-client-1.1.5.mrpack": "client-overrides/servers.dat",
+      "aziran-26.3-client-1.1.5-manual.zip": "servers.dat",
+      "aziran-26.3-client-1.1.5-multimc.zip": ".minecraft/servers.dat"
+    },
+    "format": "압축하지 않은 NBT",
+    "servers": [
+      {
+        "name": "Aziran",
+        "ip": "mc.aziran.uk"
+      }
+    ]
   },
   "provided_mod_ids": [
     "balm",
@@ -112,6 +126,10 @@
       "reason": "Modrinth client_side=unsupported. Let Me Despawn 전용 서버 라이브러리."
     },
     {
+      "title": "BlueMap",
+      "reason": "Modrinth client_side=unsupported. 웹 지도는 서버가 렌더링해 브라우저로 제공한다."
+    },
+    {
       "title": "Chunky",
       "reason": "청크 프리젠 도구. 서버 콘솔에서만 사용하며 레지스트리·네트워크 페이로드가 없다."
     },
@@ -137,17 +155,17 @@
     }
   ],
   "archives": {
-    "aziran-26.3-client-1.1.4.mrpack": {
-      "size": 7434566,
-      "sha256": "c134abc9e2c15357ea53f8a65d2dc39a32bf379080fe41344ecec5b6c2632e93"
+    "aziran-26.3-client-1.1.5.mrpack": {
+      "size": 7435405,
+      "sha256": "abec01299559cfa02b3fdaaf4772d78af5609fa35942c4d2f692564b6350e7a5"
     },
-    "aziran-26.3-client-1.1.4-manual.zip": {
-      "size": 28298225,
-      "sha256": "05b81c4f3fa961c3f895d9584762b1f977c8605b70c6730955d9ec0ac99b3534"
+    "aziran-26.3-client-1.1.5-manual.zip": {
+      "size": 28299029,
+      "sha256": "563862abfd6d7f5d2a455a484ef0e1a4421ec6902c21b9bfc8ccb44bc92d156e"
     },
-    "aziran-26.3-client-1.1.4-multimc.zip": {
-      "size": 28299226,
-      "sha256": "e7ad9aaf322d85772df05b333a64663017eac88b25725caa2a94de7c347967b6"
+    "aziran-26.3-client-1.1.5-multimc.zip": {
+      "size": 28300052,
+      "sha256": "57bc39ccc0fde57e0ee2d7d35f82832e149747a7f76cc806b29b280bbb9fe901"
     }
   },
   "mods": [
