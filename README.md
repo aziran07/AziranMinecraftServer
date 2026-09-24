@@ -23,7 +23,7 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 | 웹 지도(BlueMap)·HTTPS 원본·배포·롤백 | [docs/BLUEMAP.md](docs/BLUEMAP.md) |
 | 게임 TCP 전달(비활성 Nginx) | [minecraft.conf.template](nginx/templates/minecraft.conf.template) |
 | 컨테이너 지표 수집 | [prometheus.yml](prometheus.yml) |
-| 월드 백업·보존 기간 | [mc_backup.sh](mc_backup.sh) |
+| 정기 월드 백업·전체 데이터 보호 백업·복원 | [docs/BACKUPS.md](docs/BACKUPS.md) |
 | 설치 모드·버전·해시 고정 | [mods-26.3.lock.json](mods-26.3.lock.json) |
 
 ## 실행 전 확인
@@ -50,7 +50,7 @@ docker compose ps
 
 게임 `25565`는 Minecraft 컨테이너가 직접 게시합니다. 지도 `8100`은 Compose 네트워크에만 열려 있습니다. 지도 HTTPS 원본은 `webmap-nginx`가 호스트 `443`만 게시해 `https://mcmap.aziran.uk` → `http://minecraft:8100`으로 넘깁니다(`docker compose up -d --no-deps webmap-nginx`, 설정 `nginx/webmap.conf`). 주석 처리된 기존 Nginx(`80`/`443`)는 복원하지 않습니다(호스트 `80` 사용 중, `www`/apex는 GitHub Pages).
 
-백업 스크립트는 오래된 백업을 삭제하므로 검사용으로 실행하지 않습니다. 현재 동작과 확인된 제약은 프로젝트 지도를 참고하세요.
+운영 사용자의 cron은 매시 30분에 [mc_backup.sh](mc_backup.sh)를 실행합니다. 현재 26.3 NeoForge의 `world/`만 `minecraft_backups/`에 보관하며, 성공한 새 백업 뒤 710분이 지난 정기 백업 파일만 삭제합니다. 실행 결과와 복원 범위는 [월드 백업 안내](docs/BACKUPS.md)를 참고하세요.
 
 ## 클라이언트 모드팩
 

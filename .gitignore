@@ -12,3 +12,6 @@ logs
 /chunky-idle-state
 /dist
 /client-mods-cache
+/.orca/
+__pycache__/
+*.py[cod]

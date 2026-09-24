@@ -119,133 +119,9 @@ EOF
 
 ### 2. 접속자 공지, 정상 종료, 오프라인 백업
 
-`mc_backup.sh`와 `minecraft_backups/`는 쓰지 않는다. 그 스크립트는 `server-data/world`만 대상으로 하고 해당 디렉터리의 파일을 삭제한다. 자동 삭제 대상 밖의 보호 경로에 데이터 디렉터리 전체를 남긴다.
+BlueMap JAR 설치 전에 서버를 정상 종료하고 `server-data-26.3-neoforge/` 전체를 보호 백업한다. [서버 백업 안내의 오프라인 전체 데이터 보호 백업](BACKUPS.md#오프라인-전체-데이터-보호-백업)을 순서대로 실행하면서 예시의 `BACKUP_LABEL=pre-change`를 `pre-bluemap`으로 바꾼다. BlueMap 배포 당시에는 이전 컨테이너이므로 해당 안내의 3-A 방식으로 종료했다. 현재 컨테이너의 종료 제한을 확인해 3-A/3-B를 고른다.
 
-백업은 서버를 **완전히 멈춘 뒤** 뜬다. 실행 중 `save-off`/`save-all` 상태로 `tar`를 돌리면 월드 밖 파일(모드 데이터, 설정 등)은 계속 바뀔 수 있고, 절차가 중간에 끊기면 자동 저장이 꺼진 채 남는다. 이 절차에서는 `save-off`를 쓰지 않는다.
-
-1. 디스크 여유를 확인한다. 백업 크기는 대략 데이터 디렉터리 크기다. 여유가 부족하면 서버를 멈추기 전에 중단한다.
-
-   ```sh
-   cd /home/pilon1945/AziranMinecraftServer
-   du -sh server-data-26.3-neoforge
-   df -h /home/pilon1945
-   ```
-
-2. 접속자를 확인하고 공지한다. 접속자가 있으면 공지 후 몇 분 기다린다.
-
-   ```sh
-   docker exec aziran-minecraft-26-3 rcon-cli list
-   docker exec aziran-minecraft-26-3 rcon-cli "say 서버 점검(BlueMap 설치)으로 5분 뒤 재시작합니다."
-   ```
-
-3. 서버를 정상 종료한다.
-
-   **종료 시간 제한이 두 겹이다.** Docker의 `-t`/`stop_grace_period`는 Docker가 SIGKILL을 보내기까지의 시간일 뿐이다. 컨테이너 안에서는 itzg의 `mc-server-runner`가 SIGTERM을 받으면 서버에 `stop`을 보내고 `STOP_DURATION`(기본 60초)이 지나면 Java를 직접 죽인다. 첫 배포 시도에서 `docker compose stop -t 300 minecraft`를 썼지만 러너가 60초에 Java를 죽여 `exit=255`로 끝났다(프리젠된 약 11GB 월드 저장이 60초를 넘김). 그래서 Compose에 `STOP_DURATION: "600"`과 `stop_grace_period: 660s`를 넣었다. 다만 이 값은 **컨테이너를 다시 만들어야** 적용된다.
-
-   현재 컨테이너에 어떤 한도가 적용돼 있는지 먼저 확인한다.
-
-   ```sh
-   docker inspect --format 'StopTimeout={{.Config.StopTimeout}} restart={{.HostConfig.RestartPolicy.Name}}' aziran-minecraft-26-3
-   docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' aziran-minecraft-26-3 | grep '^STOP_DURATION=' \
-     || echo "STOP_DURATION not set (runner default 60s)"
-   ```
-
-   `StopTimeout=660`과 `STOP_DURATION=600`이 모두 보이면 3-B로 간다. 하나라도 다르면(이 브랜치 이전에 만든 컨테이너, 곧 **첫 BlueMap 이행**) 3-A를 쓴다. 이전 컨테이너에서 `docker compose stop`/`docker stop`은 `-t`를 얼마로 주든 60초에 Java가 죽으므로 쓰지 않는다.
-
-   **3-A. 첫 이행: 게임 안 `stop`으로 직접 종료(기존 컨테이너)**
-
-   게임 안 `stop`은 러너의 60초 타이머를 거치지 않는다. Java가 저장을 마치고 스스로 끝나면 러너도 같은 종료 코드로 끝난다. 기존 컨테이너의 재시작 정책은 `always`라서 그대로 두면 Java가 끝나자마자 Docker가 다시 띄우므로, 먼저 정책을 `no`로 바꾼다. 이 변경은 이 컨테이너에만 적용되고 3단계에서 Compose로 다시 만들 때 `always`로 돌아간다.
-
-   ```sh
-   docker update --restart=no aziran-minecraft-26-3
-   docker inspect --format 'restart={{.HostConfig.RestartPolicy.Name}}' aziran-minecraft-26-3   # restart=no
-   ```
-
-   `restart=no`가 아니면 `stop`을 보내지 않는다. 확인됐으면 로그 기준 시각을 남기고 종료한 뒤, 컨테이너가 끝날 때까지 최대 15분 기다린다. 명령은 한 줄씩 실행하고 각 상태를 확인한다.
-
-   ```sh
-   STOP_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ); echo "STOP_AT=$STOP_AT"
-   docker exec aziran-minecraft-26-3 rcon-cli stop
-   timeout 900 docker wait aziran-minecraft-26-3; echo "wait status=$?"
-   docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}} restart={{.HostConfig.RestartPolicy.Name}}' aziran-minecraft-26-3
-   docker logs --since "$STOP_AT" aziran-minecraft-26-3 2>&1 | grep -iE 'stopping server|saving worlds|saving chunks for level|done|error|exception'
-   ```
-
-   정상 종료 조건은 모두 만족해야 한다.
-
-   - `rcon-cli stop`의 종료 상태가 0이다(`Stopping the server` 응답).
-   - `docker wait`이 `0`을 출력하고 `wait status=0`이다. `wait status=124`는 15분 안에 끝나지 않았다는 뜻이다.
-   - `exited exit=0 oom=false restart=no`.
-   - `STOP_AT` 이후 로그에 `Stopping server` → `Saving players` → `Saving worlds` → 세 차원 모두의 `Saving chunks for level '...'/minecraft:overworld`·`minecraft:the_nether`·`minecraft:the_end`가 있고, 마지막에 `mc-server-runner`의 `Done`이 찍히며, 그 사이 저장 오류·예외가 없다. `--since`를 쓰는 이유는 이 컨테이너 로그에 첫 시도(exit 255)의 종료 기록이 남아 있기 때문이다.
-
-   26.3(NeoForge `26.3.0.8-beta`) 서버는 종료 시 `All dimensions are saved`를 찍지 않는다. 이 문구를 완료 표시로 기다리지 않는다. 판정은 위의 RCON 성공, `exit=0 oom=false`, 세 차원의 `Saving chunks`, 러너 `Done`, 저장 오류 없음을 모두 본다.
-
-   하나라도 어긋나면 **백업(4번)과 설치(3단계)를 하지 않는다.** 상태에 따라 아래처럼 되돌린 뒤 원인을 확인한다.
-
-   - `rcon-cli stop`이 실패했다(RCON 연결 불가 등): 서버는 아직 돌고 있다. 정책만 되돌린다: `docker update --restart=always aziran-minecraft-26-3`.
-   - `wait status=124`(아직 실행 중): 저장이 길어지는 중일 수 있다. `docker stop`/`docker kill`로 끊지 말고 `docker logs --since "$STOP_AT" -f aziran-minecraft-26-3`로 저장 진행을 보며 `timeout 900 docker wait aziran-minecraft-26-3`를 다시 기다린다. 끝나면 위 조건으로 다시 판정한다. 로그가 멈춰 진행이 없으면 멈춘 채 두고 원인을 조사한다.
-   - 컨테이너가 끝났지만 `exit≠0`, `oom=true`, 또는 저장 완료 로그가 없다(비정상 종료): 기존 컨테이너를 **다시 만들지 않고** 정책을 되돌려 그대로 시작한다. 월드는 다음 기동 때 마지막 저장 상태로 올라온다.
-
-     ```sh
-     docker update --restart=always aziran-minecraft-26-3
-     docker start aziran-minecraft-26-3
-     docker inspect --format '{{.State.Status}} {{.State.Health.Status}} restart={{.HostConfig.RestartPolicy.Name}}' aziran-minecraft-26-3   # running healthy restart=always
-     ```
-
-     `healthy`가 될 때까지 몇 분 걸린다. 기동 로그의 청크·월드 로드 오류를 확인하고 원인이 풀리기 전에는 이행을 다시 시도하지 않는다.
-
-   **3-B. 재생성 이후: Docker로 종료**
-
-   `StopTimeout=660`, `STOP_DURATION=600`이 적용된 컨테이너는 Docker 종료로 충분하다. `-t`를 주지 않으면 Compose의 `stop_grace_period`(660초)를 쓴다.
-
-   ```sh
-   STOP_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ); echo "STOP_AT=$STOP_AT"
-   docker compose stop minecraft
-   docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' aziran-minecraft-26-3
-   docker logs --since "$STOP_AT" aziran-minecraft-26-3 2>&1 | grep -iE 'stopping server|saving worlds|saving chunks for level|done|error|exception'
-   ```
-
-   `docker compose stop`의 종료 상태가 0이고, `exited exit=0 oom=false`이며, `STOP_AT` 이후 로그에 `Stopping server` → `Saving worlds` → 세 차원(`overworld`·`the_nether`·`the_end`)의 `Saving chunks for level` → 러너 `Done`이 보여야 한다(3-A와 같은 판정. 26.3은 `All dimensions are saved`를 찍지 않는다). `exit=137`(Docker SIGKILL), `exit=255`/`143`(러너가 Java를 죽임), `oom=true`, 세 차원 중 `Saving chunks` 누락, 러너 `Done` 누락, 저장 중 오류 중 하나라도 있으면 백업·설치로 넘어가지 않고 원인을 먼저 확인한다.
-
-   두 경우 모두 `chunky-idle-pregen` 컨트롤러는 이 동안 RCON 연결 실패를 기록하며 재연결을 기다린다.
-
-4. 데이터 디렉터리 전체를 보호 경로에 묶고 검증한다. 서버가 멈춘 상태에서만 실행한다.
-
-   아래 블록은 별도 `bash -euo pipefail` 프로세스에서 돈다. 백업 생성(`tar -cf`), 목록 추출(`tar -tf`), 필수 항목 검사, 해시 생성·검증 중 하나라도 실패하면 그 자리에서 멈춘다. 실패 시에는 그때까지 만든 백업·목록·해시 파일 이름에 `.failed`를 붙여 성공한 백업처럼 보이지 않게 하고 `BACKUP FAILED: <원인>`을 출력한 뒤 종료 상태 1로 끝난다. 성공 표시는 모든 검사가 통과한 뒤 마지막 줄에만 나온다.
-
-   ```sh
-   cd /home/pilon1945/AziranMinecraftServer
-   bash -euo pipefail <<'EOF'
-   BACKUP_DIR=/home/pilon1945/aziran-26.3-protected-backups
-   BACKUP="$BACKUP_DIR/pre-bluemap-$(date +%F-%H%M%S).tar"
-   if [ "$(docker inspect --format '{{.State.Running}}' aziran-minecraft-26-3)" != false ]; then
-     echo "BACKUP FAILED: aziran-minecraft-26-3 is not stopped" >&2; exit 1
-   fi
-   for f in "$BACKUP" "$BACKUP.list" "$BACKUP.sha256"; do
-     if [ -e "$f" ]; then echo "BACKUP FAILED: $f already exists" >&2; exit 1; fi
-   done
-   fail() {
-     echo "BACKUP FAILED: $1" >&2
-     for f in "$BACKUP" "$BACKUP.list" "$BACKUP.sha256"; do
-       if [ -e "$f" ]; then mv -- "$f" "$f.failed" || echo "could not rename $f" >&2; fi
-     done
-     exit 1
-   }
-   mkdir -p "$BACKUP_DIR" || fail "mkdir $BACKUP_DIR"
-   chmod 700 "$BACKUP_DIR" || fail "chmod $BACKUP_DIR"
-   tar -cf "$BACKUP" server-data-26.3-neoforge || fail "tar create"
-   tar -tf "$BACKUP" > "$BACKUP.list" || fail "tar list"
-   REQUIRED=$(grep -cE '^server-data-26\.3-neoforge/(world/level\.dat|server\.properties|mods/)$' "$BACKUP.list") \
-     || fail "required entries missing from archive list"
-   [ "$REQUIRED" = 3 ] || fail "required entry count $REQUIRED != 3"
-   sha256sum "$BACKUP" > "$BACKUP.sha256" || fail "sha256 create"
-   sha256sum -c "$BACKUP.sha256" || fail "sha256 verify"
-   chmod 600 "$BACKUP" "$BACKUP.list" "$BACKUP.sha256" || fail "chmod backup files"
-   echo "BACKUP VERIFIED: $BACKUP"
-   EOF
-   ```
-
-   마지막 줄이 `BACKUP VERIFIED: <경로>`이고 셸의 종료 상태(`echo $?`)가 `0`이어야 다음 단계로 간다. `BACKUP FAILED`가 나오거나 종료 상태가 0이 아니면 **여기서 수동으로 멈춘다.** 3단계(설치)는 실행하지 않는다. 3단계 블록도 검증된 백업 경로와 해시가 없으면 설치 전에 스스로 멈추지만, 그 보호에 기대지 말고 원인을 먼저 확인한다. `.failed`가 붙은 파일은 불완전한 백업이므로 롤백에 쓰지 않는다. 설치 없이 서버만 되살릴 때는 기존 컨테이너를 재생성 없이 그대로 시작한다. 3-A로 멈췄다면 재시작 정책부터 되돌린다(`docker update --restart=always aziran-minecraft-26-3` 후 `docker start aziran-minecraft-26-3`, `restart=always`와 `healthy` 확인). 출력된 백업 경로는 3단계와 롤백에 쓰므로 기록해 둔다. 백업에는 `server.properties` 등 운영 데이터가 들어 있으므로 Git이나 공개 위치에 두지 않는다. BlueMap 타일은 프리젠된 범위만큼 커지므로 설치 후 디스크 여유도 계속 확인한다.
+`BACKUP VERIFIED: <경로>`와 종료 상태 `0`을 확인하기 전에는 JAR을 설치하지 않는다. 출력된 tar 경로와 `.sha256`을 3단계 설치와 아래 롤백에 사용한다. 정기 월드 백업 tar는 전체 데이터 백업을 대신하지 않는다.
 
 ### 3. 설치와 재생성
 
@@ -253,7 +129,7 @@ EOF
 
 ```sh
 cd /home/pilon1945/AziranMinecraftServer
-BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-bluemap-<날짜-시각>.tar   # 2단계 BACKUP VERIFIED 경로
+BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-bluemap-YYYY-mm-dd-HHMMSS.tar   # 2단계 BACKUP VERIFIED 경로
 BACKUP="$BACKUP" bash -euo pipefail <<'EOF'
 JAR=/tmp/bluemap-download/bluemap-5.27-neoforge.jar
 [ -f "$BACKUP" ] && [ -f "$BACKUP.sha256" ] || { echo "INSTALL ABORTED: verified backup not found: $BACKUP" >&2; exit 1; }
@@ -303,7 +179,7 @@ docker inspect --format 'StopTimeout={{.Config.StopTimeout}} restart={{.HostConf
 docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' aziran-minecraft-26-3 | grep '^STOP_DURATION='
 ```
 
-`running healthy`, 재시작 0회, RCON 응답, 모드 로드 오류가 없는 것을 확인한다. 기존 20개 모드와 BlueMap이 모두 로드돼야 한다. 재생성된 컨테이너에 새 종료 한도와 재시작 정책이 적용됐는지도 본다: `StopTimeout=660 restart=always`, `STOP_DURATION=600`. 이후의 종료는 2단계 3-B(Docker 종료)를 쓴다.
+`running healthy`, 재시작 0회, RCON 응답, 모드 로드 오류가 없는 것을 확인한다. 기존 20개 모드와 BlueMap이 모두 로드돼야 한다. 재생성된 컨테이너에 새 종료 한도와 재시작 정책이 적용됐는지도 본다: `StopTimeout=660 restart=always`, `STOP_DURATION=600`. 이후의 종료는 [서버 백업 안내의 3-B](BACKUPS.md#오프라인-전체-데이터-보호-백업)(Docker 종료)를 쓴다.
 
 ### 6. HTTP·렌더링 확인
 
@@ -383,7 +259,7 @@ ss -ltnp | grep -E ':8100\b' || echo "8100 NOT PUBLISHED ON HOST"            # �
 
 ## 롤백
 
-0. 먼저 접속자에게 공지하고 2단계 3번과 같이 서버를 정상 종료한다. 3번의 한도 확인으로 3-A/3-B를 고르고(설치 뒤 재생성된 컨테이너라면 3-B, `docker compose stop minecraft`), `exited exit=0 oom=false`와 `STOP_AT` 이후 세 차원의 `Saving chunks`·러너 `Done`을 확인한다. 실행 중인 서버의 모드 JAR은 옮기지 않는다.
+0. 먼저 접속자에게 공지하고 [서버 백업 안내의 정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업)에 따라 서버를 멈춘다. 설치 뒤 재생성된 컨테이너라면 종료 제한을 확인한 뒤 3-B(`docker compose stop minecraft`)를 쓴다. `exited exit=0 oom=false`와 `STOP_AT` 이후 세 차원의 `Saving chunks`·러너 `Done`을 확인한다. 실행 중인 서버의 모드 JAR은 옮기지 않는다.
 1. JAR을 모드 디렉터리에서 치운다(삭제 대신 보관).
 
    ```sh
@@ -392,25 +268,9 @@ ss -ltnp | grep -E ':8100\b' || echo "8100 NOT PUBLISHED ON HOST"            # �
      /home/pilon1945/aziran-26.3-protected-backups/removed-mods/
    ```
 
-2. `docker compose up -d --no-deps minecraft`로 JAR 없이 다시 시작한다. `expose: 8100`은 Compose 네트워크 안에서만 열리므로 남겨 둬도 된다. 이 브랜치 이전의 `docker-compose.yml`로 돌아갈 때는 먼저 아래 "지도 공개만 끄기"로 `webmap-nginx`를 치운다. 이전 Compose에는 `webmap-nginx` 정의가 없어 그 컨테이너가 고아로 남기 때문이다.
+2. 월드 이상 징후가 있으면 서버를 시작하기 전에 4번의 전체 데이터 복원을 판단한다. 그렇지 않으면 `docker compose up -d --no-deps minecraft`로 JAR 없이 다시 시작한다. `expose: 8100`은 Compose 네트워크 안에서만 열리므로 남겨 둬도 된다. 이 브랜치 이전의 `docker-compose.yml`로 돌아갈 때는 먼저 아래 "지도 공개만 끄기"로 `webmap-nginx`를 치운다. 이전 Compose에는 `webmap-nginx` 정의가 없어 그 컨테이너가 고아로 남기 때문이다.
 3. BlueMap은 월드 데이터를 바꾸지 않으므로 보통 JAR 제거로 충분하다. `config/bluemap/`과 `bluemap/`(렌더 결과)은 남아도 서버 동작에 영향이 없다. 공간이 필요하면 보관 후 지운다.
-4. 기동 실패나 월드 이상이 있으면 2번에서 서버를 다시 시작하지 않는다(이미 시작했다면 0번처럼 정상 종료한다). 서버가 멈춘 상태에서 2단계 백업으로 `server-data-26.3-neoforge/`를 복원한다. 복원 전에 백업 해시를 다시 검증하고, 현재 디렉터리는 지우지 않고 옆으로 옮겨 보관한다.
-
-   ```sh
-   cd /home/pilon1945/AziranMinecraftServer
-   BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-bluemap-<날짜-시각>.tar   # 2단계 BACKUP VERIFIED 경로
-   BACKUP="$BACKUP" bash -euo pipefail <<'EOF'
-   if [ "$(docker inspect --format '{{.State.Running}}' aziran-minecraft-26-3)" != false ]; then
-     echo "RESTORE ABORTED: aziran-minecraft-26-3 is not stopped" >&2; exit 1
-   fi
-   sha256sum -c "$BACKUP.sha256"
-   mv server-data-26.3-neoforge "server-data-26.3-neoforge.failed-$(date +%F-%H%M%S)"
-   tar -xf "$BACKUP"
-   echo "RESTORE EXTRACTED: $BACKUP"
-   EOF
-   ```
-
-   해시 검증이 실패하면 블록은 현재 디렉터리를 옮기기 전에 멈춘다. `RESTORE EXTRACTED`와 종료 상태 `0`이 나오지 않으면 서버를 시작하지 않는다. 옮겨 둔 디렉터리를 되돌릴지 먼저 판단한다. 복원 뒤 1~3번(JAR 제거, 포트 게시 복귀)을 맞춘 상태로 `docker compose up -d --no-deps minecraft`로 시작한다.
+4. 기동 실패나 월드 이상이 있으면 2번에서 서버를 다시 시작하지 않는다(이미 시작했다면 0번처럼 정상 종료한다). 2단계의 `pre-bluemap-*.tar`로 [전체 데이터 복원](BACKUPS.md#전체-데이터-복원)을 수행한다. 백업 해시가 맞지 않거나 복원이 끝나지 않으면 서버를 시작하지 않는다. 복원 뒤 BlueMap JAR 제거와 지도 공개 설정을 롤백 상태에 맞춘 다음 `docker compose up -d --no-deps minecraft`로 시작한다.
 5. 5단계 상태 확인을 다시 수행한다.
 
 ### 지도 공개만 끄기(서버는 유지)

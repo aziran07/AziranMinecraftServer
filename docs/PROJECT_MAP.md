@@ -20,7 +20,7 @@ Compose에서 실행 중인 서비스는 Minecraft, 내부 웹 RCON, 지도 HTTP
 | 26.3 Fabric 준비 | `server-data-26.3/` | `mods-26.3-fabric-historical.lock.json` | 사용하지 않는 이전 결정. 파일만 보존 |
 | 26.3 NeoForge | `server-data-26.3-neoforge/` | `mods-26.3.lock.json` | 현재 Compose가 사용하는 구성 |
 
-아래 표의 1.21 구성과 로컬 모드 탐색 내용은 보존된 기존 서버에 대한 조사 기록이다. 기존 `mc_backup.sh`는 여전히 `server-data/world`를 대상으로 하므로 신규 서버의 백업으로 사용하면 안 된다.
+아래 표의 1.21 구성과 로컬 모드 탐색 내용은 보존된 기존 서버에 대한 조사 기록이다. 현재 `mc_backup.sh`는 26.3 NeoForge의 `world/`를 대상으로 한다([월드 백업 안내](BACKUPS.md)).
 
 ## 범위와 구조
 
@@ -59,7 +59,7 @@ CLAUDE.md                        Claude 작업 진입점
 | 지표 시각화 | `services.grafana`, `default.conf.template` | Grafana `3000`; 대시보드·데이터 소스 프로비저닝은 저장소에 없음 |
 | TLS·리버스 프록시 | `nginx/Dockerfile`, `nginx/nginx.conf`, `default.conf.template` | Nginx `1.24.0-alpine`, 인증서 이미지 복사, HTTP/stream 분리, 공통 WebSocket 헤더 |
 | 접근 로그 | `nginx/nginx.conf`, `services.nginx.volumes` | `nginx/logs/`에 HTTP·Minecraft stream 접근 로그와 오류 로그 저장 |
-| 월드 백업 | `mc_backup.sh` | `server-data/world`를 시간 이름의 비압축 `.tar`로 저장하고 710분 초과 파일 삭제 |
+| 월드 백업 | `mc_backup.sh`, 사용자 crontab, [BACKUPS.md](BACKUPS.md) | 매시 30분 `server-data-26.3-neoforge/world/`를 저장 동기화 후 `minecraft_backups/26.3-world-*.tar`로 보관. 성공 뒤 710분 초과 정기 백업만 삭제 |
 
 ## 요청 흐름과 도메인
 
@@ -116,10 +116,10 @@ Nginx 도메인 표는 비활성 구성을 복원할 때의 경로입니다. `mc
 | `grafana-data/` | Grafana DB·설정 등 영속 데이터; Git 제외 |
 | `prometheus-data/` | Prometheus 시계열 데이터; Git 제외 |
 | `portainer-data/` | Portainer 관리 데이터; Git 제외 |
-| `minecraft_backups/` | 월드 tar 백업; Git 제외 |
+| `minecraft_backups/` | 26.3 월드 tar와 cron 실행 로그; Git 제외. 보호 일회성 백업은 별도 경로에 보관 |
 | `nginx/logs/` | Nginx 로그; Git 제외 |
 
-별도 worktree나 새 clone에는 이 파일들이 제공되지 않습니다. 특히 백업 스크립트는 절대 경로 `/home/pilon1945/AziranMinecraftServer`를 사용하므로 다른 worktree에서 실행해도 기존 운영 경로를 대상으로 합니다.
+별도 worktree나 새 clone에는 이 파일들이 제공되지 않습니다. 특히 백업 스크립트의 기본 경로는 `/home/pilon1945/AziranMinecraftServer`이므로 다른 worktree에서 기본값으로 실행해도 기존 운영 경로를 대상으로 합니다. 테스트는 환경 변수로 임시 경로를 주입합니다.
 
 ## 로컬 게임 기능 탐색 지도
 
@@ -143,12 +143,10 @@ Nginx 도메인 표는 비활성 구성을 복원할 때의 경로입니다. `mc
 
 ## 확인된 제약과 후속 작업 후보
 
-이 절은 기존 설정의 관찰 결과이며 이번 문서화에서 수정하지 않았습니다.
+아래 나머지 항목은 기존 설정의 관찰 결과입니다.
 
 - **HTTP 리다이렉트 대상:** 여러 도메인을 하나의 server 블록에 넣고 `https://$server_name$request_uri`로 이동합니다. 요청 호스트 보존 여부를 도메인별로 검증할 후속 대상입니다. 해당 블록의 첫 선언 이름은 `www.aziran.uk`입니다.
-- **백업 실패 처리:** `cd`·`tar` 실패를 차단하는 처리 없이 삭제 명령까지 이어집니다. 최종 종료 코드가 백업 성공을 증명하지 않습니다.
-- **백업 삭제 범위:** `find ./minecraft_backups/ -type f -mmin +710`은 tar 확장자로 제한하지 않으며 공백 안전한 파일명 전달도 사용하지 않습니다.
-- **백업 정합성·복원 범위:** 실행 중 월드 저장과 동기화하는 단계가 없고 백업 범위는 `world/`뿐입니다. 모드·서버 설정·관리 서비스 데이터까지 복구하는 전체 백업은 아닙니다. 스케줄러·복원 절차는 추적 파일에 없습니다.
+- **백업 범위:** 정기 백업은 현재 서버의 `world/`만 포함합니다. 모드·서버 설정·BlueMap 렌더 데이터·관리 서비스 데이터까지 복구하는 전체 백업은 아닙니다. 같은 호스트의 `minecraft_backups/`에 두므로 호스트 장애 대비용 외부 백업도 아닙니다. 저장 동기화와 실패 처리, cron 일정, 복원 절차는 [BACKUPS.md](BACKUPS.md)에 기록합니다.
 - **배포 재현성:** 여러 컨테이너 이미지가 버전 또는 digest로 고정되지 않았고 모드 설치 목록은 비활성 주석입니다. 로컬 데이터 없이 기존 서버 구성을 재현할 수 없습니다.
 - **재시작 정책:** Minecraft·cAdvisor·Prometheus는 `always`, Portainer는 `unless-stopped`; RCON·Grafana·Nginx에는 명시된 정책이 없습니다. 헬스체크와 준비 완료 의존 관계도 정의되어 있지 않습니다.
 - **구형 Compose 메타데이터:** `version: "3.9"`에 대해 현재 설치된 Compose는 obsolete 경고를 내지만 설정 검사는 통과합니다.
@@ -158,7 +156,7 @@ Nginx 도메인 표는 비활성 구성을 복원할 때의 경로입니다. `mc
 | 작업 | 함께 검토할 영역 | 최소 검증·관찰 기준 |
 | --- | --- | --- |
 | 버전·메모리·모드 변경 | Compose Minecraft, `mods-26.3.lock.json`, 로컬 모드 호환성·월드 영향 | Compose 설정 검사; 각 JAR의 크기·해시·ZIP 무결성과 로더 메타데이터의 필수 의존성·버전 범위 대조; 합의된 실행 환경에서 서버 기동·모드 로드·게임 접속 확인 |
-| 도메인·TLS·지도 경로 변경 | `services.webmap-nginx`, `nginx/webmap.conf`, Cloudflare DNS(`mcmap` 프록시 `A`)·SSL 모드, 두 템플릿, `nginx.conf`, Dockerfile, `expose`·게시 포트, `config/bluemap/webserver.conf` 포트 | `python3 -m unittest tests.test_bluemap_deployment -v`; `docker compose config --quiet`; `webmap-nginx`의 `nginx -t`; 도메인별 TLS·지도·게임 접속 확인. 지도 배포는 [BLUEMAP.md](BLUEMAP.md)의 백업·HTTP·렌더·로컬 HTTPS 원본·공개 주소 확인 |
+| 도메인·TLS·지도 경로 변경 | `services.webmap-nginx`, `nginx/webmap.conf`, Cloudflare DNS(`mcmap` 프록시 `A`)·SSL 모드, 두 템플릿, `nginx.conf`, Dockerfile, `expose`·게시 포트, `config/bluemap/webserver.conf` 포트 | `python3 -m unittest tests.test_bluemap_deployment -v`; `docker compose config --quiet`; `webmap-nginx`의 `nginx -t`; 도메인별 TLS·지도·게임 접속 확인. 배포 전 전체 백업은 [BACKUPS.md](BACKUPS.md), 지도 HTTP·렌더·HTTPS 검증은 [BLUEMAP.md](BLUEMAP.md) |
 | 웹 RCON 변경 | Minecraft/RCON 환경변수, HTTP·WebSocket 경로 | 설정 검사; 실제 로그인·WebSocket 연결·허용된 조회 명령 확인 |
 | 모니터링 변경 | cAdvisor, Prometheus, Grafana | 대상 버전의 `promtool check config`; 실제 scrape 상태·지표·대시보드 조회 확인 |
 | 백업 변경 | 백업 스크립트, 저장·보존·복원 정책 | `bash -n`; 격리된 임시 데이터로 성공·실패·보존 경계·복원 결과 검증. 운영 백업 스크립트를 테스트 삼아 실행하지 않음 |
