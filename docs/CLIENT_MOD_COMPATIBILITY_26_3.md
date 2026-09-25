@@ -16,7 +16,7 @@
 `1.1.6`(GitHub 사전 릴리스 `client-1.1.6`)은 `1.1.5`에 서버와 같은 파일인 Simple Tomb `1.9.0`을 더한 모드 19개다.
 Simple Tomb은 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일이 필요하다. JAR 메타데이터의 필수 의존성은
 NeoForge `[26.2.0.0-alpha,)`, Minecraft `[26.2,)`뿐이라 다른 모드와의 의존성 판단은 바뀌지 않는다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
-`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, 공개된 최신판 `1.1.9`(GitHub 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9), 2026-09-25 공개·서버 설치)는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다. `1.1.10`(공개 전, 검토 대기)은 여기에 클라이언트 전용 Nemo's Inventory Sorting을 더한 모드 21개다.
+`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, `1.1.9`(GitHub 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9), 2026-09-25 공개·서버 설치)는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다. `1.1.10`(GitHub 일반 릴리스 [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10), 2026-09-25 공개)은 여기에 클라이언트 전용 Nemo's Inventory Sorting을 더한 모드 21개다.
 
 ### 1.1.10: Nemo's Inventory Sorting과 Mouse Tweaks
 
