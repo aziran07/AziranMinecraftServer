@@ -1,4 +1,4 @@
-"""Client 1.1.9 must install the requested packs and enable only the translation."""
+"""Client 1.1.10 must install the requested packs and enable only the translation."""
 
 import hashlib
 import importlib.util
@@ -45,7 +45,7 @@ class ClientResourcePackTests(unittest.TestCase):
 
     def test_pack_delivery_and_defaults(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        self.assertEqual(lock['pack_version'], '1.1.9')
+        self.assertEqual(lock['pack_version'], '1.1.10')
         packs = lock['resourcepacks']
         self.assertEqual(len(packs), 3)
         self.assertEqual(len({pack['filename'] for pack in packs}), 3)
@@ -62,9 +62,9 @@ class ClientResourcePackTests(unittest.TestCase):
         self.assertEqual([p['filename'] for p in packs if p['enabled_by_default']],
                          [TRANSLATION])
         archives = {
-            'aziran-26.3-client-1.1.9.mrpack': 'client-overrides/',
-            'aziran-26.3-client-1.1.9-manual.zip': '',
-            'aziran-26.3-client-1.1.9-multimc.zip': '.minecraft/',
+            'aziran-26.3-client-1.1.10.mrpack': 'client-overrides/',
+            'aziran-26.3-client-1.1.10-manual.zip': '',
+            'aziran-26.3-client-1.1.10-multimc.zip': '.minecraft/',
         }
         for filename, prefix in archives.items():
             with self.subTest(archive=filename), zipfile.ZipFile(ROOT / 'dist' / filename) as archive:

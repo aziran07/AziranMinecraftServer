@@ -16,7 +16,16 @@
 `1.1.6`(GitHub 사전 릴리스 `client-1.1.6`)은 `1.1.5`에 서버와 같은 파일인 Simple Tomb `1.9.0`을 더한 모드 19개다.
 Simple Tomb은 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일이 필요하다. JAR 메타데이터의 필수 의존성은
 NeoForge `[26.2.0.0-alpha,)`, Minecraft `[26.2,)`뿐이라 다른 모드와의 의존성 판단은 바뀌지 않는다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
-`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, 현재 버전 `1.1.9`(GitHub 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9), 2026-09-25 공개·서버 설치)는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다.
+`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, 공개된 최신판 `1.1.9`(GitHub 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9), 2026-09-25 공개·서버 설치)는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다. `1.1.10`(공개 전, 검토 대기)은 여기에 클라이언트 전용 Nemo's Inventory Sorting을 더한 모드 21개다.
+
+### 1.1.10: Nemo's Inventory Sorting과 Mouse Tweaks
+
+- **파일**: Modrinth 프로젝트 `JHgf35QL`, 버전 `aeA0nhgf`(`26.3-1.22.1`, 2026-09-22, release), `nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar` 169421바이트, SHA-512 `5463c182…d572f0eb`. 공식 CDN에서 받은 파일의 크기·SHA-1·SHA-512가 Modrinth 버전 메타데이터와 일치한다. [입력 lock](../mods-26.3-client-extra.lock.json)에 고정했다.
+- **메타데이터**: `neoforge.mods.toml`의 모드 ID는 `nemos_inventory_sorting` 하나이고, required 의존성은 `neoforge [26.3.0.1-beta,)`와 `minecraft [26.3,)`뿐이다. `META-INF/jarjar` 내장 JAR은 없다. Modrinth는 `client_side=required`, `server_side=unsupported`이며 서버에는 설치하지 않는다(서버 lock·`mods/` 변경 없음).
+- **라이선스**: JAR의 `LICENSE_Nemo's Inventory Sorting`이 All rights reserved이고 원본·수정본 재배포, 다른 플랫폼 재업로드, 상업적 사용을 제작자 허가 없이 금지하며 공식 배포처(CurseForge, Modrinth, GitHub)에서만 받도록 요청한다. 그래서 `bundle_jar=false`로 두어 `.mrpack`은 Modrinth CDN 다운로드 항목으로만 넣고, 수동·MultiMC ZIP은 JAR을 빼고 README가 받는 절차와 해시를 안내한다(JourneyMap과 같은 방식).
+- **Nemo 마우스 동작 끄기**: Nemo의 `SettingsConfig` 기본값은 `enableDragQuickMove`(Shift+끌기 빠른 이동), `enableSplitQuickMove`(Shift+우클릭 절반 이동), `enableScrollTransfer`(휠 이동)를 모두 켠다. 이 팩은 이미 Mouse Tweaks의 마우스 조작을 쓰므로, 세 아카이브에 `config/nemos-inventory-sorting/general.json`을 담아 Nemo의 세 항목을 `false`로 끈다. 기존 Mouse Tweaks 모드와 그 조작은 바꾸지 않는다. 같은 파일에 `includeHotbarByDefault=false`(버튼은 핫바 제외, Shift로 포함), `enableSlotLocking=true`, `enableKeyMappings`·`enableHoverKeyMappings`·`enableContainerKeyMappings=true`를 적는다. 필드 이름과 경로는 JAR의 `SettingsConfig`·`DefaultConfigValues` 클래스 상수와 상류 소스 [`9deb444`](https://github.com/NemoNotFound/NemosInventorySorting/tree/9deb444440caf3b9a69579166b72f39cc3dc8d20)(master, "Update 1.22.1")에서 확인했다. `ConfigService.writeConfig(false, ...)`는 파일이 없을 때만 기본값을 쓰므로 팩의 파일이 유지되고, 이미 이 모드를 실행한 인스턴스에는 팩의 설정이 적용되지 않는다.
+- **단축키**: 상류 소스의 `SortingKeyMappings`에서 정렬·옮기기·버리기 12개와 필터 유지 전환은 `InputConstants.UNKNOWN`(미지정), 빠른 검색만 `KEY_F`(화면 안에서 `Ctrl`/`Command`와 함께)다. 미지정 키는 상수 `UNKNOWN`이라 Occultism처럼 `-1`이 저장될 근거는 찾지 못했다. `options.txt`는 `1.1.9`와 같게 두고 새 단축키를 적지 않았다.
+- **확인하지 않은 것**: 게임 실행, 버튼 위치·동작, 핫바 제외, 슬롯 잠금, Traveler's Backpack·Tom's Simple Storage·Occultism·Curios·Cooking for Blockheads의 전용 화면에서의 표시·동작. 제작자가 밝힌 호환 대상(Iron Chests, Nemo's Backpacks, Better Chests, Barrels & Shulker Boxes)은 이 팩에 없다. JAR에는 `en_us`·`zh_tw` 언어 파일만 있어 버튼 이름은 영어로 보인다.
 
 ### 1.1.9: Traveler's Backpack 단축키 중복
 

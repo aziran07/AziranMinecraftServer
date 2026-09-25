@@ -30,6 +30,9 @@ render_servers_dat의 설명을 참고한다.
 저장소에서 만드는 파일이라 패키징 직전에 scripts/build_occultism_resource_pack.py를 실행해 새로
 만든다. options.txt는 게임 언어를 한국어로 두고 번역 팩만 켠다. load_resourcepacks와
 render_options_txt의 설명을 참고한다.
+
+세 아카이브 모두 Nemo's Inventory Sorting의 설정 파일 config/nemos-inventory-sorting/general.json을 담아
+Nemo의 드래그·분할·스크롤 빠른 이동을 끈다. 기존 Mouse Tweaks 조작은 바꾸지 않는다. NEMO_SETTINGS의 설명을 참고한다.
 """
 
 import hashlib
@@ -51,12 +54,24 @@ DIST = REPO / "dist"
 TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.9"
+PACK_VERSION = "1.1.10"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.9 구성과 그 바탕인 1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
-# 내용을 산출물에도 남긴다.
+# 1.1.10 구성과 그 바탕인 1.1.9·1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과
+# 같은 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.10은 1.1.9에 클라이언트 전용 모드 Nemo's Inventory Sorting 26.3-1.22.1(Modrinth 버전 aeA0nhgf, "
+    "nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar)을 더한 판이다. 인벤토리·상자 화면에 정렬, 같은 아이템 "
+    "옮기기, 모두 옮기기, 모두 버리기 버튼과 슬롯 잠금·아이템 검색을 더한다. 필수 의존성은 Minecraft [26.3,)과 "
+    "NeoForge [26.3.0.1-beta,)뿐이고 서버에는 설치하지 않는다. 라이선스(All rights reserved)가 재배포를 금지하므로 "
+    "JAR은 어느 아카이브에도 담지 않고 .mrpack이 Modrinth CDN에서 받게 하며, ZIP 두 개는 README가 직접 받는 "
+    "절차를 안내한다. 세 아카이브에 담은 config/nemos-inventory-sorting/general.json이 Nemo의 드래그·분할·스크롤 "
+    "빠른 이동을 끄며, 기존 Mouse Tweaks 모드와 그 조작은 바꾸지 않았다. 핫바는 버튼 동작에서 "
+    "기본으로 빼고(includeHotbarByDefault=false) 슬롯 잠금과 단축키 등록은 켠다. 나머지 모드 20개, 셰이더 팩, "
+    "리소스팩 세 개와 기본 활성화, servers.dat, options.txt는 1.1.9와 같다. 1.1.10 아카이브로 새로 만든 인스턴스의 "
+    "실행, 버튼 동작, 배낭·저장고 같은 전용 화면에서의 호환은 게임에서 확인하지 "
+    "않았다. "
+    "이하는 1.1.9 기록이다. "
     "1.1.9는 1.1.8에 서버와 같은 파일인 Traveler's Backpack 11.4.0(Modrinth 버전 Gdy0zkAN, "
     "travelersbackpack-neoforge-26.3-11.4.0.jar)을 더한 판이다. 배낭 아이템·블록을 등록하는 모드라 서버에 "
     "설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 필수 의존성은 Minecraft [26.3]과 "
@@ -158,6 +173,23 @@ OPTIONS_LANGUAGE = "ko_kr"
 # 적지 않으면 mod_resources가 번역 팩보다 위에 놓여 Occultism JAR에 들어 있는 옛
 # assets/occultism/lang/ko_kr.json이 새 번역을 덮는다. 번역 팩 외의 리소스팩은 켜지 않는다.
 MOD_RESOURCES_PACK_ID = "mod_resources"
+
+# Nemo's Inventory Sorting 26.3-1.22.1의 설정 파일. 게임 디렉터리 기준 경로이며, 모드는 이 파일이 없을 때만
+# 기본값으로 만든다(ConfigService.writeConfig(false, ...), 소스 커밋 9deb444). 필드 이름·순서는 SettingsConfig와 같다.
+# Nemo의 기본값은 드래그(Shift+드래그)·분할(Shift+우클릭)·스크롤 빠른 이동을 모두 켜는데, 이 팩은 이미 Mouse
+# Tweaks의 마우스 조작을 쓰므로 Nemo의 세 동작을 끈다. Mouse Tweaks 조작은 바꾸지 않는다. 핫바는 버튼 동작에서
+# 기본으로 빼며(Shift를 누르면 포함), 슬롯 잠금과 단축키 등록(기본값이 미지정인 단축키를 조작 화면에 표시)은 켠다.
+NEMO_CONFIG_PATH = "config/nemos-inventory-sorting/general.json"
+NEMO_SETTINGS = {
+    "includeHotbarByDefault": False,
+    "enableDragQuickMove": False,
+    "enableSplitQuickMove": False,
+    "enableScrollTransfer": False,
+    "enableSlotLocking": True,
+    "enableKeyMappings": True,
+    "enableHoverKeyMappings": True,
+    "enableContainerKeyMappings": True,
+}
 
 # 새 인스턴스의 멀티플레이 목록에 미리 넣어 두는 서버 항목.
 SERVER_LIST_NAME = "Aziran"
@@ -579,6 +611,11 @@ def render_options_txt(resourcepacks):
     return "\n".join(lines) + "\n"
 
 
+def render_nemo_config():
+    """Nemo's Inventory Sorting의 general.json. 모드의 Gson 출력처럼 들여쓰기 2칸의 JSON이다."""
+    return json.dumps(NEMO_SETTINGS, indent=2) + "\n"
+
+
 def nbt_string(value):
     """NBT 문자열 본문: 부호 없는 2바이트 빅엔디언 길이 + UTF-8 바이트."""
     data = value.encode("utf-8")
@@ -667,8 +704,8 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "## 먼저 읽을 것: ZIP 두 개에는 모든 파일이 들어 있지 않다",
         "",
         f"**`{manual_zip_name()}`과 `{multimc_zip_name()}`에는 아래 파일이 담겨 있지 않다.**",
-        "제작자 라이선스가 파일을 다시 배포하거나 모드팩 안에 직접 담는 것을 금지하고, 모드팩에는",
-        "CurseForge 또는 Modrinth에서 직접 내려받는 방식으로만 넣도록 허용하기 때문이다.",
+        "제작자 라이선스가 파일을 다시 배포하거나 모드팩 안에 직접 담는 것을 금지하고, CurseForge·Modrinth 같은",
+        "공식 배포처에서 직접 내려받는 방식만 허용하기 때문이다.",
         "빠뜨린 것이 아니라 라이선스를 지키려고 뺀 것이다.",
         "",
     ]
@@ -718,8 +755,80 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
 
     modonomicon = next(mod for mod in mods if "modonomicon" in mod["declared_mod_ids"])
     backpack = next(mod for mod in mods if "travelersbackpack" in mod["declared_mod_ids"])
+    nemo = next(mod for mod in mods if "nemos_inventory_sorting" in mod["declared_mod_ids"])
     stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
     lines += [
+        f"## 1.1.10 변경: {nemo['title']} {nemo['version_number']} 추가",
+        "",
+        f"인벤토리 정렬 모드 {nemo['title']}(`{nemo['filename']}`)을 더했다. 클라이언트 전용 모드라 서버에는",
+        "설치하지 않으며, 서버 접속 조건은 1.1.9와 같다. 필수 의존성은 Minecraft `[26.3,)`과 NeoForge",
+        "`[26.3.0.1-beta,)`뿐이다. 나머지 모드 20개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, `options.txt`,",
+        "`servers.dat`는 1.1.9와 같고, 이 모드의 설정 파일 하나를 더했다.",
+        "",
+        "- **모드 파일은 어느 아카이브에도 들어 있지 않다.** 제작자 라이선스가 재배포를 금지하고 공식 배포처",
+        "  (CurseForge, Modrinth, GitHub)에서만 받도록 하기 때문이다. `.mrpack`으로 설치하면 런처가 Modrinth에서",
+        "  원본을 받는다. ZIP 두 개로 설치하면 맨 위 \"직접 받아 넣는 절차\"대로 `mods/`에 직접 넣는다.",
+        "",
+        "### 정렬 버튼 쓰는 법",
+        "",
+        "아래는 제작자 설명과 모드 소스 기준이며, **게임에서 직접 확인하지는 않았다.**",
+        "",
+        "- 인벤토리(`E`)나 상자 같은 보관함 화면을 열면 칸 묶음 옆에 작은 버튼이 생긴다. 마우스를 올리면 이름이",
+        "  영어로 보인다(이 판의 JAR에는 `en_us`·`zh_tw` 언어 파일만 있고 한국어 번역은 없다).",
+        "  - **정렬(`Sort`)**: 그 칸 묶음(보관함 또는 내 인벤토리)의 아이템을 정렬한다.",
+        "  - **같은 아이템 옮기기(`Move Same`)**: 반대편에 이미 있는 종류의 아이템만 옮긴다. 예를 들어 상자에 들어",
+        "    있는 종류의 아이템만 내 인벤토리에서 상자로 넣는다.",
+        "  - **모두 옮기기(`Move All`)**: 모든 아이템을 반대편으로 옮긴다.",
+        "  - **모두 버리기(`Drop All`)**: 모든 아이템을 바닥에 버린다. 잘못 누르지 않도록 조심한다.",
+        "- **핫바는 기본으로 빠진다.** 내 인벤토리 쪽 버튼을 그냥 누르면 핫바(아래 9칸)는 건드리지 않는다.",
+        "  핫바까지 포함하려면 **Shift를 누른 채** 버튼을 누른다.",
+        "- **슬롯 잠금**: `Alt`(macOS는 `Option`)를 누른 채 칸을 클릭하거나 끌면 그 칸이 정렬·옮기기·버리기에서",
+        "  빠진다. `Alt`를 누르고 있으면 잠긴 칸이 표시된다.",
+        "- **아이템 검색**: 보관함 화면의 검색 칸을 누르거나 `Ctrl`+`F`(macOS는 `Command`+`F`)로 이름·툴팁·태그",
+        "  (`#minecraft:planks`)로 찾아 강조한다.",
+        "- **단축키**: 정렬·옮기기·버리기 단축키는 `Controls` → `Key Binds`의 `Nemo's Inventory Sorting` 항목에",
+        "  있고 기본으로 지정되어 있지 않다(빠른 검색만 `F`). 이 팩은 `options.txt`에 새 단축키를 적지 않았으므로",
+        "  필요하면 직접 지정한다. 버튼은 단축키 없이 쓸 수 있다.",
+        "",
+        "### Nemo 마우스 동작 끄기 (config/nemos-inventory-sorting/general.json)",
+        "",
+        "Nemo's Inventory Sorting은 기본값으로 Shift+드래그 빠른 이동, Shift+우클릭 절반 이동, 휠 스크롤 한 개씩",
+        "이동을 켠다. 이 팩은 이미 Mouse Tweaks의 마우스 조작을 쓰므로 Nemo의 이 세 동작을 끄는 설정 파일을",
+        "함께 담았다. 기존 Mouse Tweaks 모드와 그 조작은 바꾸지 않았다(`.mrpack`은 `client-overrides/`, 수동 ZIP은 ZIP 루트, MultiMC ZIP은",
+        f"`.minecraft/` 아래의 `{NEMO_CONFIG_PATH}`).",
+        "",
+        "```json",
+        render_nemo_config().rstrip("\n"),
+        "```",
+        "",
+        "- `enableDragQuickMove`·`enableSplitQuickMove`·`enableScrollTransfer`: `false`. Nemo의 Shift+드래그 빠른 이동,",
+        "  Shift+우클릭 절반 이동, 휠 이동을 끈다. Mouse Tweaks 조작은 1.1.9와 같다.",
+        "- `includeHotbarByDefault`: `false`. 버튼은 핫바를 빼고, Shift를 누르면 포함한다.",
+        "- `enableSlotLocking`: `true`. `Alt` 슬롯 잠금을 쓴다.",
+        "- `enableKeyMappings`·`enableHoverKeyMappings`·`enableContainerKeyMappings`: `true`. 단축키 항목을 조작 화면에",
+        "  표시한다(기본으로 지정되어 있지 않다).",
+        "",
+        "모드는 이 파일이 **없을 때만** 기본값(세 이동 동작이 켜진 상태)으로 새로 만든다. 새 인스턴스는 팩의",
+        "파일이 먼저 들어가므로 위 설정으로 시작한다.",
+        "",
+        "**이미 만든 인스턴스에 이 모드를 더할 때** (권장은 1.1.10을 새 인스턴스로 가져오는 것이다):",
+        "",
+        "1. 게임을 끈다.",
+        f"2. 맨 위 \"직접 받아 넣는 절차\"대로 `{nemo['filename']}`을 인스턴스의 `mods/`에 넣는다.",
+        f"3. 아카이브의 `{NEMO_CONFIG_PATH}`를 인스턴스(MultiMC라면 `.minecraft`)의 같은 경로에 넣는다.",
+        "   폴더가 없으면 만든다.",
+        "4. 이 모드를 이미 한 번 실행해 그 파일이 있다면 팩의 파일로 덮어쓰거나, 텍스트 편집기로 열어",
+        "   `enableDragQuickMove`, `enableSplitQuickMove`, `enableScrollTransfer`, `includeHotbarByDefault`를 `false`로",
+        "   고친다. 이 파일은 이 모드만 쓰므로 다른 모드 설정에는 영향이 없다.",
+        "",
+        "### 확인하지 않은 호환성",
+        "",
+        "- 버튼 위치와 동작, 핫바 제외, 슬롯 잠금을 게임에서 확인하지 않았다.",
+        f"- {backpack['title']} 배낭 화면, Tom's Simple Storage 터미널, Occultism 저장고, Curios, Cooking for",
+        "  Blockheads 같은 **모드 전용 화면**에서 버튼이 보이는지와 제대로 동작하는지는 확인하지 않았다. 제작자가",
+        "  호환을 밝힌 모드(Iron Chests, Nemo's Backpacks, Better Chests, Barrels & Shulker Boxes)는 이 팩에 없다.",
+        "  전용 화면에서 결과가 이상하면 그 화면에서는 버튼을 쓰지 말고 알려 준다.",
+        "",
         f"## 1.1.9 변경: {backpack['title']} {backpack['version_number']} 추가",
         "",
         f"서버에 설치하는 배낭 모드 {backpack['title']}(`{backpack['filename']}`, LGPL-3.0-only)과 같은 파일을",
@@ -924,7 +1033,8 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "Simple Tomb(CurseForge 배포), Iris 로컬 빌드, 리소스팩 "
         + ", ".join(pack["title"] for pack in bundled_resourcepacks(resourcepacks))
         + "은 팩 안에 들어 있다.",
-        "언어·리소스팩·사역마 단축키·배낭 열기 키를 정한 `options.txt`와 Aziran 서버를 적은 `servers.dat`도 함께 설치된다.",
+        "언어·리소스팩·사역마 단축키·배낭 열기 키를 정한 `options.txt`, Aziran 서버를 적은 `servers.dat`,",
+        f"Nemo's Inventory Sorting 설정 `{NEMO_CONFIG_PATH}`도 함께 설치된다.",
         "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
         "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
         "런처에 따라 기존 인스턴스에 덮어쓸 때 `servers.dat`가 팩의 파일로 바뀌어 저장해 둔 서버 목록이",
@@ -934,7 +1044,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         f"`{manual_zip_name()}`은 런처를 쓰지 않는 설치용이다.",
         f"모드 JAR {bundled_count}개, `resourcepacks/`의 리소스팩 {len(bundled_resourcepacks(resourcepacks))}개, "
-        "`options.txt`, `servers.dat`가 들어 있고,",
+        f"`options.txt`, `servers.dat`, `{NEMO_CONFIG_PATH}`가 들어 있고,",
         "위에서 안내한 파일은 직접 받아 넣어야 한다.",
         "",
         "1. Minecraft 런처에 NeoForge "
@@ -942,6 +1052,8 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "2. 해당 프로파일의 게임 디렉터리를 연다(기본값은 `.minecraft`). 가능하면 새 디렉터리를 쓴다.",
         "3. 이전 버전을 설치했던 디렉터리라면 `mods/xaerominimap-neoforge-26.3-26.5.3.jar`를 먼저 지운다.",
         "4. ZIP 안의 `mods/`와 `resourcepacks/` 폴더 내용을 게임 디렉터리의 같은 이름 폴더에 넣는다.",
+        f"   `{NEMO_CONFIG_PATH}`도 게임 디렉터리의 같은 경로에 넣는다. 이미 있으면 위 \"이미 만든 인스턴스에",
+        "   이 모드를 더할 때\"를 따른다.",
         "5. 게임 디렉터리에 `options.txt`가 **없으면** ZIP의 `options.txt`를 넣는다. **이미 있으면 덮어쓰지",
         "   말고** 위 \"이미 있는 인스턴스를 고치는 방법\"대로 `key.keyboard.-1`만 바꾸고, 게임에서 언어를",
         "   한국어로 바꾼 뒤 위 \"리소스팩 켜고 끄는 법\"대로 번역 팩을 켠다.",
@@ -959,7 +1071,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         f"`{multimc_zip_name()}`은 MultiMC 인스턴스 내보내기 형식이다.",
         f"모드 JAR {bundled_count}개, `.minecraft/resourcepacks/`의 리소스팩 "
         f"{len(bundled_resourcepacks(resourcepacks))}개, `.minecraft/options.txt`,",
-        "`.minecraft/servers.dat`가 팩 안에 들어 있다.",
+        f"`.minecraft/servers.dat`, `.minecraft/{NEMO_CONFIG_PATH}`가 팩 안에 들어 있다.",
         "**MultiMC를 쓴다면 이 ZIP 대신 `.mrpack`을 가져오는 쪽을 권한다.** `.mrpack`은 나머지 모드와",
         "셰이더 팩, 리소스팩까지 런처가 받아 주므로 수작업이 없다.",
         "",
@@ -1047,7 +1159,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "멀티플레이 동작은 이미 서버가 처리하며, 클라이언트 설치는 싱글플레이(통합 서버)에서 같은",
         "동작을 얻기 위한 것이다.",
         "",
-        "Mouse Tweaks, ImmediatelyFast, Sodium, Iris는 Modrinth가 `client_side=required`,",
+        "Mouse Tweaks, ImmediatelyFast, Sodium, Iris, Nemo's Inventory Sorting은 Modrinth가 `client_side=required`,",
         "`server_side=unsupported`로 표시한 클라이언트 전용 모드라 서버에는 설치하지 않는다.",
         "Mouse Tweaks는 같은 버전의 배포 파일 3개 중 실행용 primary JAR만 담고",
         "`-api.jar`·`-src.jar`는 제외한다.",
@@ -1061,6 +1173,11 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "  - 공식 사이트: http://journeymap.info/",
         "  - Modrinth: https://modrinth.com/mod/journeymap",
         "  - 라이선스: https://teamjm.github.io/journeymap-docs/6.0.x/about/licensing/",
+        f"- {nemo['title']} (Nemo)",
+        f"  - Modrinth: https://modrinth.com/mod/{nemo['project_slug']}",
+        "  - 소스: https://github.com/NemoNotFound/NemosInventorySorting",
+        "  - 라이선스: All rights reserved (JAR 안의 `LICENSE_Nemo's Inventory Sorting`). 이 팩은 JAR을 담지 않고",
+        "    `.mrpack`이 Modrinth에서 받게 한다.",
         "- Complementary Shaders - Reimagined (Complementary Development, EminGT)",
         "  - 공식 사이트: https://www.complementary.dev/",
         "  - Modrinth: https://modrinth.com/shader/complementary-reimagined",
@@ -1122,7 +1239,10 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.9 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Traveler's Backpack의 배낭",
+        "- **이 1.1.10 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Nemo's Inventory Sorting의",
+        "  버튼·핫바 제외·슬롯 잠금·검색, 배낭·저장고 같은 모드 전용 화면에서의 호환을",
+        "  게임에서 확인하지 않았다(위 \"확인하지 않은 호환성\" 참고).",
+        "- 1.1.9 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Traveler's Backpack의 배낭",
         "  열기·Curios Back 슬롯 착용·`Y` 단축키, 사망 시 배낭 처리(Simple Tomb·Curios와의 상호작용)를 게임에서",
         "  확인하지 않았다.",
         "- 1.1.8 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Modonomicon 2.7.0의 책 화면",
@@ -1289,7 +1409,8 @@ def render_manifest(mods, resourcepacks):
     }
 
 
-def build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses, options_txt, servers_dat):
+def build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses, options_txt, servers_dat,
+                 nemo_config):
     index = {
         "formatVersion": 1,
         "game": "minecraft",
@@ -1341,6 +1462,7 @@ def build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses
         zf.writestr("LICENSES.md", licenses)
         zf.writestr("client-overrides/options.txt", options_txt)
         zf.writestr("client-overrides/servers.dat", servers_dat)
+        zf.writestr(f"client-overrides/{NEMO_CONFIG_PATH}", nemo_config)
         for mod in mods:
             if mod["mrpack_delivery"] == "client-overrides":
                 zf.write(jar_path(mod), f"client-overrides/mods/{mod['filename']}")
@@ -1352,7 +1474,7 @@ def build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses
     return out, index
 
 
-def build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat):
+def build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat, nemo_config):
     manifest = render_manifest(mods, resourcepacks)
     out = DIST / manual_zip_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -1361,6 +1483,7 @@ def build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
         zf.writestr("options.txt", options_txt)
         zf.writestr("servers.dat", servers_dat)
+        zf.writestr(NEMO_CONFIG_PATH, nemo_config)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f"mods/{mod['filename']}")
         for pack in bundled_resourcepacks(resourcepacks):
@@ -1370,7 +1493,7 @@ def build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers
     return out, manifest
 
 
-def build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses, options_txt, servers_dat):
+def build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses, options_txt, servers_dat, nemo_config):
     """MultiMC 인스턴스 내보내기 형식으로 묶는다.
 
     Minecraft와 NeoForge는 파일로 담지 않고 mmc-pack.json의 컴포넌트로만 지정한다.
@@ -1424,6 +1547,7 @@ def build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses, option
         zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
         zf.writestr(".minecraft/options.txt", options_txt)
         zf.writestr(".minecraft/servers.dat", servers_dat)
+        zf.writestr(f".minecraft/{NEMO_CONFIG_PATH}", nemo_config)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f".minecraft/mods/{mod['filename']}")
         for pack in bundled_resourcepacks(resourcepacks):
@@ -1539,6 +1663,20 @@ def write_client_lock(server_lock, mods, shaderpacks, resourcepacks, provided_mo
             "format": "압축하지 않은 NBT",
             "servers": [{"name": SERVER_LIST_NAME, "ip": SERVER_LIST_ADDRESS}],
         },
+        "seeded_configs": [
+            {
+                "mod_id": "nemos_inventory_sorting",
+                "archive_paths": {
+                    mrpack_name(): f"client-overrides/{NEMO_CONFIG_PATH}",
+                    manual_zip_name(): NEMO_CONFIG_PATH,
+                    multimc_zip_name(): f".minecraft/{NEMO_CONFIG_PATH}",
+                },
+                "settings": NEMO_SETTINGS,
+                "reason": "이 팩은 이미 Mouse Tweaks의 마우스 조작을 쓰므로 Nemo의 드래그·분할·스크롤 빠른 이동을 끈다. "
+                          "Mouse Tweaks 조작은 바꾸지 않는다. 핫바는 버튼 동작에서 기본으로 빼고 슬롯 잠금과 단축키 등록은 켠다. "
+                          "모드는 이 파일이 없을 때만 기본값으로 만들므로 이미 실행한 인스턴스에는 적용되지 않는다.",
+            },
+        ],
         "provided_mod_ids": provided_mod_ids,
         "excluded": [{"title": t, "reason": EXCLUSIONS[t]} for t in sorted(EXCLUSIONS)],
         "archives": archives,
@@ -1569,11 +1707,13 @@ def main():
     licenses = render_licenses(mods, shaderpacks, resourcepacks)
     options_txt = render_options_txt(resourcepacks)
     servers_dat = render_servers_dat()
+    nemo_config = render_nemo_config()
     mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses,
-                                      options_txt, servers_dat)
-    zip_path, manifest = build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat)
+                                      options_txt, servers_dat, nemo_config)
+    zip_path, manifest = build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat,
+                                          nemo_config)
     multimc_path, _ = build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses,
-                                        options_txt, servers_dat)
+                                        options_txt, servers_dat, nemo_config)
 
     archives = {}
     for path in (mrpack_path, zip_path, multimc_path):

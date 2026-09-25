@@ -6,7 +6,7 @@
   "java_version": 25,
   "cache_directory": "client-mods-cache",
   "cache_note": "JAR은 Git에 포함하지 않는다. 아래 url에서 cache_directory/filename으로 받으면 빌더가 size·sha512를 대조한다.",
-  "mod_count": 5,
+  "mod_count": 6,
   "removed": [
     {
       "title": "Xaero's Minimap",
@@ -340,6 +340,59 @@
             "sha256": "d7e5689dc4cbbd5ab3ecc0fc791e8e21e0e3f82c14612c34f7be30726f609a0c"
           }
         ]
+      }
+    },
+    {
+      "title": "Nemo's Inventory Sorting",
+      "source": "modrinth",
+      "project_slug": "nemos-inventory-sorting",
+      "project_id": "JHgf35QL",
+      "version_id": "aeA0nhgf",
+      "version_number": "26.3-1.22.1",
+      "version_type": "release",
+      "date_published": "2026-09-22T18:30:18.613818Z",
+      "filename": "nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "url": "https://cdn.modrinth.com/data/JHgf35QL/versions/aeA0nhgf/nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "size": 169421,
+      "sha1": "e2d0f882583f0db0b75a17a2af4fd68dd3cc6ff4",
+      "sha512": "5463c182d069eff9e320f68cd2d272829adbca6a338f4221c0e7dd9497c6e465118e66513a2a1720f5e3d1fab41451d0a173aef398044704568fa083d572f0eb",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_only",
+      "client_side": "required",
+      "server_side": "unsupported",
+      "declared_mod_ids": [
+        "nemos_inventory_sorting"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "required_dependencies_note": "Modrinth 버전 메타데이터의 dependencies는 비어 있고, JAR의 META-INF/neoforge.mods.toml은 neoforge [26.3.0.1-beta,)와 minecraft [26.3,)만 required로 선언한다. 내장 JAR(META-INF/jarjar)은 없다. 고정한 NeoForge 26.3.0.8-beta가 범위를 만족한다.",
+      "bundled_jars": [],
+      "has_fabric_metadata": false,
+      "source_repository": "https://github.com/NemoNotFound/NemosInventorySorting",
+      "source_commit": "9deb444440caf3b9a69579166b72f39cc3dc8d20",
+      "source_note": "master의 커밋 9deb444(Update 1.22.1)에서 SettingsConfig.java, ConfigService.java, SortingKeyMappings.java를 확인했다. 설정 파일은 게임 디렉터리 기준 config/nemos-inventory-sorting/general.json이며 모드는 파일이 없을 때만 기본값으로 만든다(writeConfig(false, ...)). JAR의 SettingsConfig·DefaultConfigValues 클래스 상수에서도 같은 필드 이름과 경로를 확인했다.",
+      "client_reason": "인벤토리·상자 화면에 정렬, 같은 아이템 옮기기, 모두 옮기기, 모두 버리기 버튼과 슬롯 잠금·검색을 더한다. 클라이언트 전용이라 서버에는 설치하지 않는다. Nemo의 드래그·분할·스크롤 빠른 이동은 팩의 config에서 끄며, 기존 Mouse Tweaks 조작은 바꾸지 않는다.",
+      "bundle_jar": false,
+      "bundle_jar_reason": "JAR 안의 LICENSE_Nemo's Inventory Sorting(All rights reserved)이 원본·수정본 재배포와 다른 플랫폼 재업로드를 제작자 허가 없이 금지하고, 공식 배포처(CurseForge, Modrinth, GitHub)에서만 받도록 요청한다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다.",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (재배포 금지, 공식 배포처에서만 다운로드)",
+        "url": "https://github.com/NemoNotFound/NemosInventorySorting?tab=License-1-ov-file",
+        "note": "JAR의 neoforge.mods.toml이 license=\"All Rights Reserved\"를 선언하고, JAR 안의 LICENSE_Nemo's Inventory Sorting이 \"You are not allowed to: redistribute this mod (original or modified), reupload it to other platforms, use it commercially, or share modified versions publicly without the express written permission of the author.\"라고 적는다. Modrinth 프로젝트 메타데이터도 LicenseRef-All-Rights-Reserved다.",
+        "distribution_note": "같은 LICENSE: \"Please only download this mod from official sources (e.g., CurseForge, Modrinth, GitHub) provided by the author.\" 따라서 JAR을 어느 아카이브에도 담지 않고, .mrpack은 런처가 Modrinth CDN에서 원본을 받게 하며, ZIP 두 개는 README가 공식 배포처에서 직접 받는 절차를 안내한다."
       }
     }
   ],

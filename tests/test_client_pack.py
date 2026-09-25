@@ -14,7 +14,7 @@ EXPECTED = {
     'balm', 'cookingforblockheads', 'curios', 'farmersdelight', 'geckolib',
     'jade', 'jei', 'modonomicon', 'occultism', 'packetfixer', 'toms_storage',
     'lithium', 'mousetweaks', 'clumps', 'immediatelyfast', 'journeymap',
-    'sodium', 'iris', 'simpletomb', 'travelersbackpack',
+    'sodium', 'iris', 'simpletomb', 'travelersbackpack', 'nemos_inventory_sorting',
 }
 
 
@@ -33,10 +33,10 @@ class ClientPackTests(unittest.TestCase):
 
     def test_artifacts_match_requested_mods_and_dependencies(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        self.assertEqual(lock['pack_version'], '1.1.9')
-        self.assertEqual(lock['mod_count'], 20)
+        self.assertEqual(lock['pack_version'], '1.1.10')
+        self.assertEqual(lock['mod_count'], 21)
         self.assertEqual(lock['shared_with_server_count'], 15)
-        self.assertEqual(lock['client_only_count'], 5)
+        self.assertEqual(lock['client_only_count'], 6)
         self.assertEqual(lock['minecraft_version'], '26.3')
         self.assertEqual(lock['loader_version'], '26.3.0.8-beta')
         mods = {m['filename']: m for m in lock['mods']}
@@ -44,6 +44,7 @@ class ClientPackTests(unittest.TestCase):
         trusted = {m['filename']: m['sha512'] for m in server['mods']}
         # Independently obtained from the publishers' pinned Modrinth versions.
         trusted.update({
+            'nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar': '5463c182d069eff9e320f68cd2d272829adbca6a338f4221c0e7dd9497c6e465118e66513a2a1720f5e3d1fab41451d0a173aef398044704568fa083d572f0eb',
             'MouseTweaks-neoforge-mc26.3-2.31.jar': '93e7ac34bbc15de635073722054b11fed3981e0f39954286e8a57214ce5ce007e5562882cb81cd230c8ea49970970c84548cfc598332c539777986090b090798',
             'ImmediatelyFast-NeoForge-1.17.1+26.3.jar': '6fddcf7e9de2bf179bdd18cc317fa1cc50ea9c3a40b06a0e0673ecb1dba29fb2ac2743ada361e32f52c2c1f333043795a5149b8b89ee467665c2b734e7d5d951',
             'journeymap-neoforge-26.3-6.0.9.jar': '1ed0fc68d17e5134d55111aeea256cac523097eb2c899c11b4ead7f611058983ff54277a0dbcfe5a422a0bd77c05591a677be3bf13b7c927d0f4cfdfbe4d440b',
@@ -52,8 +53,9 @@ class ClientPackTests(unittest.TestCase):
         })
         for name, mod in mods.items():
             self.assertEqual(mod['sha512'], trusted[name])
-        manual = ROOT / 'dist/aziran-26.3-client-1.1.9-manual.zip'
+        manual = ROOT / 'dist/aziran-26.3-client-1.1.10-manual.zip'
         journey_name = 'journeymap-neoforge-26.3-6.0.9.jar'
+        nemo_name = 'nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar'
         provided = {'minecraft', 'neoforge'}
         required = set()
         top_ids = set()
@@ -80,7 +82,7 @@ class ClientPackTests(unittest.TestCase):
             self.assertEqual(len(names), len(set(names)))
             self.assertTrue(all(not n.startswith('/') and '..' not in Path(n).parts for n in names))
             jars = [n for n in names if n.startswith('mods/') and n.endswith('.jar')]
-            self.assertEqual({Path(n).name for n in jars}, set(mods) - {journey_name})
+            self.assertEqual({Path(n).name for n in jars}, set(mods) - {journey_name, nemo_name})
             self.assertEqual(len(jars), 19)
             instructions = archive.read('README.md').decode()
             self.assertIn('JourneyMap', instructions)
@@ -98,6 +100,9 @@ class ClientPackTests(unittest.TestCase):
         journey_data = (ROOT / 'client-mods-cache' / journey_name).read_bytes()
         self.assertEqual(hashlib.sha512(journey_data).hexdigest(), mods[journey_name]['sha512'])
         inspect(journey_data, top=True)
+        nemo_data = (ROOT / 'client-mods-cache' / nemo_name).read_bytes()
+        self.assertEqual(hashlib.sha512(nemo_data).hexdigest(), trusted[nemo_name])
+        inspect(nemo_data, top=True)
         self.assertEqual(top_ids, EXPECTED)
         self.assertFalse(required - provided, f'Missing dependencies: {required - provided}')
         self.assertIn('sodium-neoforge-0.9.2+mc26.3.jar', mods)
@@ -107,7 +112,7 @@ class ClientPackTests(unittest.TestCase):
         self.assertIn(journey_name, mods)
         self.assertFalse(any('xaerominimap' in name for name in mods))
 
-        with zipfile.ZipFile(ROOT / 'dist/aziran-26.3-client-1.1.9.mrpack') as archive:
+        with zipfile.ZipFile(ROOT / 'dist/aziran-26.3-client-1.1.10.mrpack') as archive:
             self.assertIsNone(archive.testzip())
             index = json.loads(archive.read('modrinth.index.json'))
             self.assertEqual(index['dependencies'], {'minecraft': '26.3', 'neoforge': '26.3.0.8-beta'})

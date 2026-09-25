@@ -1,18 +1,18 @@
 {
   "pack_name": "Aziran 26.3 Client",
-  "pack_version": "1.1.9",
+  "pack_version": "1.1.10",
   "minecraft_version": "26.3",
   "loader": "neoforge",
   "loader_version": "26.3.0.8-beta",
   "java_version": 25,
-  "release_note": "1.1.9는 1.1.8에 서버와 같은 파일인 Traveler's Backpack 11.4.0(Modrinth 버전 Gdy0zkAN, travelersbackpack-neoforge-26.3-11.4.0.jar)을 더한 판이다. 배낭 아이템·블록을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 필수 의존성은 Minecraft [26.3]과 NeoForge [26.3.0.1-beta,)뿐이다. 상류 기본 단축키는 배낭 열기 B, 도구 바꾸기/호스 모드 Z인데, B는 이미 Occultism 가방(satchel) 열기, Tom's Simple Storage 터미널, JourneyMap 웨이포인트 만들기의 기본값이기도 하다. 그래서 새 인스턴스의 options.txt에 배낭 열기 하나만 바닐라와 팩의 모든 모드에 기본 지정이 없는 Y로 적었고 다른 단축키는 바꾸지 않았다. 나머지 모드 19개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt의 기존 줄은 1.1.8과 같다. 1.1.9부터 GitHub 일반 릴리스로 배포하지만 Iris는 여전히 미병합 PR #3354(커밋 10d3598)의 로컬 빌드이며 공식 안정판이 아니다. 1.1.9 아카이브로 새로 만든 인스턴스의 실행과 배낭 사용은 게임에서 확인하지 않았다. 이하는 1.1.8 기록이다. 1.1.8은 1.1.7에서 Modonomicon만 26.3-2.6.0에서 26.3-2.7.0(Modrinth 버전 SFKjMnCe, modonomicon-26.3-neoforge-2.7.0.jar)으로 바꾼 판이다. 2.7.0에는 Minecraft 26.3의 SDL 입력에서 책(Occultism의 Dictionary of Spirits 등)의 노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋 d74b6f2dbba9956182f11808f82e1a22911cb5ee, use SDL mouse button constant for node view dragging)이 들어 있다. 나머지 모드 18개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, options.txt, servers.dat는 1.1.7과 같다. 서버도 같은 2.7.0 파일로 바꾼 뒤 이 판을 쓴다. 1.1.8 아카이브로 새로 만든 인스턴스의 실행과 책 화면 끌기는 게임에서 확인하지 않았다. 이하는 1.1.7 기록이다. 1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. 이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. 이하는 1.1.6 기록이다. 1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
+  "release_note": "1.1.10은 1.1.9에 클라이언트 전용 모드 Nemo's Inventory Sorting 26.3-1.22.1(Modrinth 버전 aeA0nhgf, nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar)을 더한 판이다. 인벤토리·상자 화면에 정렬, 같은 아이템 옮기기, 모두 옮기기, 모두 버리기 버튼과 슬롯 잠금·아이템 검색을 더한다. 필수 의존성은 Minecraft [26.3,)과 NeoForge [26.3.0.1-beta,)뿐이고 서버에는 설치하지 않는다. 라이선스(All rights reserved)가 재배포를 금지하므로 JAR은 어느 아카이브에도 담지 않고 .mrpack이 Modrinth CDN에서 받게 하며, ZIP 두 개는 README가 직접 받는 절차를 안내한다. 세 아카이브에 담은 config/nemos-inventory-sorting/general.json이 Nemo의 드래그·분할·스크롤 빠른 이동을 끄며, 기존 Mouse Tweaks 모드와 그 조작은 바꾸지 않았다. 핫바는 버튼 동작에서 기본으로 빼고(includeHotbarByDefault=false) 슬롯 잠금과 단축키 등록은 켠다. 나머지 모드 20개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt는 1.1.9와 같다. 1.1.10 아카이브로 새로 만든 인스턴스의 실행, 버튼 동작, 배낭·저장고 같은 전용 화면에서의 호환은 게임에서 확인하지 않았다. 이하는 1.1.9 기록이다. 1.1.9는 1.1.8에 서버와 같은 파일인 Traveler's Backpack 11.4.0(Modrinth 버전 Gdy0zkAN, travelersbackpack-neoforge-26.3-11.4.0.jar)을 더한 판이다. 배낭 아이템·블록을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 필수 의존성은 Minecraft [26.3]과 NeoForge [26.3.0.1-beta,)뿐이다. 상류 기본 단축키는 배낭 열기 B, 도구 바꾸기/호스 모드 Z인데, B는 이미 Occultism 가방(satchel) 열기, Tom's Simple Storage 터미널, JourneyMap 웨이포인트 만들기의 기본값이기도 하다. 그래서 새 인스턴스의 options.txt에 배낭 열기 하나만 바닐라와 팩의 모든 모드에 기본 지정이 없는 Y로 적었고 다른 단축키는 바꾸지 않았다. 나머지 모드 19개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt의 기존 줄은 1.1.8과 같다. 1.1.9부터 GitHub 일반 릴리스로 배포하지만 Iris는 여전히 미병합 PR #3354(커밋 10d3598)의 로컬 빌드이며 공식 안정판이 아니다. 1.1.9 아카이브로 새로 만든 인스턴스의 실행과 배낭 사용은 게임에서 확인하지 않았다. 이하는 1.1.8 기록이다. 1.1.8은 1.1.7에서 Modonomicon만 26.3-2.6.0에서 26.3-2.7.0(Modrinth 버전 SFKjMnCe, modonomicon-26.3-neoforge-2.7.0.jar)으로 바꾼 판이다. 2.7.0에는 Minecraft 26.3의 SDL 입력에서 책(Occultism의 Dictionary of Spirits 등)의 노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋 d74b6f2dbba9956182f11808f82e1a22911cb5ee, use SDL mouse button constant for node view dragging)이 들어 있다. 나머지 모드 18개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, options.txt, servers.dat는 1.1.7과 같다. 서버도 같은 2.7.0 파일로 바꾼 뒤 이 판을 쓴다. 1.1.8 아카이브로 새로 만든 인스턴스의 실행과 책 화면 끌기는 게임에서 확인하지 않았다. 이하는 1.1.7 기록이다. 1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. 이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. 이하는 1.1.6 기록이다. 1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
   "source_locks": [
     "mods-26.3.lock.json",
     "mods-26.3-client-extra.lock.json"
   ],
-  "mod_count": 20,
+  "mod_count": 21,
   "shared_with_server_count": 15,
-  "client_only_count": 5,
+  "client_only_count": 6,
   "bundled_jar_count": 19,
   "external_download_only": [
     {
@@ -20,6 +20,12 @@
       "filename": "journeymap-neoforge-26.3-6.0.9.jar",
       "url": "https://cdn.modrinth.com/data/lfHFW1mp/versions/OCuB6UWq/journeymap-neoforge-26.3-6.0.9.jar",
       "reason": "라이선스가 JAR 번들·재호스팅을 금지한다. 모드팩은 설치·실행 과정에서 JourneyMap을 CurseForge 또는 Modrinth에서 내려받을 때만 허용된다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다."
+    },
+    {
+      "title": "Nemo's Inventory Sorting",
+      "filename": "nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "url": "https://cdn.modrinth.com/data/JHgf35QL/versions/aeA0nhgf/nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "reason": "JAR 안의 LICENSE_Nemo's Inventory Sorting(All rights reserved)이 원본·수정본 재배포와 다른 플랫폼 재업로드를 제작자 허가 없이 금지하고, 공식 배포처(CurseForge, Modrinth, GitHub)에서만 받도록 요청한다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다."
     }
   ],
   "shaderpacks": [
@@ -158,9 +164,9 @@
   ],
   "seeded_options": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.9.mrpack": "client-overrides/options.txt",
-      "aziran-26.3-client-1.1.9-manual.zip": "options.txt",
-      "aziran-26.3-client-1.1.9-multimc.zip": ".minecraft/options.txt"
+      "aziran-26.3-client-1.1.10.mrpack": "client-overrides/options.txt",
+      "aziran-26.3-client-1.1.10-manual.zip": "options.txt",
+      "aziran-26.3-client-1.1.10-multimc.zip": ".minecraft/options.txt"
     },
     "version": 5023,
     "lang": "ko_kr",
@@ -199,9 +205,9 @@
   },
   "seeded_servers": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.9.mrpack": "client-overrides/servers.dat",
-      "aziran-26.3-client-1.1.9-manual.zip": "servers.dat",
-      "aziran-26.3-client-1.1.9-multimc.zip": ".minecraft/servers.dat"
+      "aziran-26.3-client-1.1.10.mrpack": "client-overrides/servers.dat",
+      "aziran-26.3-client-1.1.10-manual.zip": "servers.dat",
+      "aziran-26.3-client-1.1.10-multimc.zip": ".minecraft/servers.dat"
     },
     "format": "압축하지 않은 NBT",
     "servers": [
@@ -211,6 +217,27 @@
       }
     ]
   },
+  "seeded_configs": [
+    {
+      "mod_id": "nemos_inventory_sorting",
+      "archive_paths": {
+        "aziran-26.3-client-1.1.10.mrpack": "client-overrides/config/nemos-inventory-sorting/general.json",
+        "aziran-26.3-client-1.1.10-manual.zip": "config/nemos-inventory-sorting/general.json",
+        "aziran-26.3-client-1.1.10-multimc.zip": ".minecraft/config/nemos-inventory-sorting/general.json"
+      },
+      "settings": {
+        "includeHotbarByDefault": false,
+        "enableDragQuickMove": false,
+        "enableSplitQuickMove": false,
+        "enableScrollTransfer": false,
+        "enableSlotLocking": true,
+        "enableKeyMappings": true,
+        "enableHoverKeyMappings": true,
+        "enableContainerKeyMappings": true
+      },
+      "reason": "이 팩은 이미 Mouse Tweaks의 마우스 조작을 쓰므로 Nemo의 드래그·분할·스크롤 빠른 이동을 끈다. Mouse Tweaks 조작은 바꾸지 않는다. 핫바는 버튼 동작에서 기본으로 빼고 슬롯 잠금과 단축키 등록은 켠다. 모드는 이 파일이 없을 때만 기본값으로 만들므로 이미 실행한 인스턴스에는 적용되지 않는다."
+    }
+  ],
   "provided_mod_ids": [
     "balm",
     "clumps",
@@ -233,6 +260,7 @@
     "minecraft",
     "modonomicon",
     "mousetweaks",
+    "nemos_inventory_sorting",
     "neoforge",
     "occultism",
     "packetfixer",
@@ -281,17 +309,17 @@
     }
   ],
   "archives": {
-    "aziran-26.3-client-1.1.9.mrpack": {
-      "size": 8938937,
-      "sha256": "17b9019157755221ca657c7cc9453994aaddeae6b94542efd084267e28a00205"
+    "aziran-26.3-client-1.1.10.mrpack": {
+      "size": 8942164,
+      "sha256": "088a998fbb58d345613350d2e423a2e81fac35e96bf366568d529c4233451674"
     },
-    "aziran-26.3-client-1.1.9-manual.zip": {
-      "size": 31043941,
-      "sha256": "af41b23be440feec78287149d621bbb4bf9e6fadc611d4aac3a9b8979f215cb2"
+    "aziran-26.3-client-1.1.10-manual.zip": {
+      "size": 31046970,
+      "sha256": "7b4354c1368af00df863f4dfa24f1df43a6c636f78ada31c77ba341b2ff8edca"
     },
-    "aziran-26.3-client-1.1.9-multimc.zip": {
-      "size": 31045052,
-      "sha256": "ef5ca4e274c44334f7e49fdcda4e5b01c3dd2c17463403174830f8d4d3878a4a"
+    "aziran-26.3-client-1.1.10-multimc.zip": {
+      "size": 31048104,
+      "sha256": "26527abc90910ac546c14b90f11523e9fc84ccf444274916bb6c0c8015757226"
     }
   },
   "mods": [
@@ -1143,6 +1171,45 @@
           }
         ]
       }
+    },
+    {
+      "title": "Nemo's Inventory Sorting",
+      "filename": "nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "origin": "client-extra-lock",
+      "source": "modrinth",
+      "version_number": "26.3-1.22.1",
+      "project_slug": "nemos-inventory-sorting",
+      "url": "https://cdn.modrinth.com/data/JHgf35QL/versions/aeA0nhgf/nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar",
+      "size": 169421,
+      "sha1": "e2d0f882583f0db0b75a17a2af4fd68dd3cc6ff4",
+      "sha512": "5463c182d069eff9e320f68cd2d272829adbca6a338f4221c0e7dd9497c6e465118e66513a2a1720f5e3d1fab41451d0a173aef398044704568fa083d572f0eb",
+      "sha256": "33f5d0a0f9686003be6c816eac01c01f1c28633b1625752a98b84fd577d63f84",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (재배포 금지, 공식 배포처에서만 다운로드)",
+        "url": "https://github.com/NemoNotFound/NemosInventorySorting?tab=License-1-ov-file",
+        "note": "JAR의 neoforge.mods.toml이 license=\"All Rights Reserved\"를 선언하고, JAR 안의 LICENSE_Nemo's Inventory Sorting이 \"You are not allowed to: redistribute this mod (original or modified), reupload it to other platforms, use it commercially, or share modified versions publicly without the express written permission of the author.\"라고 적는다. Modrinth 프로젝트 메타데이터도 LicenseRef-All-Rights-Reserved다.",
+        "distribution_note": "같은 LICENSE: \"Please only download this mod from official sources (e.g., CurseForge, Modrinth, GitHub) provided by the author.\" 따라서 JAR을 어느 아카이브에도 담지 않고, .mrpack은 런처가 Modrinth CDN에서 원본을 받게 하며, ZIP 두 개는 README가 공식 배포처에서 직접 받는 절차를 안내한다."
+      },
+      "bundle_jar": false,
+      "bundle_jar_reason": "JAR 안의 LICENSE_Nemo's Inventory Sorting(All rights reserved)이 원본·수정본 재배포와 다른 플랫폼 재업로드를 제작자 허가 없이 금지하고, 공식 배포처(CurseForge, Modrinth, GitHub)에서만 받도록 요청한다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 JAR을 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시·메타데이터 검증용이며 배포물에 들어가지 않는다.",
+      "declared_mod_ids": [
+        "nemos_inventory_sorting"
+      ],
+      "bundled_jars": [],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,)"
+        }
+      ],
+      "mrpack_delivery": "download",
+      "build": null,
+      "source_bundle": null
     }
   ]
 }

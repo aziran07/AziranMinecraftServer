@@ -184,6 +184,8 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
+클라이언트 팩 `1.1.10`은 `1.1.9`에 클라이언트 전용 Nemo's Inventory Sorting `26.3-1.22.1`(Modrinth `aeA0nhgf`)을 더한 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap과 Nemo는 라이선스상 `.mrpack` 다운로드 전용). 서버 lock·서버 `mods/`는 바꾸지 않았으므로 서버 백업·재시작이 필요 없다. 세 아카이브에 Nemo 설정 `config/nemos-inventory-sorting/general.json`을 더했고 `options.txt`·`servers.dat`·셰이더 팩·리소스팩은 `1.1.9`와 같다. **`client-1.1.10`은 아직 공개하지 않았다**(검토 대기). 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#1110-nemos-inventory-sorting과-mouse-tweaks)에 있다.
+
 클라이언트 팩 `1.1.9`는 `1.1.8`에 서버와 같은 Traveler's Backpack `11.4.0`을 더한 판이다(모드 20개: 서버 공통 15개·클라이언트 전용 5개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap은 계속 `.mrpack` 다운로드 전용). 셰이더 팩, 리소스팩 3개와 기본 활성화, `servers.dat`는 `1.1.8`과 같고, `options.txt`에는 배낭 열기를 상류 기본값 `B` 대신 `Y`로 적은 한 줄(`key_key.travelersbackpack.inventory:key.keyboard.y`)만 더했다. GitHub 일반 릴리스(latest) [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)로 2026-09-25 공개했고, 서버에도 같은 날 설치했다(위 절). Iris는 계속 미병합 PR 로컬 빌드다. `B` 중복과 `Y`를 고른 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#119-travelers-backpack-단축키-중복)에 적었다.
 
 클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). GitHub 사전 릴리스 [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했고, 서버도 같은 날 2.7.0으로 교체했다. 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 이전 판 기록이다.
