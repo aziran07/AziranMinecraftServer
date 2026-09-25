@@ -10,6 +10,12 @@ Compose에서 실행 중인 서비스는 Minecraft, 내부 웹 RCON, 지도 HTTP
 
 `https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 주소 복사 테스트는 `tests/test_join_guide_copy.cjs`다. 현재 클라이언트는 Nemo's Inventory Sorting을 더한 GitHub 일반 릴리스(latest) [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)이다(2026-09-25 공개, 사이트는 Pages 실행 `36146375828`로 배포·공개 확인). 서버는 바뀌지 않았다. 그 이전 판은 Traveler's Backpack을 더한 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)이다(2026-09-25 공개). 서버에도 같은 날 월드만 보호 백업한 뒤 Traveler's Backpack을 설치했다. 1.1.9 당시 사이트 소스는 `client-1.1.9` 링크로 바꿨지만, 1.1.7 때와 같이 작업 브랜치의 Pages 배포가 환경 보호 규칙에 거부됐고, PR #7을 `main`에 병합(`0a0056b`)한 뒤 Pages 배포 실행 `36144033527`이 성공해 해결됐다(2026-09-25). 1.1.8까지는 실험 단계 Iris 때문에 사전 릴리스로 제공했고, 사용자 결정으로 1.1.9부터 일반 릴리스로 공개한다(Iris는 계속 미병합 PR 로컬 빌드). 이전 릴리스는 유지한다. 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
 
+웹 안내의 현재 정보 구조는 [사이트 설계](SITE_INFORMATION_DESIGN.md)를 따른다.
+`index.html`은 다운로드·주소 복사와 아이콘 가이드 카드, `join.html`은 설치,
+`play.html`은 배낭·정렬·지도, `visuals.html`은 화면 설정, `help.html`은 문제 해결을 담당한다.
+기존 `commands.html`·`occultism.html`은 별도 가이드로 유지한다.
+주소 복사는 `tests/test_join_guide_copy.cjs`, 로컬 링크·앵커·자산은 `tests/test_site_links.py`로 검증한다.
+
 ## 26.3 준비 변경
 
 현재 브랜치의 Minecraft 구성은 Java 25, Minecraft 26.3, NeoForge `26.3.0.8-beta`와 `server-data-26.3-neoforge/`를 사용하도록 준비한다. 26.3 계열 NeoForge는 베타 채널만 배포되므로 Compose의 `NEOFORGE_VERSION`에 정확한 버전을 고정한다. 고정 모드 목록은 `mods-26.3.lock.json`, 설치 및 검증 상태는 [모드 설치 안내](MODS_26_3.md), 로더 결정 근거는 [로더 비교](LOADER_COMPARISON_26_3.md)에 기록한다.

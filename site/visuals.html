@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>화면 설정 · Aziran 마인크래프트 서버</title>
+<meta name="description" content="Aziran 모드팩의 셰이더 켜기와 끄기, Occultism 한국어 번역과 리소스팩 기본값, 리소스팩 순서와 게임 언어 설정.">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2321242e'/%3E%3Crect x='2' y='9' width='12' height='5' fill='%237a8aba'/%3E%3Crect x='6' y='4' width='4' height='5' fill='%23f68d1f'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip-link" href="#shaders">셰이더 안내로 건너뛰기</a>
+
+<header class="masthead">
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="logo-pill" href="index.html">AZIRAN</a>
+      <nav aria-label="주요 메뉴">
+        <ul class="nav-list">
+          <li><a href="join.html">설치</a></li>
+          <li><a href="play.html">플레이</a></li>
+          <li><a href="visuals.html" aria-current="page">화면 설정</a></li>
+          <li><a href="commands.html">명령어</a></li>
+          <li><a href="help.html">도움말</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="substrip">
+    <div class="wrap"><p>셰이더 · 리소스팩 · 게임 언어</p></div>
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <section class="hero-panel chamfer" aria-labelledby="hero-title">
+    <p class="eyebrow">Aziran 모드팩 화면 설정</p>
+    <h1 class="hero-title hero-title-ko" id="hero-title">화면 설정</h1>
+    <p class="hero-lede">셰이더는 처음에 꺼져 있고, 새 인스턴스는 한국어로 시작합니다. 원하는 것만 골라 켜세요.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#shaders">셰이더 켜는 법</a>
+      <a class="btn btn-quiet" href="#resourcepacks">리소스팩 보기</a>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <section class="panel" id="shaders" aria-labelledby="shaders-title">
+      <h2 class="panel-head" id="shaders-title">셰이더 켜기와 끄기</h2>
+      <div class="panel-body">
+        <p><strong>셰이더는 처음에 꺼져 있습니다.</strong></p>
+        <ol class="substeps">
+          <li>게임에서 <strong>Options</strong>(설정) → <strong>Video Settings</strong>(비디오 설정) → <strong>Shader Packs...</strong>를 누릅니다.</li>
+          <li>켜려면 <code>ComplementaryReimagined_r5.9.3</code>을 골라 <strong>Apply</strong>(적용) 후 <strong>Done</strong>(완료)을 누릅니다.</li>
+          <li>끄려면 같은 화면에서 <code>OFF</code>를 고릅니다.</li>
+        </ol>
+        <p class="hint">셰이더는 그래픽 부하가 크니 프레임이 낮으면 끄세요.</p>
+        <p class="hint">
+          셰이더 팩은 라이선스상 모드팩 파일에 담을 수 없어서, <code>.mrpack</code>을 가져올 때 런처가 Modrinth에서 직접 내려받습니다.
+          모드팩 1.1.10은 셰이더를 쓰기 위해 Iris의 아직 공식 반영되지 않은 개발 버전을 직접 빌드해 담았습니다. 문제가 생기면 오류 내용을 <a href="help.html#contact">알려 주세요</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel" id="resourcepacks" aria-labelledby="resourcepacks-title">
+      <h2 class="panel-head" id="resourcepacks-title">한국어 번역과 리소스팩</h2>
+      <div class="panel-body">
+        <p>
+          새로 가져온 인스턴스는 <strong>게임 언어가 한국어</strong>이고, <strong>Occultism 한국어 번역 팩만 켜진 상태</strong>로 시작합니다.
+          나머지 두 리소스팩은 설치만 되어 있고 <strong>꺼져 있습니다.</strong> 원할 때 직접 켜세요.
+        </p>
+        <dl class="cmd-list">
+          <div class="cmd">
+            <dt>Occultism 한국어 번역 <span class="state-on">켜짐</span></dt>
+            <dd>Occultism 모드의 아이템 이름과 안내서 전체를 이 서버에서 새로 번역했습니다. 게임 언어가 한국어일 때 보입니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt>Stay True <span class="state-off">꺼짐</span></dt>
+            <dd>바닐라 느낌을 살린 텍스처 팩입니다. 1.21.5용이라 26.3에서 제대로 보이는지는 확인하지 않았고, 게임이 이전 버전용 팩이라고 경고합니다. 연결 텍스처 같은 일부 표현은 OptiFine이 있어야 해서 이 모드팩에서는 적용되지 않습니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt>Vanilla Experience+ <span class="state-off">꺼짐</span></dt>
+            <dd>바닐라 스타일을 다듬고 고치는 리소스팩으로 26.3을 지원합니다. 모드팩 가져오기 중에 런처가 Modrinth에서 받습니다. 몹 변형 텍스처는 별도 모드가 있어야 보입니다.</dd>
+          </div>
+        </dl>
+        <p class="dotted"><strong>켜고 끄는 법</strong></p>
+        <ol class="substeps">
+          <li>게임에서 <strong>Options</strong>(설정) → <strong>Resource Packs...</strong>(리소스팩)을 엽니다.</li>
+          <li>켜려면 왼쪽 <strong>Available</strong>(사용 가능) 목록에서 팩의 화살표를 눌러 오른쪽 <strong>Selected</strong>(선택됨)로 옮깁니다. 끄려면 반대로 왼쪽으로 옮깁니다.</li>
+          <li>오른쪽 목록은 <strong>위에 있는 팩이 우선</strong>합니다. 새로 켠 팩은 맨 위에 붙으니, <code>occultism-ko-1.256.0-mc26.3.zip</code>을 위 화살표로 <strong>맨 위</strong>로 올려 번역이 계속 보이게 합니다.</li>
+          <li><strong>Done</strong>(완료)을 누르면 리소스를 다시 불러옵니다.</li>
+        </ol>
+        <p class="hint">
+          Stay True와 Vanilla Experience+를 함께 켜면 같은 블록의 텍스처를 서로 덮을 수 있어, 위에 있는 팩의 모습만 보입니다. 화면이 이상하면 한쪽을 끄세요.
+          리소스팩은 <a href="#shaders">셰이더</a>와 별개 설정이라 함께 켜도 됩니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel" id="language" aria-labelledby="language-title">
+      <h2 class="panel-head" id="language-title">이미 만든 인스턴스</h2>
+      <div class="panel-body">
+        <p>
+          <strong>이미 만든 인스턴스는 바뀌지 않습니다.</strong> 언어와 리소스팩 기본값은 새로 가져온 인스턴스에만 적용됩니다.
+          기존 인스턴스에서 한국어를 쓰려면 <strong>Options</strong> → <strong>Language...</strong>(언어)에서 한국어를 고르세요.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <aside class="rail" aria-label="기본값과 다른 안내">
+
+    <section class="panel" aria-labelledby="defaults-title">
+      <h2 class="panel-head" id="defaults-title">새 인스턴스 기본값</h2>
+      <div class="panel-body">
+        <dl class="spec-grid">
+          <div class="spec">
+            <dt>셰이더</dt>
+            <dd>꺼짐 (ComplementaryReimagined_r5.9.3 설치됨)</dd>
+          </div>
+          <div class="spec">
+            <dt>게임 언어</dt>
+            <dd>한국어</dd>
+          </div>
+          <div class="spec">
+            <dt>리소스팩</dt>
+            <dd>3개 중 Occultism 한국어 번역만 켜짐</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <nav class="panel" aria-labelledby="more-title">
+      <h2 class="panel-head" id="more-title">다른 가이드</h2>
+      <div class="panel-body">
+        <ul class="quick-links">
+          <li><a href="play.html#journeymap"><img class="link-icon" src="icons/map.svg" alt="" width="28" height="28"><span class="link-text">미니맵과 웹 지도</span><span class="arrow" aria-hidden="true">▶</span></a></li>
+          <li><a href="occultism.html"><img class="link-icon" src="icons/book.svg" alt="" width="28" height="28"><span class="link-text">Occultism 시작 가이드</span><span class="arrow" aria-hidden="true">▶</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+  </aside>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>
+      모드 목록과 라이선스 정보는 배포 페이지의 <code>README.md</code>·<code>LICENSES.md</code>에 있습니다.
+      <a href="https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10">모드팩 1.1.10 배포 페이지</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>도움말 · Aziran 마인크래프트 서버</title>
+<meta name="description" content="Aziran 서버 도움말. 두 번째 실행에서 게임이 멈출 때 options.txt 고치는 법, 자바 오류 해결, 디스코드 문의.">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2321242e'/%3E%3Crect x='2' y='9' width='12' height='5' fill='%237a8aba'/%3E%3Crect x='6' y='4' width='4' height='5' fill='%23f68d1f'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip-link" href="#keys">해결 방법으로 건너뛰기</a>
+
+<header class="masthead">
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="logo-pill" href="index.html">AZIRAN</a>
+      <nav aria-label="주요 메뉴">
+        <ul class="nav-list">
+          <li><a href="join.html">설치</a></li>
+          <li><a href="play.html">플레이</a></li>
+          <li><a href="visuals.html">화면 설정</a></li>
+          <li><a href="commands.html">명령어</a></li>
+          <li><a href="help.html" aria-current="page">도움말</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="substrip">
+    <div class="wrap"><p>멈춤 해결 · 자바 오류 · 문의</p></div>
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <section class="hero-panel chamfer" aria-labelledby="hero-title">
+    <p class="eyebrow">Aziran 서버 도움말</p>
+    <h1 class="hero-title hero-title-ko" id="hero-title">도움말</h1>
+    <p class="hero-lede">게임이 멈추거나 실행되지 않을 때 먼저 확인할 것과 문의하는 방법입니다.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#keys">두 번째 실행 멈춤 해결</a>
+      <a class="btn btn-quiet" href="#contact">문의하기</a>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <section class="panel trouble" id="keys" aria-labelledby="keys-title">
+      <h2 class="panel-head" id="keys-title">두 번째 실행에서 게임이 멈출 때</h2>
+      <div class="panel-body">
+        <p>
+          Occultism 모드의 알려진 문제로, 사역마 단축키가 <code>options.txt</code>에 <code>key.keyboard.-1</code>로 저장되면 다음 실행에서 게임이 멈춥니다.
+          1.1.4부터 모드팩은 새 인스턴스에 이 단축키들을 미지정(<code>key.keyboard.unknown</code>)으로 적은 <code>options.txt</code>를 함께 넣어 이 문제를 피합니다.
+        </p>
+        <p class="dotted"><strong>이전에 만든 인스턴스를 계속 쓰거나 이미 멈춘 적이 있다면</strong></p>
+        <ol class="substeps">
+          <li>게임을 끈 상태에서 인스턴스를 오른쪽 클릭 → <strong>Folder</strong>(폴더)로 엽니다.</li>
+          <li><code>minecraft</code> 또는 <code>.minecraft</code> 폴더의 <code>options.txt</code>를 메모장으로 엽니다.</li>
+          <li><code>key.keyboard.-1</code>을 모두 <code>key.keyboard.unknown</code>으로 바꾸고 저장합니다.</li>
+        </ol>
+        <p class="hint">조작 설정에서 사역마 단축키를 기본값으로 되돌리면 같은 문제가 다시 생깁니다.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="java-errors" aria-labelledby="java-errors-title">
+      <h2 class="panel-head" id="java-errors-title">자바 관련 오류가 날 때</h2>
+      <div class="panel-body">
+        <p>
+          이 모드팩은 <strong>Java 25</strong>가 필요합니다. 자동으로 받을 수 없거나 자바 관련 오류가 나오면, Java 25를 직접 설치한 뒤
+          인스턴스를 오른쪽 클릭 → <strong>Edit</strong> → <strong>Settings → Java</strong>에서 Java 25를 선택합니다.
+        </p>
+        <p class="links">
+          <a href="join.html#java">설치 안내 2단계: 자바 25 준비 (설정 화면 사진)</a><br>
+          <a href="https://prismlauncher.org/wiki/getting-started/installing-java/">Prism Launcher 공식 자바 설치 안내</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="panel" id="contact" aria-labelledby="contact-title">
+      <h2 class="panel-head" id="contact-title">도움이 필요할 때</h2>
+      <div class="panel-body">
+        <p>
+          게임 실행, 모드팩 설치, 서버 접속이 잘 안 되거나 궁금한 점이 있으면 디스코드 <a href="https://discord.com/users/1089166615955914772"><strong>aziran07</strong></a>에게 문의해 주세요.
+        </p>
+        <p class="dotted">오류 메시지가 나왔다면 그 내용을 함께 보내 주시면 더 빨리 도와드릴 수 있습니다.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <aside class="rail" aria-label="관련 안내">
+
+    <nav class="panel" aria-labelledby="more-title">
+      <h2 class="panel-head" id="more-title">관련 안내</h2>
+      <div class="panel-body">
+        <ul class="quick-links">
+          <li><a href="join.html#steps">설치 4단계 다시 보기 <span class="arrow" aria-hidden="true">▶</span></a></li>
+          <li><a href="join.html#update">이전 모드팩에서 바꾸기 <span class="arrow" aria-hidden="true">▶</span></a></li>
+          <li><a href="occultism.html">Occultism 시작 가이드 <span class="arrow" aria-hidden="true">▶</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+  </aside>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>
+      모드 목록과 라이선스 정보는 배포 페이지의 <code>README.md</code>·<code>LICENSES.md</code>에 있습니다.
+      <a href="https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10">모드팩 1.1.10 배포 페이지</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
