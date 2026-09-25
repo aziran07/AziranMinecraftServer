@@ -17,6 +17,7 @@ These instructions apply throughout this repository.
 
 - **Codex owns analysis, architecture, design, task decomposition, acceptance criteria, automated test authoring and maintenance, review, and independent verification.** Codex coordinates the work and reports the final outcome to the user.
 - **Claude owns production implementation.** This includes application code, operational scripts, operational configuration, and infrastructure changes, including fixes requested during review. Claude runs tests and fixes implementation defects; Codex writes and modifies automated test code.
+- **Codex normally performs Git commits and pushes directly after review and verification.** Do not delegate commits or pushes to Claude unless the user explicitly requests it or a concrete constraint requires an exception. Claude should return implementation changes for Codex to review and commit.
 - Codex may inspect code, run commands and checks, write and maintain tests and test-only helpers or fixtures, and maintain design documents and agent instructions. Codex must delegate production implementation to Claude instead of writing production patches itself.
 - Claude must report proposed test changes and their rationale to Codex through Orca orchestration. Codex reviews and makes warranted test changes; Claude must not modify tests or expected results to accommodate its implementation.
 - Claude must follow the agreed design and report ambiguities, blockers, and proposed design changes to Codex before implementing a materially different approach.
