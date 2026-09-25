@@ -20,9 +20,9 @@
 
 ## 설치 명세
 
-lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 24개 항목에 해당하는 JAR 24개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
-### Traveler's Backpack 추가 준비 (2026-09-25, 서버 미적용)
+### Traveler's Backpack 추가 (2026-09-25)
 
 사용자 요청으로 배낭 모드 [Traveler's Backpack](https://modrinth.com/mod/travelersbackpack)(Modrinth 프로젝트 `rlloIFEV`, 버전 `Gdy0zkAN` `26.3-11.4.0`, 2026-09-24 공개, `travelersbackpack-neoforge-26.3-11.4.0.jar`, 1475945바이트, SHA-512 `0ec5ad7a…5f0fce1`)을 lock에 더해 24개가 됐다. CurseForge 프로젝트(`travelers-backpack`)와 같은 제작자(Tiviacz1337)의 공식 Modrinth 배포 파일이며 수정하지 않았다. Modrinth 메타데이터는 NeoForge, `26.3`, `client_and_server`(서버·클라이언트 모두 required)이다.
 
@@ -30,7 +30,19 @@ lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 �
 
 설정 기본값(26.3 JAR 바이트코드와 상류 26.1 소스로 확인): `backSlotIntegration=true`(Curios가 설치된 이 서버에서는 배낭을 Curios의 Back 슬롯에만 착용), `backpackDeathPlace=true`(죽을 때 멘 배낭을 그 자리에 블록으로 놓음), `backpackForceDeathPlace=false`. **Simple Tomb 무덤과의 사망 처리, Curios 착용은 게임에서 확인하지 않았다.** 이전 기동 로그에 Occultism의 Curios 통합 대체(`Failed to initialize Curios integration`) 경고가 있으나 Traveler's Backpack의 Curios 연동과는 별개이며 이 연동도 확인하지 않았다.
 
-**운영 서버에는 아직 설치하지 않았다.** `server-data-26.3-neoforge/mods/`는 23개 그대로이며 `tests/test_travelers_backpack_deployment.py`의 서버 검사는 설치 전까지 실패하는 것이 정상이다. 순서는 GitHub 초안(draft) 릴리스 `client-1.1.9`에 자산을 올려 해시 확인 → 월드만 백업한 뒤 서버에 설치·재시작 → 서버 기동 확인 뒤 초안을 일반 릴리스(latest)로 공개다. 서버 설치 전에는 [오프라인 월드 보호 백업](BACKUPS.md#오프라인-월드-보호-백업)만 한다. 이 모드가 서버에 설치되면 모드가 없는 1.1.8 이하 클라이언트는 접속할 수 없으므로 클라이언트 `1.1.9`를 함께 낸다.
+2026-09-25 운영 서버에 설치했다. 초안 릴리스 `client-1.1.9`의 6개 자산 검증 뒤 사용자가 요청한 즉시 재시작으로 진행했고, 접속자는 0명이었다. 서버 기동을 확인한 뒤 Codex가 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)를 일반 릴리스(latest)로 공개했다.
+
+| 단계 | 시각(UTC) | 결과 |
+| --- | --- | --- |
+| 사전 확인 | 13:43 | `StopTimeout=660`, `STOP_DURATION=600`, healthy·재시작 0회, `world/` 11GB, 여유 1.1TB, 접속자 0명, 설치할 JAR의 크기 1475945바이트·SHA-512 확인 |
+| 정상 종료 3-B | 13:44:53 → 13:44:54 | RCON 재시작 공지 후 `docker compose stop minecraft` 종료 상태 0, `exited exit=0 oom=false`, `Stopping server` → `Saving players` → `Saving worlds` → 세 차원 `Saving chunks for level` → 러너 `Done`, 저장 오류 없음 |
+| 월드 보호 백업 | 13:45:04 → 13:45:31 | [오프라인 월드 보호 백업](BACKUPS.md#오프라인-월드-보호-백업) 절차로 `server-data-26.3-neoforge/world/`만 묶었다. `/home/pilon1945/aziran-26.3-protected-backups/pre-travelersbackpack-world-2026-09-25-134504.tar`(11450746880바이트, SHA-256 `80bd0722c6444f9a54c0b76acc6c7a5f98a1301049ba72f1f8e11893e6ff4830`). 목록 3830개 항목이 모두 `world/` 아래이고 `level.dat`와 세 차원 `region/` 4개 필수 항목이 있다. `BACKUP VERIFIED`, 종료 상태 0, 파일 `600`·디렉터리 `700`. 모드·설정·BlueMap은 백업하지 않았고 다른 백업은 건드리지 않았다 |
+| JAR 설치 | 13:45:39 | 공식 JAR을 `mods/travelersbackpack-neoforge-26.3-11.4.0.jar`로 다른 JAR과 같은 소유자·권한(`pilon1945`, `664`)으로 설치. `mods/` 24개 파일이 모두 lock의 SHA-512와 일치, 기존 23개 SHA-256 설치 전후 동일 |
+| 기동 | 13:45:43 → 13:45:59 | `docker compose start minecraft` 종료 상태 0, 13:45:57 `Done (0.533s)`, RCON 기동, `running healthy` 재시작 0회, `rcon-cli list` 응답(0명) |
+
+기동 로그의 모드 목록에 `Traveler's Backpack 11.4.0 (travelersbackpack)`(`mods/travelersbackpack-neoforge-26.3-11.4.0.jar`)과 `Modonomicon 2.7.0`이 있다. 13:18 UTC 기동과 비교해 새 경고·오류는 없고, 그때의 Modonomicon 버전 차이 알림은 사라졌다. 남은 경고는 모두 이전부터 있던 것이다: 모드 refmap 3건, udev, Occultism의 Curios 통합 대체(`Failed to initialize Curios integration`와 `ClassNotFoundException: ...CuriosIntegrationImpl`), `apothic_enchanting` 데이터 맵, log4j `DebugFile` 부록의 `io.netty.channel.kqueue.Native` 예외. 처음 기동하며 만든 `config/travelersbackpack-server.toml`은 `backSlotIntegration = true`, `backpackDeathPlace = true`, `backpackForceDeathPlace = false`이고 `travelersbackpack-common.toml`은 `enableLoot = true`, `enableVillagerTrade = true`다. 설정은 수정하지 않았다.
+
+설치 뒤 Python 검사 69개(`tests/test_travelers_backpack_deployment.py` 서버 검사 포함)와 JavaScript 검사 2개가 통과했고, Codex가 서버 상태·JAR 해시·백업 목록·검사를 따로 확인했다. **배낭 화면, Curios Back 슬롯 착용, `Y` 단축키, Simple Tomb과의 사망 처리, 1.1.8 이하 클라이언트의 접속 거부는 게임에서 확인하지 않았다.** 롤백이 필요하면 서버를 정상 종료한 뒤 이 JAR을 빼고 lock을 이전 커밋으로 되돌린다. 배낭 모드가 월드에 남긴 블록·아이템 데이터 때문에 되돌릴 월드가 필요하면 위 월드 백업으로 [보호 월드 백업 복원](BACKUPS.md#보호-월드-백업-복원)을 판단한다.
 
 ### Modonomicon 2.7.0 교체 (2026-09-25)
 
@@ -172,7 +184,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 `1.1.9`는 `1.1.8`에 서버와 같은 Traveler's Backpack `11.4.0`을 더한 판이다(모드 20개: 서버 공통 15개·클라이언트 전용 5개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap은 계속 `.mrpack` 다운로드 전용). 셰이더 팩, 리소스팩 3개와 기본 활성화, `servers.dat`는 `1.1.8`과 같고, `options.txt`에는 배낭 열기를 상류 기본값 `B` 대신 `Y`로 적은 한 줄(`key_key.travelersbackpack.inventory:key.keyboard.y`)만 더했다. 빌드는 마쳤고 Release는 아직 만들지 않았다. `1.1.9`부터 일반 릴리스로 공개하며 순서는 GitHub 초안(draft) 릴리스 `client-1.1.9`에 자산을 올려 해시 확인 → 월드만 백업한 뒤 서버에 설치·재시작 → 서버 기동 확인 뒤 초안을 일반 릴리스(latest)로 공개다. Iris는 계속 미병합 PR 로컬 빌드다. `B` 중복과 `Y`를 고른 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#119-travelers-backpack-단축키-중복)에 적었다.
+클라이언트 팩 `1.1.9`는 `1.1.8`에 서버와 같은 Traveler's Backpack `11.4.0`을 더한 판이다(모드 20개: 서버 공통 15개·클라이언트 전용 5개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap은 계속 `.mrpack` 다운로드 전용). 셰이더 팩, 리소스팩 3개와 기본 활성화, `servers.dat`는 `1.1.8`과 같고, `options.txt`에는 배낭 열기를 상류 기본값 `B` 대신 `Y`로 적은 한 줄(`key_key.travelersbackpack.inventory:key.keyboard.y`)만 더했다. GitHub 일반 릴리스(latest) [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)로 2026-09-25 공개했고, 서버에도 같은 날 설치했다(위 절). Iris는 계속 미병합 PR 로컬 빌드다. `B` 중복과 `Y`를 고른 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#119-travelers-backpack-단축키-중복)에 적었다.
 
 클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). GitHub 사전 릴리스 [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했고, 서버도 같은 날 2.7.0으로 교체했다. 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 이전 판 기록이다.
 

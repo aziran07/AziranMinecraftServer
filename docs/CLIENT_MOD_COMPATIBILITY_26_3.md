@@ -10,13 +10,13 @@
 아래 "이번에 추가한 모드"는 팩 `1.1.0` 기준에 `1.1.2`·`1.1.3`에서 더한 모드를 합쳐 적었다.
 `1.1.3`은 여기서 Sodium과 Xaero's Minimap을 빼고 JourneyMap을 더한 모드 16개였다.
 `1.1.4`(GitHub 사전 릴리스 `client-1.1.4`)는 `1.1.3`에 Sodium을 되돌리고 Iris 로컬 빌드를 더한 모드 18개와 셰이더 팩 1개다.
-현재 버전 `1.1.5`(GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5))는 모드·셰이더 구성이 `1.1.4`와 같고, 새 인스턴스의
+`1.1.5`(GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5))는 모드·셰이더 구성이 `1.1.4`와 같고, 새 인스턴스의
 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버 하나만 적은 `servers.dat`를 더했다. 모드 호환성 판단은 바뀌지 않는다.
 `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
 `1.1.6`(GitHub 사전 릴리스 `client-1.1.6`)은 `1.1.5`에 서버와 같은 파일인 Simple Tomb `1.9.0`을 더한 모드 19개다.
 Simple Tomb은 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일이 필요하다. JAR 메타데이터의 필수 의존성은
 NeoForge `[26.2.0.0-alpha,)`, Minecraft `[26.2,)`뿐이라 다른 모드와의 의존성 판단은 바뀌지 않는다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
-`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, `1.1.9`는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다.
+`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, 현재 버전 `1.1.9`(GitHub 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9), 2026-09-25 공개·서버 설치)는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다.
 
 ### 1.1.9: Traveler's Backpack 단축키 중복
 
