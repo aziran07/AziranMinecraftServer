@@ -54,12 +54,21 @@ DIST = REPO / "dist"
 TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.10"
+PACK_VERSION = "1.1.11"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.10 구성과 그 바탕인 1.1.9·1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과
+# 1.1.11 구성과 그 바탕인 1.1.10·1.1.9·1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과
 # 같은 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.11은 1.1.10의 모드 21개(같은 JAR), 셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt, "
+    "Nemo 설정 파일을 그대로 두고 Occultism 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)만 새로 만든 "
+    "판이다. 파일 이름과 활성화 ID(file/occultism-ko-1.256.0-mc26.3.zip)는 그대로다. Occultism 안내서 페이지 "
+    "JSON에 직접 적힌 영어 본문 5개(내세나무 묘목, 통나무, 자연산 변종, Otherstone, Otherrock)를 번역하고 "
+    "안내서가 참조하지만 원문 언어 파일에 없는 키 4개를 보완해 Occultism 키가 4,341개가 됐다. 같은 팩에 "
+    "Modonomicon 2.7.0 영어 키 309개 전체의 한국어 번역(assets/modonomicon/lang/ko_kr.json)을 더했다. "
+    "사용자가 기존 게임 인스턴스에 새 번역 팩을 넣어 번역이 적용되는 것을 확인했다. 1.1.11 아카이브로 새로 "
+    "만든 인스턴스의 실행과 모든 책 페이지·링크는 확인하지 않았다. 서버는 바뀌지 않았다. "
+    "이하는 1.1.10 기록이다. "
     "1.1.10은 1.1.9에 클라이언트 전용 모드 Nemo's Inventory Sorting 26.3-1.22.1(Modrinth 버전 aeA0nhgf, "
     "nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar)을 더한 판이다. 인벤토리·상자 화면에 정렬, 같은 아이템 "
     "옮기기, 모두 옮기기, 모두 버리기 버튼과 슬롯 잠금·아이템 검색을 더한다. 필수 의존성은 Minecraft [26.3,)과 "
@@ -758,6 +767,20 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
     nemo = next(mod for mod in mods if "nemos_inventory_sorting" in mod["declared_mod_ids"])
     stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
     lines += [
+        "## 1.1.11 변경: 한국어 번역 팩 갱신",
+        "",
+        f"{translation['title']}(`{translation['filename']}`)만 새로 만들었다. 모드 {len(mods)}개(같은 JAR), 셰이더 팩,",
+        "리소스팩 세 개와 기본 활성화, `options.txt`, `servers.dat`, Nemo 설정 파일은 1.1.10과 같다. 번역 팩의 파일",
+        f"이름과 활성화 ID(`file/{translation['filename']}`)도 그대로다. 서버는 바뀌지 않았다.",
+        "",
+        "- Occultism 안내서 페이지에 직접 적힌 영어 본문 5개(내세나무 묘목, 통나무, 자연산 변종, Otherstone,",
+        "  Otherrock)를 번역하고, 안내서가 참조하지만 원문 언어 파일에 없는 키 4개를 보완했다. Occultism 키는",
+        "  4,341개다.",
+        "- 같은 팩에 Modonomicon 2.7.0 영어 키 309개 전체의 한국어 번역(`assets/modonomicon/lang/ko_kr.json`)을",
+        "  더했다. 책의 버튼·검색·북마크·설정 화면이 한국어로 보인다.",
+        "- 사용자가 새 번역 팩을 **기존 게임 인스턴스**에 넣어 번역이 적용되는 것을 확인했다. 1.1.11 아카이브로",
+        "  새로 만든 인스턴스의 실행과 모든 책 페이지·링크는 확인하지 않았다.",
+        "",
         f"## 1.1.10 변경: {nemo['title']} {nemo['version_number']} 추가",
         "",
         f"인벤토리 정렬 모드 {nemo['title']}(`{nemo['filename']}`)을 더했다. 클라이언트 전용 모드라 서버에는",
@@ -811,7 +834,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "모드는 이 파일이 **없을 때만** 기본값(세 이동 동작이 켜진 상태)으로 새로 만든다. 새 인스턴스는 팩의",
         "파일이 먼저 들어가므로 위 설정으로 시작한다.",
         "",
-        "**이미 만든 인스턴스에 이 모드를 더할 때** (권장은 1.1.10을 새 인스턴스로 가져오는 것이다):",
+        "**이미 만든 인스턴스에 이 모드를 더할 때** (권장은 1.1.10 이상을 새 인스턴스로 가져오는 것이다):",
         "",
         "1. 게임을 끈다.",
         f"2. 맨 위 \"직접 받아 넣는 절차\"대로 `{nemo['filename']}`을 인스턴스의 `mods/`에 넣는다.",
@@ -1225,6 +1248,8 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인한 것:",
         "",
+        "- 사용자가 1.1.11의 새 번역 팩을 기존 게임 인스턴스에 넣어 Occultism 안내서와 Modonomicon 화면에",
+        "  번역이 적용되는 것을 확인했다. 1.1.11 아카이브로 새로 만든 인스턴스에서 확인한 것은 아니다.",
         "- 사용자의 이전 1.1.4 시험 인스턴스(Iris·Sodium·Complementary 포함)는 `options.txt`를 초기화한",
         "  첫 실행에서 Complementary 셰이더 적용과 서버 접속에 성공했다. 두 번째 실행은 위의",
         "  `key.keyboard.-1` 문제로 실패했다.",
@@ -1239,7 +1264,9 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.10 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Nemo's Inventory Sorting의",
+        "- **이 1.1.11 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 새 번역 팩은 사용자가",
+        "  기존 인스턴스에 넣어 번역이 적용되는 것만 확인했고, 모든 책 페이지·링크는 확인하지 않았다.",
+        "- 1.1.10 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Nemo's Inventory Sorting의",
         "  버튼·핫바 제외·슬롯 잠금·검색, 배낭·저장고 같은 모드 전용 화면에서의 호환을",
         "  게임에서 확인하지 않았다(위 \"확인하지 않은 호환성\" 참고).",
         "- 1.1.9 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Traveler's Backpack의 배낭",
@@ -1724,8 +1751,16 @@ def main():
 
     (DIST / "README.md").write_text(readme, encoding="utf-8")
     (DIST / "LICENSES.md").write_text(licenses, encoding="utf-8")
+    # 릴리스에 함께 올리는 파일: 세 아카이브, 설치·라이선스 문서, 번역 팩 단독 ZIP.
+    translation = next(pack for pack in resourcepacks if pack["source"] == "repository-build")
+    release_files = [mrpack_path, zip_path, multimc_path,
+                     DIST / "README.md", DIST / "LICENSES.md", translation["local_path"]]
+    for path in release_files:
+        if path.parent != DIST:
+            raise SystemExit(f"릴리스 파일이 dist/ 밖에 있어 체크섬 목록에 넣을 수 없다: {path}")
     (DIST / "SHA256SUMS.txt").write_text(
-        "".join(f"{archives[name]['sha256']}  {name}\n" for name in sorted(archives)),
+        "".join(f"{file_hashes(path)['sha256']}  {path.name}\n"
+                for path in sorted(release_files, key=lambda path: path.name)),
         encoding="utf-8",
     )
     write_client_lock(server_lock, mods, shaderpacks, resourcepacks, provided, archives)

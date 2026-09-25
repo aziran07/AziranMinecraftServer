@@ -18,7 +18,7 @@ class NemoInventorySortingTests(unittest.TestCase):
         for suffix, prefix in (('.mrpack', 'client-overrides/'),
                                ('-manual.zip', ''), ('-multimc.zip', '.minecraft/')):
             with self.subTest(format=suffix):
-                with zipfile.ZipFile(ROOT / f'dist/aziran-26.3-client-1.1.10{suffix}') as archive:
+                with zipfile.ZipFile(ROOT / f'dist/aziran-26.3-client-1.1.11{suffix}') as archive:
                     self.assertFalse(any(Path(n).name == FILENAME for n in archive.namelist()))
                     settings = json.loads(archive.read(prefix + CONFIG))
                     for key in ('enableDragQuickMove', 'enableSplitQuickMove', 'enableScrollTransfer'):

@@ -54,9 +54,11 @@ docker compose ps
 
 ## 클라이언트 모드팩
 
-현재 버전은 `1.1.10`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 21개, 셰이더 팩 1개, 리소스팩 3개로 구성했습니다. 서버와 공유하는 모드 15개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris·Nemo's Inventory Sorting 6개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.10`은 `1.1.9`에 클라이언트 전용 인벤토리 정렬 모드 Nemo's Inventory Sorting `26.3-1.22.1`을 더했습니다. `1.1.9`는 `1.1.8`에 서버와 같은 배낭 모드 Traveler's Backpack `11.4.0`을 더했습니다. `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.6.0`에서 `26.3-2.7.0`으로 바꿔 책 화면의 왼쪽 버튼 끌기 수정을 담았습니다. `1.1.7`은 `1.1.6`의 모드·셰이더·`servers.dat`를 그대로 두고, 게임 언어를 한국어로 시작하게 하며 Occultism 한국어 번역 리소스팩(기본 켜짐)과 선택 리소스팩 Stay True·Vanilla Experience+(기본 꺼짐)를 더했습니다. `1.1.6`은 `1.1.5`에 서버와 같은 무덤 모드 Simple Tomb `1.9.0`만 더했습니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
+현재 버전은 `1.1.11`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 21개, 셰이더 팩 1개, 리소스팩 3개로 구성했습니다. 서버와 공유하는 모드 15개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris·Nemo's Inventory Sorting 6개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.11`은 `1.1.10`의 모드·셰이더·리소스팩 구성과 `options.txt`·`servers.dat`를 그대로 두고 Occultism 한국어 번역 팩(`occultism-ko-1.256.0-mc26.3.zip`, 파일 이름·활성화 ID 유지)만 새로 만들어 Occultism 안내서의 영어 본문과 Modonomicon 화면을 번역했습니다. `1.1.10`은 `1.1.9`에 클라이언트 전용 인벤토리 정렬 모드 Nemo's Inventory Sorting `26.3-1.22.1`을 더했습니다. `1.1.9`는 `1.1.8`에 서버와 같은 배낭 모드 Traveler's Backpack `11.4.0`을 더했습니다. `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.6.0`에서 `26.3-2.7.0`으로 바꿔 책 화면의 왼쪽 버튼 끌기 수정을 담았습니다. `1.1.7`은 `1.1.6`의 모드·셰이더·`servers.dat`를 그대로 두고, 게임 언어를 한국어로 시작하게 하며 Occultism 한국어 번역 리소스팩(기본 켜짐)과 선택 리소스팩 Stay True·Vanilla Experience+(기본 꺼짐)를 더했습니다. `1.1.6`은 `1.1.5`에 서버와 같은 무덤 모드 Simple Tomb `1.9.0`만 더했습니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
 
-`1.1.10`은 GitHub **일반 릴리스(latest)** [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)로 2026-09-25 14:16 UTC 공개했습니다. 소스 커밋 `f65d6c2`에 태그만 먼저 올리고, 초안 릴리스에 올린 6개 자산을 내려받아 크기·SHA-256이 로컬 산출물과 일치함을 확인한 뒤 공개했습니다. 그다음 `main`을 올려 Pages 배포 실행 [`36146375828`](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36146375828)이 성공했고, `https://aziran.uk`가 HTTP 200으로 `client-1.1.10` 다운로드 링크·팩 이름·모드 21개·정렬 안내 절을 제공하며 링크된 `.mrpack`(HTTP 200, SHA-256 일치)과 배포 페이지가 열리는 것을 확인했습니다. 추가한 모드는 클라이언트 전용이라 서버 구성은 바뀌지 않으므로 서버 재시작·백업이 필요 없고, `1.1.9` 인스턴스도 그대로 접속할 수 있습니다(서버 쪽 조건이 같다는 판단이며 접속 시험은 하지 않았습니다). 기존 인스턴스는 자동으로 업데이트되지 않습니다. `1.1.10` 인스턴스의 게임 실행, 정렬 버튼 동작, 배낭·저장고 같은 모드 전용 화면에서의 호환은 게임에서 확인하지 않았습니다.
+`1.1.11`은 릴리스 [`client-1.1.11`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.11)로 공개할 산출물을 로컬에서 준비했으며, **아직 공개하지 않았습니다.** 릴리스에는 세 아카이브, 설치·라이선스 문서, 번역 팩 단독 ZIP `occultism-ko-1.256.0-mc26.3.zip`(SHA-256 `206fe5460f3cbe3bc84ace4a981ec5924dd52301dddf605895c992409e091c0d`)과 이 6개 파일의 `SHA256SUMS.txt`를 올립니다. 사용자가 새 번역 팩을 기존 게임 인스턴스에 넣어 번역이 적용되는 것을 확인했습니다. `1.1.11` 아카이브로 새로 만든 인스턴스의 실행과 모든 책 페이지·링크는 확인하지 않았습니다. 서버는 바뀌지 않았으므로 서버 재시작이 필요 없고, `1.1.10` 인스턴스도 그대로 접속할 수 있습니다.
+
+`1.1.10`은 GitHub **일반 릴리스**(1.1.11 이전 latest) [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)로 2026-09-25 14:16 UTC 공개했습니다. 소스 커밋 `f65d6c2`에 태그만 먼저 올리고, 초안 릴리스에 올린 6개 자산을 내려받아 크기·SHA-256이 로컬 산출물과 일치함을 확인한 뒤 공개했습니다. 그다음 `main`을 올려 Pages 배포 실행 [`36146375828`](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36146375828)이 성공했고, `https://aziran.uk`가 HTTP 200으로 `client-1.1.10` 다운로드 링크·팩 이름·모드 21개·정렬 안내 절을 제공하며 링크된 `.mrpack`(HTTP 200, SHA-256 일치)과 배포 페이지가 열리는 것을 확인했습니다. 추가한 모드는 클라이언트 전용이라 서버 구성은 바뀌지 않으므로 서버 재시작·백업이 필요 없고, `1.1.9` 인스턴스도 그대로 접속할 수 있습니다(서버 쪽 조건이 같다는 판단이며 접속 시험은 하지 않았습니다). 기존 인스턴스는 자동으로 업데이트되지 않습니다. `1.1.10` 인스턴스의 게임 실행, 정렬 버튼 동작, 배낭·저장고 같은 모드 전용 화면에서의 호환은 게임에서 확인하지 않았습니다.
 
 `1.1.9`는 GitHub **일반 릴리스**(1.1.10 이전 latest) [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)로 2026-09-25 공개했습니다. 초안에 올린 6개 자산의 크기·SHA-256을 로컬 산출물과 대조한 뒤, 서버에 Traveler's Backpack을 설치하고 기동을 확인하고 나서 공개했습니다. 서버는 같은 날 월드만 보호 백업한 뒤 설치했습니다(13:44:54 UTC 정상 종료, 13:45:43 UTC 시작, 13:45:59 UTC healthy). 기록은 [모드 설치 안내](docs/MODS_26_3.md#travelers-backpack-추가-2026-09-25)에 있습니다. `1.1.9`부터는 사전 릴리스가 아닌 일반 릴리스로 공개하지만, 셰이더용 Iris는 여전히 미병합 PR #3354(커밋 `10d3598`)의 로컬 빌드이며 공식 안정판이 아닙니다. 이전 판은 사전 릴리스로 그대로 둡니다. 서버에 이 모드가 들어갔으므로 이 모드가 없는 `1.1.8` 이하 인스턴스로는 접속할 수 없고, `1.1.9`를 새 인스턴스로 가져오도록 안내합니다(`1.1.8` 이하 인스턴스의 실제 접속 거부는 시험하지 않았습니다). 사이트 소스는 `client-1.1.9` 링크로 바꿨지만 작업 브랜치에서는 Pages 환경 보호 규칙 때문에 배포되지 않았고, PR #7을 `main`에 병합(`0a0056b`)한 뒤 [배포 실행 `36144033527`](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36144033527)이 성공해 해결됐습니다(2026-09-25). `1.1.9` 인스턴스의 게임 실행, 배낭 화면·Curios 착용·`Y` 단축키, 사망 시 배낭 처리는 게임에서 확인하지 않았습니다.
 
@@ -68,9 +70,9 @@ docker compose ps
 
 `1.1.6`은 GitHub **사전 릴리스(prerelease)** [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있으며, 리소스팩을 추가하기 전 판입니다. 서버는 `client-1.1.6` Release 공개와 사이트 배포를 마친 뒤 2026-09-25에 재시작해 Simple Tomb을 활성화했으므로, 이 모드가 없는 `1.1.5` 이하 팩으로는 접속할 수 없습니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.** 이전 버전 `1.1.5`와 `1.1.4`는 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5), [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)에 `.mrpack`과 설치 안내·라이선스 문서·체크섬으로 공개되어 있고 그대로 둡니다. 서버가 Simple Tomb을 활성화했으므로 두 판으로는 접속할 수 없습니다.
 
-- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.10.mrpack)
-- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.10-multimc.zip)
-- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.10-manual.zip)
+- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.11.mrpack)
+- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.11-multimc.zip)
+- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.11-manual.zip)
 - [설치 안내](dist/README.md), [라이선스](dist/LICENSES.md), [고정 목록](mods-26.3-client.lock.json)
 - [클라이언트 모드 호환성 검토](docs/CLIENT_MOD_COMPATIBILITY_26_3.md)
 
@@ -84,6 +86,14 @@ docker compose ps
 - Vanilla Experience+ `2.0` 리소스팩 — [제작자 FAQ](https://modrinth.com/resourcepack/vanilla-exp)가 모드팩 의존성 사용은 허락하지만 에셋 재배포는 명시적 허가 없이 금지합니다.
 
 **`.mrpack`을 쓰는 쪽을 권합니다.** 런처가 설치 중에 Modrinth CDN에서 네 파일을 받으므로 모드 21개와 셰이더 팩, 리소스팩이 모두 갖춰집니다. MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있습니다([MultiMC 위키](https://github.com/MultiMC/Launcher/wiki/Import-Instance), 실제 가져오기는 시험하지 않았습니다). ZIP 두 개를 쓰면 모드 19개와 리소스팩 2개(번역·Stay True)만 설치되며, 팩 안 `README.md`가 나머지 파일을 공식 배포처에서 받아 `mods/`·`shaderpacks/`·`resourcepacks/`에 넣는 절차와 SHA-512를 안내합니다. 셰이더 팩과 Vanilla Experience+는 선택 사항이라 넣지 않아도 접속할 수 있습니다.
+
+### 1.1.11: 한국어 번역 팩 갱신
+
+Occultism 한국어 번역 팩 `occultism-ko-1.256.0-mc26.3.zip`만 새로 만들었습니다. 모드 21개(같은 JAR), 셰이더 팩, 리소스팩 3개와 기본 활성화, `options.txt`, `servers.dat`, Nemo 설정 파일은 `1.1.10`과 같고, 번역 팩의 파일 이름과 활성화 ID(`file/occultism-ko-1.256.0-mc26.3.zip`)도 그대로입니다. 자세한 번역 범위와 검증은 [번역 문서](docs/OCCULTISM_KO_TRANSLATION.md)에 있습니다.
+
+- Occultism 안내서 페이지에 직접 적힌 영어 본문 5개(내세나무 묘목, 통나무, 자연산 변종, Otherstone, Otherrock)를 번역하고, 안내서가 참조하지만 원문 언어 파일에 없는 키 4개를 보완했습니다. Occultism 키는 4,341개입니다.
+- 같은 팩에 Modonomicon `2.7.0` 영어 키 309개 전체의 한국어 번역(`assets/modonomicon/lang/ko_kr.json`)을 더했습니다.
+- **확인한 것과 하지 않은 것:** 사용자가 새 번역 팩을 기존 게임 인스턴스에 넣어 번역이 적용되는 것을 확인했습니다. `1.1.11` 아카이브로 새로 만든 인스턴스의 실행과 모든 책 페이지·링크는 확인하지 않았습니다.
 
 ### 1.1.10: Nemo's Inventory Sorting 추가
 
@@ -117,7 +127,7 @@ docker compose ps
 
 | 리소스팩 | 출처 | 팩 포함 | 기본 상태 |
 | --- | --- | --- | --- |
-| Occultism 한국어 번역 `occultism-ko-1.256.0-mc26.3.zip` | 이 저장소([번역 문서](docs/OCCULTISM_KO_TRANSLATION.md)), MIT(원작 Occultism) | 세 아카이브에 포함 | **켜짐** |
+| Occultism 한국어 번역 `occultism-ko-1.256.0-mc26.3.zip` | 이 저장소([번역 문서](docs/OCCULTISM_KO_TRANSLATION.md)), MIT(원작 Occultism), `1.1.11`부터 Modonomicon 번역은 CC-BY-SA-4.0 | 세 아카이브에 포함 | **켜짐** |
 | Stay True `1.21.5` | [CurseForge](https://www.curseforge.com/minecraft/texture-packs/stay-true) 파일 `6534716`(2025-05-16), haimcyfly | 세 아카이브에 원본 그대로 포함 | 꺼짐 |
 | Vanilla Experience+ `2.0` | [Modrinth](https://modrinth.com/resourcepack/vanilla-exp) 버전 `UBuTOpY1`(26.1~26.3 지원), Kryqu | `.mrpack` 설치 중 Modrinth CDN 다운로드 | 꺼짐 |
 
@@ -170,7 +180,7 @@ Occultism 26.3 소스(커밋 `631457c`)의 `ClientSetupEventHandler.java` 218행
 
 빌더는 옛 구성을 실수로 다시 가져오는 일을 막기 위해 `dist/`에 **이번 버전의 MultiMC 인스턴스 ZIP만 남기고 이전 버전 인스턴스 ZIP은 데스크톱 휴지통으로 보냅니다.** 영구 삭제가 아니라 `gio trash`를 쓰므로 파일 관리자나 `gio trash --restore`로 되돌릴 수 있습니다. `gio`가 없거나 실패하면 빌드를 중단합니다. 이전 버전의 `.mrpack`과 수동 ZIP은 그대로 둡니다. **런처에 이미 가져와 둔 인스턴스는 영향을 받지 않습니다.**
 
-MultiMC 인스턴스 ZIP의 인스턴스 이름은 `Aziran 26.3 Client 1.1.10`입니다. Minecraft `26.3`과 NeoForge `26.3.0.8-beta`는 `mmc-pack.json`의 컴포넌트로만 지정해 런처가 공식 메타데이터에서 내려받으므로 첫 실행에 인터넷 연결과 로그인한 계정이 필요합니다. Java `25` 경로는 `Edit Instance` → `Settings` → `Java`에서 직접 지정합니다.
+MultiMC 인스턴스 ZIP의 인스턴스 이름은 `Aziran 26.3 Client 1.1.11`입니다. Minecraft `26.3`과 NeoForge `26.3.0.8-beta`는 `mmc-pack.json`의 컴포넌트로만 지정해 런처가 공식 메타데이터에서 내려받으므로 첫 실행에 인터넷 연결과 로그인한 계정이 필요합니다. Java `25` 경로는 `Edit Instance` → `Settings` → `Java`에서 직접 지정합니다.
 
 클라이언트 전용 모드·셰이더 팩·리소스팩의 고정 목록은 [mods-26.3-client-extra.lock.json](mods-26.3-client-extra.lock.json)이며, JAR·셰이더 팩·외부 리소스팩·Iris 소스 번들은 Git에서 제외한 `client-mods-cache/`에 둡니다. 생성 파일은 `dist/`에 있으며 Git에는 포함하지 않습니다. `python3 scripts/build_client_pack.py`로 다시 생성합니다. 파일 무결성·의존성·아카이브 구성은 리눅스에서 검증했고, `1.1.4` 팩으로 새로 만든 인스턴스의 Windows 두 번 연속 실행 성공은 사용자 보고로 확인했습니다(서버 접속·셰이더 적용 여부는 그 보고에 없음). `1.1.5`는 `servers.dat` 구성만 파일 수준에서 검증했고, `1.1.6`은 세 아카이브의 Simple Tomb JAR이 서버 파일과 같은 SHA-512인지 파일 수준에서 검증했습니다. 두 버전 모두 게임 실행은 확인하지 않았습니다. `1.1.7`은 리소스팩의 크기·해시·ZIP 무결성, 세 아카이브의 번역 팩 바이트 일치, `options.txt` 기본값을 파일 수준에서 검증했고, `options.txt` 형식과 리소스팩 우선순위는 26.3 클라이언트·NeoForge 소스로 확인했습니다. 게임 실행은 확인하지 않았습니다.
 
