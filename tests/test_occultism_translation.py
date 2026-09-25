@@ -135,9 +135,12 @@ class ResourcePackTests(unittest.TestCase):
                 data = read_json((TRANSLATIONS / f'{name}.json').read_text())
                 self.assertFalse(set(merged) & set(data))
                 merged.update(data)
+            literals = read_json((TRANSLATIONS / 'book_overrides.json').read_text())
+            self.assertFalse(set(merged) & set(literals))
+            merged.update(literals)
             actual = read_json(archive.read('assets/occultism/lang/ko_kr.json'))
             self.assertEqual(actual, merged)
-            self.assertEqual(set(actual), set(source()))
+            self.assertEqual(set(actual), set(source()) | set(literals))
 
 
 class BuilderFailureTests(unittest.TestCase):

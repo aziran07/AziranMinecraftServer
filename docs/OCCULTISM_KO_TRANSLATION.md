@@ -2,7 +2,8 @@
 
 ## 범위와 기준
 
-Minecraft 26.3 / Occultism 1.256.0의 영어 키 4,332개 전체를 대상으로 한다.
+기본 번역은 Minecraft 26.3 / Occultism 1.256.0의 영어 키 4,332개 전체를 대상으로 한다.
+후속 확장은 안내서 누락 문자열 9개와 Modonomicon 2.7.0의 영어 키 309개를 포함한다.
 [확정 용어집](OCCULTISM_KO_GLOSSARY.md)을 적용해 기존 한국어도 현재 원문과 대조한다.
 결과물은 한국어를 선택한 클라이언트에 적용할 독립 리소스팩이다.
 모드 JAR, 서버 설정·월드, 공개 다운로드와 기존 배포 팩은 변경 범위에 포함하지 않는다.
@@ -11,7 +12,67 @@ Minecraft 26.3 / Occultism 1.256.0의 영어 키 4,332개 전체를 대상으로
 SHA-256: `118d02366adffbd8ebbe0024f484c88d8720eff43fb70b1adfd7d0fde74ddb51`.
 원문 경로: `assets/occultism/lang/en_us.json`.
 기존 한국어: `assets/occultism/lang/ko_kr.json`.
-현재 영어에 없는 구버전 키는 새 팩에 포함하지 않는다.
+현재 영어에 없는 구버전 키는 새 팩에 포함하지 않는다. 단, 현재 안내서 페이지에서 실제 참조하는
+누락 키와 언어 파일 밖의 본문은 아래의 확장 범위에 따라 별도로 검증한다.
+
+## 안내서 및 Modonomicon 번역 확장 (2026-09-25)
+
+사용자 화면에서 내세나무 묘목·통나무 제목만 한국어이고 본문은 영어인 문제가 확인됐다.
+기존 검증은 `en_us.json`의 4,332개 키만 대상으로 삼아, 페이지 JSON에 직접 적힌 영어를 놓쳤다.
+기존 16개 테스트가 통과해도 이 문제는 발견되지 않았다.
+
+확장 범위와 구현 전 검증 기준:
+
+- Occultism의 `data/occultism/modonomicon/books/**/*.json`에 있는 `text`, `title`,
+  `name`, `description` 값을 언어 파일과 대조한다. 원문에 없는 문자열은 정확히 9개다.
+- 직접 적힌 영어 본문 5개: 내세나무 묘목, 통나무, 자연산 변종, Otherstone, Otherrock.
+  `translations/occultism/ko_kr/book_overrides.json`에 원문 문자열을 **마지막 개행까지 그대로**
+  키로 삼아 한국어를 넣는다.
+- 같은 파일에서 원문에 빠진 키 4개도 보완한다. 엔더맨·엔더마이트·가스트 빙의 설명 제목은
+  해당 항목 이름의 기존 번역을 사용한다. `craft_eldritch_chalice.ritual2.text`는 연결된
+  `misc_celestial_chalice` 제작법의 실제 결과물을 바탕으로 짧은 제작 의식 설명을 넣는다.
+  이는 없는 영어 문장을 추측해 번역하는 것이 아니라, 확인한 페이지 맥락으로 누락 표기를 보완하는 결정이다.
+- Modonomicon 2.7.0의 영어 키 309개 전체를 `translations/modonomicon/ko_kr.json`에 번역한다.
+  버튼·검색·북마크·설정·명령·연구 알림·예제 안내서를 포함한다. 브랜드·기호·순수 서식은 보존한다.
+  예제의 크기 조정용 Lorem ipsum, 코드 식별자, 로그 검색용 원문 문구도 용도에 맞게 보존한다.
+  기준 JAR은 `server-data-26.3-neoforge/mods/modonomicon-26.3-neoforge-2.7.0.jar`,
+  SHA-256은 `27e1ca11f161012cc95c114beb5b58a96081d189857301c0d8a93466a4ad370a`다.
+- 기존 ZIP 파일명과 활성화 ID를 유지하고, 그 안에 Occultism 4,341개 키와
+  `assets/modonomicon/lang/ko_kr.json` 309개 키를 담는다. 기존 클라이언트 빌더도 같은 ZIP을 포함한다.
+- 추가 입력도 고정 JAR·정확한 키 집합·중복·문자열 타입을 확인한다. 빌드는 오프라인·결정적·원자적으로
+  수행하고 실패하면 기존 ZIP을 유지한다. 치환자·링크·서식 코드 보존과 실제 한국어 여부를 검사한다.
+- 자동 검증은 `tests/test_book_translation.py`와 기존 번역·클라이언트 팩 검사로 수행한다.
+  실제 게임 화면에서 줄바꿈·글자 잘림까지 확인한 것으로 보고하지 않는다.
+
+[Modonomicon의 BookTextHolder 소스](https://github.com/klikli-dev/modonomicon/blob/version/26.3/common/src/main/java/com/klikli_dev/modonomicon/book/BookTextHolder.java)는
+일반 문자열도 `I18n.get(this.string)`으로 조회한다. 따라서 원문 문장 자체를 언어 키로 추가하면 된다.
+설치된 2.7.0 JAR의 `BookTextHolder.class`도 독립적으로 읽어 `getString()`의 일반 문자열 분기에서
+`I18n.get(String, Object[])` 호출을 확인했다. Modonomicon 자체 안내서의 같은 필드도 검사했으며
+영어 언어 파일 밖에 남은 문자열은 없었다.
+서버 데이터팩·모드 JAR·월드 변경이나 서버 재시작은 필요하지 않다.
+
+Modonomicon 번역의 출처·변경 사실·CC-BY-SA-4.0 고지를 팩에 추가한다.
+[상류 README](https://github.com/klikli-dev/modonomicon#licensing)와 라이선스 전문은 에셋을
+CC-BY-SA-4.0으로 명시한다. 상류 파일명이 `LICENSES/CC-BY-4.0.txt`이고 모드 메타데이터가
+`CC-BY-4.0`이라고 적힌 것과 차이가 있으므로 실제 전문을 보존한다. Occultism의 MIT 고지는 유지한다.
+
+### 확장 결과와 검증
+
+- Occultism 4,341개 키(기존 4,332개 + 안내서 보완 9개), Modonomicon 309개 키를 포함한다.
+- `python3 scripts/build_occultism_resource_pack.py`를 Codex가 독립 실행해 동일 산출물을 확인했다.
+  ZIP은 121,472바이트, SHA-256은
+  `206fe5460f3cbe3bc84ace4a981ec5924dd52301dddf605895c992409e091c0d`다.
+- `python3 -m unittest discover -s tests -v`: Codex 독립 실행 **64개 통과**.
+  안내서 본문 누락 회귀 검사, Modonomicon 전체 키·한국어·치환자·링크·서식·숫자 검사,
+  잘못된 입력에서 기존 산출물 보존, 세 클라이언트 배포 형식에 동일 ZIP 포함을 확인했다.
+- Modonomicon의 화면·설정·명령·연구 안내와 예제 본문을 원문과 대조했다. 기존 Occultism의
+  세 번역 파일은 변경하지 않았다.
+- 로컬 클라이언트 아카이브와 생성 lock도 새 번역으로 다시 만들었다. 버전명은 아직 `1.1.10`이므로
+  현재 작업 폴더의 아카이브·생성 lock 해시는 기존 공개 `client-1.1.10` 릴리스와 다르다.
+  **공개 릴리스 파일은 교체하지 않았다.** 다음 클라이언트 공개 시에는 새 버전으로 발행해야 한다.
+- 기존 인스턴스에는 새 `occultism-ko-1.256.0-mc26.3.zip`으로 같은 이름의 파일을 교체하고
+  한국어·리소스팩 활성화 상태를 확인한다. 기존 팩 활성화 ID는 유지했다.
+  게임 내 줄바꿈·글자 잘림·링크 이동은 아직 확인하지 않았다.
 
 ## 파일 소유권과 분할
 
@@ -69,7 +130,7 @@ python3 -m unittest discover -s tests -p test_occultism_translation.py -v
 이 팩은 `ko_kr` 번역만 제공한다. 버전이 다른 모드에는 새 키·변경된 설명이 있을 수 있으므로 동일한 번역 범위를 보장하지 않는다.
 Occultism 원문과 기존 번역의 출처 및 [상류 MIT 라이선스](https://raw.githubusercontent.com/klikli-dev/occultism/version/26.3/LICENSE)를 팩에 포함한다.
 
-## 현재 상태
+## 최초 제작 검증 기록 (확장 전)
 
 **번역·팩 제작·정적 검증 완료 (2026-09-25).**
 

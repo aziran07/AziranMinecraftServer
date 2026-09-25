@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
-"""Occultism 1.256.0 한국어 번역 리소스팩 빌더.
+"""Occultism 1.256.0·Modonomicon 2.7.0 한국어 번역 리소스팩 빌더.
 
 고정한 Occultism JAR의 en_us.json 키 집합을 기준으로 세 번역 JSON
 (interface, guide_basics, guide_advanced)을 검증하고 합쳐 리소스팩 ZIP을 만든다.
+Occultism 안내서 데이터에 언어 키 대신 영어 문장이나 en_us.json에 없는 키가 그대로 적힌
+필드는 book_overrides.json이 원문 문자열 그대로를 키로 삼아 보완한다. Modonomicon은
+BookTextHolder에서 이런 문자열도 I18n.get으로 조회하므로 언어 키로 추가하면 번역된다.
+고정한 Modonomicon JAR의 en_us.json 전체는 translations/modonomicon/ko_kr.json으로 번역한다.
 
 - 원문 JAR의 SHA-256이 고정값과 다르면 중단한다.
 - 번역 JSON의 중복 키, 객체가 아닌 최상위 값, 문자열이 아닌 값, 분할 범위를 벗어난 키,
   파일 사이의 겹치는 키, 원문 대비 누락·추가 키를 모두 모아 알리고 중단한다.
+  안내서 보완 파일과 Modonomicon 번역도 원문 대비 누락·추가·중복 키와 잘못된 값을 알리고 중단한다.
 - 검증을 모두 통과한 뒤에만 같은 폴더의 임시 파일에 쓰고 교체하므로, 실패하면
   기존 산출물은 그대로 남고 새 ZIP은 생기지 않는다.
 - 빌드 중에는 아무것도 내려받지 않는다. 팩 메타데이터와 라이선스·출처 파일은
-  translations/occultism/ 아래의 저장된 파일을 그대로 담는다.
+  translations/occultism/과 translations/modonomicon/ 아래의 저장된 파일을 그대로 담는다.
 
 ZIP 항목 순서와 시각·권한은 고정해 같은 입력이면 같은 바이트가 나온다.
 """
@@ -29,10 +34,21 @@ DEFAULT_SOURCE_JAR = REPO / "server-data-26.3-neoforge/mods/occultism-26.3-neofo
 DEFAULT_TRANSLATIONS = REPO / "translations/occultism/ko_kr"
 DEFAULT_OUTPUT = REPO / "dist/occultism-ko-1.256.0-mc26.3.zip"
 PACK_FILES = REPO / "translations/occultism"
+DEFAULT_MODONOMICON_JAR = REPO / "server-data-26.3-neoforge/mods/modonomicon-26.3-neoforge-2.7.0.jar"
+DEFAULT_MODONOMICON_TRANSLATIONS = REPO / "translations/modonomicon/ko_kr.json"
+MODONOMICON_LICENSE = REPO / "translations/modonomicon/LICENSE"
 
 SOURCE_SHA256 = "118d02366adffbd8ebbe0024f484c88d8720eff43fb70b1adfd7d0fde74ddb51"
 SOURCE_LANG = "assets/occultism/lang/en_us.json"
 TARGET_LANG = "assets/occultism/lang/ko_kr.json"
+BOOKS_PREFIX = "data/occultism/modonomicon/books/"
+BOOK_TEXT_FIELDS = ("text", "title", "name", "description")
+BOOK_OVERRIDES = "book_overrides.json"
+
+MODONOMICON_SHA256 = "27e1ca11f161012cc95c114beb5b58a96081d189857301c0d8a93466a4ad370a"
+MODONOMICON_SOURCE_LANG = "assets/modonomicon/lang/en_us.json"
+MODONOMICON_TARGET_LANG = "assets/modonomicon/lang/ko_kr.json"
+MODONOMICON_LICENSE_ENTRY = "LICENSE-Modonomicon-CC-BY-SA-4.0.txt"
 # 로컬 Minecraft 26.3 클라이언트 JAR의 version.json이 밝힌 resource version 97.1.
 PACK_FORMAT = [97, 1]
 
@@ -80,17 +96,79 @@ def parse_json_object(text, label):
     return data
 
 
-def read_source(jar_path):
+def check_pinned_jar(jar_path, expected_sha256):
     if not jar_path.is_file():
         raise BuildError(f"원문 JAR이 없습니다: {jar_path}")
     digest = hashlib.sha256(jar_path.read_bytes()).hexdigest()
-    if digest != SOURCE_SHA256:
+    if digest != expected_sha256:
         raise BuildError(
             f"원문 JAR의 SHA-256이 고정값과 다릅니다: {jar_path}\n"
-            f"  기대값: {SOURCE_SHA256}\n  실제값: {digest}")
+            f"  기대값: {expected_sha256}\n  실제값: {digest}")
+
+
+def read_source(jar_path):
+    """Occultism 영어 원문과, 안내서 데이터에서 원문 키로 풀리지 않는 문자열 목록을 돌려준다."""
+    check_pinned_jar(jar_path, SOURCE_SHA256)
     with zipfile.ZipFile(jar_path) as archive:
-        text = archive.read(SOURCE_LANG).decode("utf-8")
-    return parse_json_object(text, f"{jar_path}!{SOURCE_LANG}")
+        source = parse_json_object(archive.read(SOURCE_LANG).decode("utf-8"), f"{jar_path}!{SOURCE_LANG}")
+        unresolved = set()
+        for name in sorted(archive.namelist()):
+            if not name.startswith(BOOKS_PREFIX) or not name.endswith(".json"):
+                continue
+            document = parse_json_object(archive.read(name).decode("utf-8"), f"{jar_path}!{name}")
+            for field in BOOK_TEXT_FIELDS:
+                value = document.get(field)
+                if isinstance(value, str) and value and value not in source:
+                    unresolved.add(value)
+    return source, sorted(unresolved)
+
+
+def read_book_overrides(translations_dir, unresolved):
+    """안내서의 풀리지 않는 문자열마다 정확히 하나의 번역이 있는지 확인해 원문 순서로 돌려준다."""
+    path = translations_dir / BOOK_OVERRIDES
+    if not path.is_file():
+        raise BuildError(f"{path}: 번역 파일이 없습니다.")
+    data = parse_json_object(path.read_text(encoding="utf-8"), str(path))
+    problems = []
+    non_strings = sorted(key for key, value in data.items() if not isinstance(value, str) or not value.strip())
+    if non_strings:
+        problems.append(f"{path}: 비어 있거나 문자열이 아닌 값 {len(non_strings)}개: " + ", ".join(
+            json.dumps(key, ensure_ascii=False) for key in non_strings))
+    extra = sorted(set(data) - set(unresolved))
+    if extra:
+        problems.append(f"{path}: 안내서 데이터에 없는 원문 {len(extra)}개: " + ", ".join(
+            json.dumps(key, ensure_ascii=False) for key in extra))
+    missing = [key for key in unresolved if key not in data]
+    if missing:
+        problems.append(f"{path}: 번역이 없는 안내서 원문 {len(missing)}개: " + ", ".join(
+            json.dumps(key, ensure_ascii=False) for key in missing))
+    if problems:
+        raise BuildError("\n".join(problems))
+    return {key: data[key] for key in unresolved}
+
+
+def read_modonomicon(jar_path, translations_path):
+    """고정한 Modonomicon 영어 원문과 키 집합이 정확히 같은 한국어 번역을 원문 순서로 돌려준다."""
+    check_pinned_jar(jar_path, MODONOMICON_SHA256)
+    with zipfile.ZipFile(jar_path) as archive:
+        source = parse_json_object(archive.read(MODONOMICON_SOURCE_LANG).decode("utf-8"),
+                                   f"{jar_path}!{MODONOMICON_SOURCE_LANG}")
+    if not translations_path.is_file():
+        raise BuildError(f"{translations_path}: 번역 파일이 없습니다.")
+    data = parse_json_object(translations_path.read_text(encoding="utf-8"), str(translations_path))
+    problems = []
+    non_strings = sorted(key for key, value in data.items() if not isinstance(value, str))
+    if non_strings:
+        problems.append(f"{translations_path}: 문자열이 아닌 값 {len(non_strings)}개: " + ", ".join(non_strings))
+    extra = sorted(key for key in data if key not in source)
+    if extra:
+        problems.append(f"{translations_path}: 원문에 없는 키 {len(extra)}개: " + ", ".join(extra))
+    missing = [key for key in source if key not in data]
+    if missing:
+        problems.append(f"{translations_path}: 번역이 없는 원문 키 {len(missing)}개: " + ", ".join(missing))
+    if problems:
+        raise BuildError("\n".join(problems))
+    return {key: data[key] for key in source}
 
 
 def read_translations(translations_dir, source):
@@ -144,10 +222,11 @@ def read_translations(translations_dir, source):
 
 
 def read_pack_files():
-    """저장된 pack.mcmeta, LICENSE, NOTICE.md를 확인하고 ZIP 경로별 바이트로 돌려준다."""
+    """저장된 pack.mcmeta, 라이선스, NOTICE.md를 확인하고 ZIP 경로별 바이트로 돌려준다."""
+    sources = {name: PACK_FILES / name for name in ("pack.mcmeta", "LICENSE", "NOTICE.md")}
+    sources[MODONOMICON_LICENSE_ENTRY] = MODONOMICON_LICENSE
     files = {}
-    for name in ("pack.mcmeta", "LICENSE", "NOTICE.md"):
-        path = PACK_FILES / name
+    for name, path in sources.items():
         if not path.is_file() or not path.read_bytes().strip():
             raise BuildError(f"팩 파일이 없거나 비어 있습니다: {path}")
         files[name] = path.read_bytes()
@@ -183,21 +262,31 @@ def write_pack(output, entries):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Occultism 한국어 번역 리소스팩을 만듭니다.")
+    parser = argparse.ArgumentParser(description="Occultism·Modonomicon 한국어 번역 리소스팩을 만듭니다.")
     parser.add_argument("--source-jar", type=Path, default=DEFAULT_SOURCE_JAR,
                         help=f"고정한 Occultism JAR (기본값: {DEFAULT_SOURCE_JAR.relative_to(REPO)})")
     parser.add_argument("--translations-dir", type=Path, default=DEFAULT_TRANSLATIONS,
-                        help="interface/guide_basics/guide_advanced.json이 있는 폴더 "
+                        help=f"interface/guide_basics/guide_advanced.json과 {BOOK_OVERRIDES}가 있는 폴더 "
                              f"(기본값: {DEFAULT_TRANSLATIONS.relative_to(REPO)})")
+    parser.add_argument("--modonomicon-jar", type=Path, default=DEFAULT_MODONOMICON_JAR,
+                        help=f"고정한 Modonomicon JAR (기본값: {DEFAULT_MODONOMICON_JAR.relative_to(REPO)})")
+    parser.add_argument("--modonomicon-translations", type=Path, default=DEFAULT_MODONOMICON_TRANSLATIONS,
+                        help="Modonomicon 한국어 번역 JSON "
+                             f"(기본값: {DEFAULT_MODONOMICON_TRANSLATIONS.relative_to(REPO)})")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT,
                         help=f"만들 ZIP 경로 (기본값: {DEFAULT_OUTPUT.relative_to(REPO)})")
     args = parser.parse_args()
 
     try:
-        source = read_source(args.source_jar)
+        source, unresolved = read_source(args.source_jar)
         translations = read_translations(args.translations_dir, source)
+        overrides = read_book_overrides(args.translations_dir, unresolved)
+        translations.update(overrides)
+        modonomicon = read_modonomicon(args.modonomicon_jar, args.modonomicon_translations)
         entries = read_pack_files()
         entries[TARGET_LANG] = (json.dumps(translations, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        entries[MODONOMICON_TARGET_LANG] = (
+            json.dumps(modonomicon, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         write_pack(args.output, entries)
     except BuildError as error:
         print(f"빌드 실패: {error}", file=sys.stderr)
@@ -205,7 +294,8 @@ def main():
         return 1
 
     digest = hashlib.sha256(args.output.read_bytes()).hexdigest()
-    print(f"{args.output}: 번역 키 {len(translations)}개, {args.output.stat().st_size} bytes, SHA-256 {digest}")
+    print(f"{args.output}: Occultism 번역 키 {len(translations)}개(안내서 보완 {len(overrides)}개 포함), "
+          f"Modonomicon 번역 키 {len(modonomicon)}개, {args.output.stat().st_size} bytes, SHA-256 {digest}")
     return 0
 
 

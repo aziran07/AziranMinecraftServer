@@ -452,7 +452,9 @@
           "translations/occultism/ko_kr/",
           "translations/occultism/pack.mcmeta",
           "translations/occultism/LICENSE",
-          "translations/occultism/NOTICE.md"
+          "translations/occultism/NOTICE.md",
+          "translations/modonomicon/ko_kr.json",
+          "translations/modonomicon/LICENSE"
         ],
         "note": "이 저장소에서 만드는 번역 팩이라 해시를 입력 lock에 고정하지 않는다. build_client_pack.py가 패키징 직전에 번역 빌더를 실행해 새로 만들고, 그 결과의 크기·해시를 생성 lock에 기록한다."
       },
@@ -466,15 +468,15 @@
           1
         ]
       },
-      "client_reason": "Occultism 1.256.0 전체 영어 원문(4,332개 키)을 다시 번역한 한국어 언어 파일. 게임 언어를 한국어로 두고 기본으로 켠다.",
+      "client_reason": "Occultism 1.256.0 전체 영어 원문(4,332개 키)을 다시 번역하고 안내서 데이터에만 있는 문장·누락 키 9개를 보완한 한국어 언어 파일과, 안내서 화면을 제공하는 Modonomicon 2.7.0 전체 영어 원문(309개 키)의 한국어 언어 파일. 게임 언어를 한국어로 두고 기본으로 켠다.",
       "enabled_by_default": true,
       "bundle_file": true,
-      "bundle_reason": "이 저장소가 만든 번역이며, 원작 Occultism의 MIT License 조건대로 팩 안의 LICENSE·NOTICE.md에 원작 저작권 고지와 라이선스 전문을 담는다. 세 아카이브 모두에 같은 바이트로 담는다.",
+      "bundle_reason": "이 저장소가 만든 번역이며, 원작 Occultism의 MIT License와 원작 Modonomicon 에셋의 CC-BY-SA-4.0 조건대로 팩 안의 LICENSE·LICENSE-Modonomicon-CC-BY-SA-4.0.txt·NOTICE.md에 원작 저작권 고지, 변경 사실과 라이선스 전문을 담는다. 세 아카이브 모두에 같은 바이트로 담는다.",
       "license": {
-        "id": "MIT",
-        "name": "MIT License (원작 Occultism)",
+        "id": "MIT AND CC-BY-SA-4.0",
+        "name": "MIT License (원작 Occultism) / CC-BY-SA-4.0 (원작 Modonomicon 에셋)",
         "url": "https://github.com/klikli-dev/occultism/blob/version/26.3/LICENSE",
-        "note": "Occultism 원작의 MIT License 전문과 기존 한국어 번역 기여자 표기를 팩 안 LICENSE·NOTICE.md에 담는다. 비공식 번역이며 원작자가 검토하지 않았다."
+        "note": "Occultism 번역은 원작의 MIT License 전문과 기존 한국어 번역 기여자 표기를 팩 안 LICENSE·NOTICE.md에 담는다. Modonomicon 번역은 원작 에셋 라이선스(https://github.com/klikli-dev/modonomicon#licensing)대로 CC-BY-SA-4.0으로 배포하며 전문을 LICENSE-Modonomicon-CC-BY-SA-4.0.txt에, 출처·변경 사실을 NOTICE.md에 담는다. 상류 파일명 LICENSES/CC-BY-4.0.txt와 달리 그 내용은 CC-BY-SA-4.0 전문이다. 비공식 번역이며 두 원작자 모두 검토하지 않았다."
       }
     },
     {

@@ -71,14 +71,16 @@
           "translations/occultism/ko_kr/",
           "translations/occultism/pack.mcmeta",
           "translations/occultism/LICENSE",
-          "translations/occultism/NOTICE.md"
+          "translations/occultism/NOTICE.md",
+          "translations/modonomicon/ko_kr.json",
+          "translations/modonomicon/LICENSE"
         ],
         "note": "이 저장소에서 만드는 번역 팩이라 해시를 입력 lock에 고정하지 않는다. build_client_pack.py가 패키징 직전에 번역 빌더를 실행해 새로 만들고, 그 결과의 크기·해시를 생성 lock에 기록한다."
       },
-      "size": 105993,
-      "sha1": "f306579c1f0853fa5e1c1688ed6dea7818245d58",
-      "sha512": "feb0a731dbe75d51463c4fd42574de6fc3a5ad56fa030ac27a9a375b5e288e0713bc5c94ec78be1db473652f9c45e233c5d97bfda0b474ee175eccea5e5115e9",
-      "sha256": "5affd2607b882309e6a93013654c4f6fadb512a21b50c74fb2fabc18d7242f44",
+      "size": 121472,
+      "sha1": "49f28c6d971339d210f40087435251c98406d52d",
+      "sha512": "6a5fbb02d1efa176e54fd15c7139119aa64a8fe5f44978a375a2805fc8a9e9dfea1deb6bcb54a9a483c405e5db52a1814894889713a357a0cfa480dd8d9530fb",
+      "sha256": "206fe5460f3cbe3bc84ace4a981ec5924dd52301dddf605895c992409e091c0d",
       "pack_format": {
         "min_format": [
           97,
@@ -91,13 +93,13 @@
       },
       "compatibility_note": null,
       "license": {
-        "id": "MIT",
-        "name": "MIT License (원작 Occultism)",
+        "id": "MIT AND CC-BY-SA-4.0",
+        "name": "MIT License (원작 Occultism) / CC-BY-SA-4.0 (원작 Modonomicon 에셋)",
         "url": "https://github.com/klikli-dev/occultism/blob/version/26.3/LICENSE",
-        "note": "Occultism 원작의 MIT License 전문과 기존 한국어 번역 기여자 표기를 팩 안 LICENSE·NOTICE.md에 담는다. 비공식 번역이며 원작자가 검토하지 않았다."
+        "note": "Occultism 번역은 원작의 MIT License 전문과 기존 한국어 번역 기여자 표기를 팩 안 LICENSE·NOTICE.md에 담는다. Modonomicon 번역은 원작 에셋 라이선스(https://github.com/klikli-dev/modonomicon#licensing)대로 CC-BY-SA-4.0으로 배포하며 전문을 LICENSE-Modonomicon-CC-BY-SA-4.0.txt에, 출처·변경 사실을 NOTICE.md에 담는다. 상류 파일명 LICENSES/CC-BY-4.0.txt와 달리 그 내용은 CC-BY-SA-4.0 전문이다. 비공식 번역이며 두 원작자 모두 검토하지 않았다."
       },
       "bundle_file": true,
-      "bundle_reason": "이 저장소가 만든 번역이며, 원작 Occultism의 MIT License 조건대로 팩 안의 LICENSE·NOTICE.md에 원작 저작권 고지와 라이선스 전문을 담는다. 세 아카이브 모두에 같은 바이트로 담는다.",
+      "bundle_reason": "이 저장소가 만든 번역이며, 원작 Occultism의 MIT License와 원작 Modonomicon 에셋의 CC-BY-SA-4.0 조건대로 팩 안의 LICENSE·LICENSE-Modonomicon-CC-BY-SA-4.0.txt·NOTICE.md에 원작 저작권 고지, 변경 사실과 라이선스 전문을 담는다. 세 아카이브 모두에 같은 바이트로 담는다.",
       "enabled_by_default": true
     },
     {
@@ -310,16 +312,16 @@
   ],
   "archives": {
     "aziran-26.3-client-1.1.10.mrpack": {
-      "size": 8942164,
-      "sha256": "088a998fbb58d345613350d2e423a2e81fac35e96bf366568d529c4233451674"
+      "size": 8957675,
+      "sha256": "bc2f7ca3d97488780eec8d470c724ce71838dc0e63db62c68847b9e5162064e0"
     },
     "aziran-26.3-client-1.1.10-manual.zip": {
-      "size": 31046970,
-      "sha256": "7b4354c1368af00df863f4dfa24f1df43a6c636f78ada31c77ba341b2ff8edca"
+      "size": 31062479,
+      "sha256": "748f3131505e51f62afc43910d6b38d2b722445f96066f8834f392b2a8e6aa5a"
     },
     "aziran-26.3-client-1.1.10-multimc.zip": {
-      "size": 31048104,
-      "sha256": "26527abc90910ac546c14b90f11523e9fc84ccf444274916bb6c0c8015757226"
+      "size": 31063613,
+      "sha256": "87c31b9cd499c6f1a5a88d1b7e6f4cd055f0e26ff54aef8dcd4badbcf312740a"
     }
   },
   "mods": [
