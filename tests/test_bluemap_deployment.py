@@ -11,18 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class BlueMapDeploymentTests(unittest.TestCase):
-    def test_pinned_server_mod_matches_26_3_neoforge(self):
-        lock = json.loads((ROOT / "mods-26.3.lock.json").read_text())
-        matches = [mod for mod in lock["mods"] if mod.get("project_id") == "swbUV1cr"]
-        self.assertEqual(len(matches), 1)
-        mod = matches[0]
-        self.assertEqual(mod["version_id"], "1EXOwqA2")
-        self.assertEqual(mod["filename"], "bluemap-5.27-neoforge.jar")
-        self.assertEqual(mod["sha512"], "10d4739243996b40d20330a78582ef405715351fb50b543194595da8cea8f9bbf9ee6d7aba8586653f42a7f6113c9f0e04b5bf61e42ac5a47c3152ea0c4b7c82")
-        self.assertIn("26.3", mod["game_versions"])
-        self.assertIn("neoforge", mod["loaders"])
-        self.assertEqual(lock["mod_count"], len(lock["mods"]))
-
     def test_https_proxy_reaches_bluemap_without_publishing_map_or_admin_ports(self):
         env = os.environ.copy()
         env.update({

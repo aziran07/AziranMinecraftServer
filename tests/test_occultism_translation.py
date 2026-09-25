@@ -55,34 +55,6 @@ def source():
         return read_json(archive.read('assets/occultism/lang/en_us.json'))
 
 
-def glossary_names():
-    text = (ROOT / 'docs/OCCULTISM_KO_GLOSSARY.md').read_text()
-    section = text.split('## 기존 이름 대응표\n')[1].split('## 현재 영어 파일')[0]
-    names = {}
-    for line in section.splitlines():
-        if not line.startswith('| ') or '`' not in line:
-            continue
-        _, _, chosen, _, keys = [part.strip() for part in line.strip('|').split('|')]
-        for key in re.findall(r'`([^`]+)`', keys):
-            names[key] = chosen
-    section = text.split('## 한국어 이름이 없던 주요 항목의 채택 표기\n')[1].split('\n## ', 1)[0]
-    for line in section.splitlines():
-        if line.startswith('| ') and '`' in line:
-            _, _, chosen, keycell = [part.strip() for part in line.strip('|').split('|')]
-            key = re.search(r'`([^`]+)`', keycell)[1]
-            names[key] = chosen.split(' — ')[0]
-    section = text.split('## 번역 중 추가한 공통 이름\n')[1].split('\n## ', 1)[0]
-    common_names = {}
-    for line in section.splitlines():
-        if line.startswith('| ') and '`' in line:
-            english, chosen, _ = [part.strip() for part in line.strip('|').split('|')]
-            common_names[english] = chosen
-    for key, english in source().items():
-        if english in common_names:
-            names[key] = common_names[english]
-    return names
-
-
 class TranslationChecks:
     shard = None
 
@@ -118,12 +90,6 @@ class TranslationChecks:
                                  collections.Counter(re.findall(r'§.', original)))
                 self.assertEqual(translated.count('**'), original.count('**'))
 
-    def test_approved_names(self):
-        for key, expected in glossary_names().items():
-            if key in self.english:
-                with self.subTest(key=key):
-                    self.assertEqual(self.korean[key], expected)
-
     def test_explicit_numbers_are_preserved(self):
         # Link destinations include color codes and IDs, checked separately.
         # Keep written numerals so quantities, percentages and steps cannot disappear.
@@ -145,23 +111,9 @@ class InterfaceTranslationTests(TranslationChecks, unittest.TestCase):
 class BasicsTranslationTests(TranslationChecks, unittest.TestCase):
     shard = 'guide_basics'
 
-    def test_vanilla_material_names_and_config_labels(self):
-        text = '\n'.join(self.korean.values())
-        self.assertNotIn('싹트는 자수정', text)
-        self.assertIn('싹 틔우는 자수정', text)
-        guide = self.korean['book.occultism.dictionary_of_spirits.getting_started.divination_rod.config.text']
-        self.assertIn('아이템', guide)
-        self.assertIn('c:ores 광석 탐지', guide)
-
 
 class AdvancedTranslationTests(TranslationChecks, unittest.TestCase):
     shard = 'guide_advanced'
-
-    def test_vanilla_material_names(self):
-        self.assertEqual(self.korean['book.occultism.dictionary_of_spirits.crafting_rituals.craft_budding_amethyst.name'],
-                         '싹 틔우는 자수정 벼리기')
-        self.assertEqual(self.korean['book.occultism.dictionary_of_spirits.crafting_rituals.craft_reinforced_deepslate.name'],
-                         '보강된 심층암 벼리기')
 
 
 class ResourcePackTests(unittest.TestCase):

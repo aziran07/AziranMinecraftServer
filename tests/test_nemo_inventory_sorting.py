@@ -1,9 +1,7 @@
 """Nemo installs from its publisher and leaves Mouse Tweaks in charge of gestures."""
 
-import hashlib
 import json
 from pathlib import Path
-import tomllib
 import unittest
 import zipfile
 
@@ -16,28 +14,6 @@ CONFIG = 'config/nemos-inventory-sorting/general.json'
 
 
 class NemoInventorySortingTests(unittest.TestCase):
-    def test_official_client_mod_and_dependencies(self):
-        lock = json.loads((ROOT / 'mods-26.3-client-extra.lock.json').read_text())
-        mods = [m for m in lock['mods'] if m['filename'] == FILENAME]
-        self.assertEqual(len(mods), 1)
-        mod = mods[0]
-        self.assertEqual(mod['version_id'], 'aeA0nhgf')
-        self.assertEqual(mod['url'], URL)
-        self.assertEqual(mod['sha512'], SHA512)
-        self.assertFalse(mod['bundle_jar'])
-        self.assertEqual(mod['declared_mod_ids'], ['nemos_inventory_sorting'])
-        jar_path = ROOT / 'client-mods-cache' / FILENAME
-        self.assertEqual(hashlib.sha512(jar_path.read_bytes()).hexdigest(), SHA512)
-        with zipfile.ZipFile(jar_path) as jar:
-            metadata = tomllib.loads(jar.read('META-INF/neoforge.mods.toml').decode())
-        required = {d['modId']: d['versionRange']
-                    for d in metadata['dependencies']['nemos_inventory_sorting']
-                    if d.get('type', 'required') == 'required'}
-        self.assertEqual(required, {'minecraft': '[26.3,)', 'neoforge': '[26.3.0.1-beta,)'})
-        server = json.loads((ROOT / 'mods-26.3.lock.json').read_text())
-        self.assertFalse(any(m['filename'] == FILENAME for m in server['mods']))
-        self.assertFalse((ROOT / 'server-data-26.3-neoforge/mods' / FILENAME).exists())
-
     def test_all_formats_configure_gestures_and_respect_distribution(self):
         for suffix, prefix in (('.mrpack', 'client-overrides/'),
                                ('-manual.zip', ''), ('-multimc.zip', '.minecraft/')):

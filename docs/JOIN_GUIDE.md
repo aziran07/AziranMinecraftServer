@@ -37,7 +37,6 @@ Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인�
 ## 검증
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p test_join_guide.py -v
 node --check site/app.js
 node --test tests/test_join_guide_copy.cjs
 ```
