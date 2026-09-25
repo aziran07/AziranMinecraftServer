@@ -127,6 +127,7 @@ EXCLUSIONS = {
     "Chunky": "청크 프리젠 도구. 서버 콘솔에서만 사용하며 레지스트리·네트워크 페이로드가 없다.",
     "Cristel Lib": "Towns and Towers용 데이터팩 설정 라이브러리. 콘텐츠 레지스트리가 없다.",
     "Let Me Despawn": "Modrinth client_side=unsupported. 몹 디스폰 정리는 서버 전용이다.",
+    "SableCraft Standards": "서버 권한형 명령 모드. 바닐라 클라이언트로 모든 명령이 동작하고 클라이언트 설치는 선택 사항이다.",
     "Structures – Structures & Exploration": "클래스 0개의 데이터팩 JAR. 구조물은 서버가 생성해 전송한다.",
     "Towns and Towers": "클래스 0개의 데이터팩 JAR. 구조물은 서버가 생성해 전송한다.",
     "spark": "프로파일링 도구. 서버 콘솔에서만 사용한다.",

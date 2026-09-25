@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 21,
+  "mod_count": 22,
   "mods": [
     {
       "title": "Almanac",
@@ -801,6 +801,58 @@
         }
       ],
       "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "SableCraft Standards",
+      "source": "curseforge",
+      "project_id": 1670445,
+      "project_slug": "sablecraft-standards",
+      "project_url": "https://www.curseforge.com/minecraft/mc-mods/sablecraft-standards",
+      "file_id": 8915391,
+      "version_number": "1.10.0+mc26.3",
+      "version_type": "beta",
+      "date_published": "2026-09-18T22:01:40.24Z",
+      "filename": "standards-1.10.0+mc26.3.jar",
+      "url": "https://edge.forgecdn.net/files/8915/391/standards-1.10.0%2Bmc26.3.jar",
+      "size": 1267744,
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "curseforge_reported_size": 1267744,
+      "cdn_etag_md5": "c3b874c73ebe7e610a096ab34d1883f3",
+      "github_release_url": "https://github.com/Sablednah/SableCraft-Standards/releases/tag/v1.10.0",
+      "github_release_sha256": "183c690bfb7fcce430cc2e08dadeb129676a8cb6f80c242e6198f83cd64d8d41",
+      "note": "서버 권한형 필수 명령 모드. 바닐라 클라이언트로 모든 명령이 동작하며 클라이언트 설치는 선택 사항이다. config/standards-common.toml에서 homes·back·tpa·spawn만 켜고 economy를 포함한 나머지 명령군은 끈다.",
+      "md5": "c3b874c73ebe7e610a096ab34d1883f3",
+      "sha1": "4edd3e12a2bd28472b250737a2f31e8beeea0687",
+      "sha256": "183c690bfb7fcce430cc2e08dadeb129676a8cb6f80c242e6198f83cd64d8d41",
+      "sha512": "8956b79b2a061414af5566a541f33ddef2452bd399b6264cc4b09ca8d482ff4a0bc8315adf96f3b74bccf67f5c0a8968192e490d5dfe040e1e7818c8d71bb077",
+      "declared_mod_ids": [
+        "standards"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3,26.4)"
+        }
+      ],
+      "bundled_jars": [
+        {
+          "filename": "snakeyaml-2.2.jar",
+          "path": "META-INF/jarjar/snakeyaml-2.2.jar",
+          "size": 334352,
+          "sha512": "11547e75cc80bee26f532e2598bc6e4ffa802941496dc0d8ce017f1b15e01ebbb80e91ed17d1047916e32bf2fc58da532bc71a1dfe93afccc277a296d86634ba",
+          "declared_mod_ids": []
+        }
+      ],
       "has_fabric_metadata": false
     },
     {

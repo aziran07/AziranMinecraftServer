@@ -20,7 +20,13 @@
 
 ## 설치 명세
 
-lock의 21개 항목에 해당하는 JAR 21개를 설치했다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24 추가 설치했다([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 22개 항목에 해당하는 JAR 22개를 설치했다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`을 2026-09-25 추가 설치했다([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+
+### SableCraft Standards 명령 설정 (2026-09-25)
+
+`standards-1.10.0+mc26.3.jar`는 서버에만 설치했다. `config/standards-common.toml`에서 명령군 `homes`, `back`, `tpa`, `spawn`만 켰고 `warps`, `top`, `economy`를 포함한 나머지 명령군은 껐다. `/home`, `/sethome`, `/homes`, `/delhome`, `/back`, `/tpa`, `/spawn`은 일반 유저에게 기본 허용된다. 사망 지점 `/back`은 `commands.backOnDeathAccess = "everyone"`와 `teleport.backOnDeath = true`로 허용했다. 관리자용 `/setspawn` 등은 일반 유저에게 열지 않았다. 모드가 항상 등록하는 `/actions`, `/perm`, `/rank`, `/standards`는 명령군 설정으로 끌 수 없으며 관리자 기능은 별도 권한을 요구한다.
+
+설치 전 접속자는 0명이었다. 전체 데이터 백업은 사용자 요청에 따라 실행하지 않았다. 정상 종료 후 JAR과 설정을 설치하고 서버를 시작했으며, 컨테이너는 `healthy`, 재시작 0회였다. 설치된 22개 JAR 모두 lock의 SHA-512와 일치했다. RCON 도움말에서 `/home`과 `/back`을 확인하고 `/warp`, `/top`은 등록되지 않은 것을 확인했다. 일반 유저가 직접 사용하거나 사망 지점으로 복귀하는 실제 플레이 검증은 아직 하지 않았다.
 
 ### 사용자가 지정한 모드
 
@@ -124,11 +130,13 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Almanac·Let Me Despawn·BlueMap 등 서버 전용 모드는 제외하며 서버의 21개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 22개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
 
 현재 클라이언트 팩 `1.1.5`는 `1.1.4`와 같은 모드 18개와 셰이더 팩 1개에 기본 멀티플레이 목록 `servers.dat`(`mc.aziran.uk`)를 더해 담으며, GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)로 공개되어 있다. `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.4`는 사전 릴리스 `client-1.1.4`로 공개되어 있다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
+
+SableCraft 제외 사유를 빌더에 추가했지만 공개된 `1.1.5` 아카이브와 클라이언트 lock은 그대로 유지했다. 현재 빌더로 `1.1.5`를 다시 만들면 모드·설정은 같고 포함된 README만 달라져 아카이브 해시가 기존 공개판과 달라진다. 다음 클라이언트 팩 배포 때 버전을 올려 새 산출물을 고정해야 한다.
 
 모드는 두 갈래다.
 
@@ -138,7 +146,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 `1.1.4`의 Iris 대응 소스 번들, Sodium 복귀 근거, Occultism 사역마 단축키용 `options.txt` 우회는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md)에 적었다.
 
-서버에만 두고 제외한 7개: Almanac, Chunky, Cristel Lib, Let Me Despawn, Structures, Towns and Towers, spark. 제외 근거는 각 모드의 Modrinth `client_side` 값과 JAR 검사 결과다. Structures와 Towns and Towers는 클래스 파일이 0개인 데이터팩 JAR이고, 제외한 7개 중 NeoForge 네트워크 페이로드를 등록하는 모드는 없다. Lithium과 Clumps는 1.0.0에서 "서버 측 동작"으로 제외했으나, 클라이언트에서도 동작하는 모드라 1.1.0부터 서버와 같은 파일을 함께 담는다. 둘 다 이미 서버에 설치돼 있어 서버 구성은 바꾸지 않았다.
+서버에만 두고 제외한 8개: Almanac, Chunky, Cristel Lib, Let Me Despawn, SableCraft Standards, Structures, Towns and Towers, spark. Structures와 Towns and Towers는 클래스 파일이 0개인 데이터팩 JAR이다. SableCraft Standards는 서버 설치만으로 명령이 동작하며 클라이언트 설치는 선택 사항이다. Lithium과 Clumps는 1.0.0에서 "서버 측 동작"으로 제외했으나, 클라이언트에서도 동작하는 모드라 1.1.0부터 서버와 같은 파일을 함께 담는다. 둘 다 이미 서버에 설치돼 있어 서버 구성은 바꾸지 않았다.
 
 ### 1.1.3에서 Xaero's Minimap을 JourneyMap으로 교체
 
