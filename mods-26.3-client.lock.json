@@ -1,11 +1,11 @@
 {
   "pack_name": "Aziran 26.3 Client",
-  "pack_version": "1.1.7",
+  "pack_version": "1.1.8",
   "minecraft_version": "26.3",
   "loader": "neoforge",
   "loader_version": "26.3.0.8-beta",
   "java_version": 25,
-  "release_note": "1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. 이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. 이하는 1.1.6 기록이다. 1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
+  "release_note": "1.1.8은 1.1.7에서 Modonomicon만 26.3-2.6.0에서 26.3-2.7.0(Modrinth 버전 SFKjMnCe, modonomicon-26.3-neoforge-2.7.0.jar)으로 바꾼 판이다. 2.7.0에는 Minecraft 26.3의 SDL 입력에서 책(Occultism의 Dictionary of Spirits 등)의 노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋 d74b6f2dbba9956182f11808f82e1a22911cb5ee, use SDL mouse button constant for node view dragging)이 들어 있다. 나머지 모드 18개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, options.txt, servers.dat는 1.1.7과 같다. 서버도 같은 2.7.0 파일로 바꾼 뒤 이 판을 쓴다. 1.1.8 아카이브로 새로 만든 인스턴스의 실행과 책 화면 끌기는 게임에서 확인하지 않았다. 이하는 1.1.7 기록이다. 1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. 이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. 이하는 1.1.6 기록이다. 1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
   "source_locks": [
     "mods-26.3.lock.json",
     "mods-26.3-client-extra.lock.json"
@@ -158,9 +158,9 @@
   ],
   "seeded_options": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.7.mrpack": "client-overrides/options.txt",
-      "aziran-26.3-client-1.1.7-manual.zip": "options.txt",
-      "aziran-26.3-client-1.1.7-multimc.zip": ".minecraft/options.txt"
+      "aziran-26.3-client-1.1.8.mrpack": "client-overrides/options.txt",
+      "aziran-26.3-client-1.1.8-manual.zip": "options.txt",
+      "aziran-26.3-client-1.1.8-multimc.zip": ".minecraft/options.txt"
     },
     "version": 5023,
     "lang": "ko_kr",
@@ -195,9 +195,9 @@
   },
   "seeded_servers": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.7.mrpack": "client-overrides/servers.dat",
-      "aziran-26.3-client-1.1.7-manual.zip": "servers.dat",
-      "aziran-26.3-client-1.1.7-multimc.zip": ".minecraft/servers.dat"
+      "aziran-26.3-client-1.1.8.mrpack": "client-overrides/servers.dat",
+      "aziran-26.3-client-1.1.8-manual.zip": "servers.dat",
+      "aziran-26.3-client-1.1.8-multimc.zip": ".minecraft/servers.dat"
     },
     "format": "압축하지 않은 NBT",
     "servers": [
@@ -276,17 +276,17 @@
     }
   ],
   "archives": {
-    "aziran-26.3-client-1.1.7.mrpack": {
-      "size": 8937364,
-      "sha256": "19f3231aaf1ca176feeb38f1b70cdb4bc0183ea37b4253f16cc69c9bc00cfe85"
+    "aziran-26.3-client-1.1.8.mrpack": {
+      "size": 8937686,
+      "sha256": "e92a0d35f7b1541406c79d009a145a42407b36d5f0854e16909e6fd78c0cb970"
     },
-    "aziran-26.3-client-1.1.7-manual.zip": {
-      "size": 29801079,
-      "sha256": "6afb70eadd39e04256e466c1cb9be368afec214b610db5f0176ff1d9d62b35ad"
+    "aziran-26.3-client-1.1.8-manual.zip": {
+      "size": 29815119,
+      "sha256": "236beee4c236219eeab3dda4a95810a7856bf4a43046721c36500b8ccbc180e1"
     },
-    "aziran-26.3-client-1.1.7-multimc.zip": {
-      "size": 29802168,
-      "sha256": "20b48372012a28e618a67f9c27925b366143372ebb7d175523f41d8f869319d6"
+    "aziran-26.3-client-1.1.8-multimc.zip": {
+      "size": 29816208,
+      "sha256": "ca5ffd8506acc00eaec78304b8b8da0b0d2b8da1c1b38af41942b4083b2fba6e"
     }
   },
   "mods": [
@@ -623,16 +623,16 @@
     },
     {
       "title": "Modonomicon",
-      "filename": "modonomicon-26.3-neoforge-2.6.0.jar",
+      "filename": "modonomicon-26.3-neoforge-2.7.0.jar",
       "origin": "server-lock",
       "source": "modrinth",
-      "version_number": "26.3-2.6.0",
+      "version_number": "26.3-2.7.0",
       "project_slug": "modonomicon",
-      "url": "https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar",
-      "size": 2973738,
-      "sha1": "02311031457e30527199579f0cb41a3d4559ba07",
-      "sha512": "4dafaf737bafd2420bce6f5857a6908c90c1fe687ad303dce5d1eb5c960f0f3a14019319fdcd22f0c1f7f75e255d77637a1e2041d9e85cda69c296c74fa35433",
-      "sha256": "c86e42623aafbe60449065c10b6a145b092ca0bf4301ee2b243ea491afb780dc",
+      "url": "https://cdn.modrinth.com/data/692GClaE/versions/SFKjMnCe/modonomicon-26.3-neoforge-2.7.0.jar",
+      "size": 2987945,
+      "sha1": "a3f20d15d4a944c6fc8d413661a58f9d8ddaeafd",
+      "sha512": "7d16cb18892339b2ab226de271c06a32410983800bd50989f3e98f1b68d5c3f7a91017eb386a2c4995e893f78c642adb34a6dd0afc47e622705e0a209904d70e",
+      "sha256": "27e1ca11f161012cc95c114beb5b58a96081d189857301c0d8a93466a4ad370a",
       "license": {
         "id": "MIT AND CC-BY-4.0",
         "name": "MIT License, Creative Commons Attribution 4.0",

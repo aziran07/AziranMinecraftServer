@@ -51,12 +51,20 @@ DIST = REPO / "dist"
 TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.7"
+PACK_VERSION = "1.1.8"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.7 구성과 그 바탕인 1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
+# 1.1.8 구성과 그 바탕인 1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
 # 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.8은 1.1.7에서 Modonomicon만 26.3-2.6.0에서 26.3-2.7.0(Modrinth 버전 SFKjMnCe, "
+    "modonomicon-26.3-neoforge-2.7.0.jar)으로 바꾼 판이다. 2.7.0에는 Minecraft 26.3의 SDL 입력에서 "
+    "책(Occultism의 Dictionary of Spirits 등)의 노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋 "
+    "d74b6f2dbba9956182f11808f82e1a22911cb5ee, use SDL mouse button constant for node view dragging)이 "
+    "들어 있다. 나머지 모드 18개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, options.txt, servers.dat는 "
+    "1.1.7과 같다. 서버도 같은 2.7.0 파일로 바꾼 뒤 이 판을 쓴다. 1.1.8 아카이브로 새로 만든 인스턴스의 "
+    "실행과 책 화면 끌기는 게임에서 확인하지 않았다. "
+    "이하는 1.1.7 기록이다. "
     "1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. "
     "이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 "
     "아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 "
@@ -679,8 +687,18 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
             "",
         ]
 
+    modonomicon = next(mod for mod in mods if "modonomicon" in mod["declared_mod_ids"])
     stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
     lines += [
+        f"## 1.1.8 변경: Modonomicon {modonomicon['version_number']}",
+        "",
+        f"1.1.7에서 Modonomicon만 26.3-2.6.0에서 {modonomicon['version_number']}(`{modonomicon['filename']}`)로",
+        "바꿨다. 서버와 같은 파일이다. 이 판에는 Minecraft 26.3의 SDL 입력에서 책(Occultism의 Dictionary of Spirits 등)의",
+        "노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋",
+        "`d74b6f2dbba9956182f11808f82e1a22911cb5ee`, use SDL mouse button constant for node view dragging)이",
+        "들어 있다. 나머지 모드 18개, 셰이더 팩, 리소스팩 세 개와 기본 활성화, `options.txt`, `servers.dat`는",
+        "1.1.7과 같다. **책 화면 끌기가 실제로 고쳐졌는지는 게임에서 확인하지 않았다.**",
+        "",
         "## 1.1.7 변경: 한국어 기본값과 리소스팩 추가",
         "",
         "모드 19개, 셰이더 팩, `servers.dat`는 1.1.6과 같다. 리소스팩 세 개를 더하고 `options.txt`에",
@@ -1053,7 +1071,9 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.7 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 한국어 기본값, 번역 팩의",
+        "- **이 1.1.8 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Modonomicon 2.7.0의 책 화면",
+        "  왼쪽 버튼 끌기 수정을 게임에서 확인하지 않았다.",
+        "- 1.1.7 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. 한국어 기본값, 번역 팩의",
         "  표시와 우선순위, 리소스팩 켜기·끄기를 게임에서 확인하지 않았다.",
         f"- {stay_true['title']}는 {stay_true['version_number']}용이라 26.3에서의 표시를 확인하지 않았고, OptiFine 전용 표현은",
         "  적용되지 않는다. Vanilla Experience+도 게임에서 적용해 보지 않았다.",

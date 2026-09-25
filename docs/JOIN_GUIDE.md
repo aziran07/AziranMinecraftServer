@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.7`의 `.mrpack`과 설치·라이선스 문서. **`client-1.1.7` 사전 릴리스는 2026-09-25 공개했다.** 세 아카이브와 `README.md`, `LICENSES.md`, `SHA256SUMS.txt`가 업로드되어 있고 크기·SHA-256을 확인했다. 사이트 소스의 링크는 `client-1.1.7`을 가리키지만 [배포 실행](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36117840610)은 `github-pages` 환경 브랜치 보호 규칙에 거부됐다. 허용 브랜치는 `main`과 `feat/join-guide`이며, 현재 작업 브랜치는 제외되어 있다. PR #7을 `main`에 병합한 뒤 배포 성공을 확인해야 한다. 환경 보호 규칙은 변경하지 않았다. 1.1.7은 모드 구성이 1.1.6과 같고 리소스팩만 더했으므로 서버 재시작이 필요 없으며, 1.1.6 인스턴스도 계속 접속할 수 있다. (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
+- 다운로드: GitHub Release `client-1.1.8`의 `.mrpack`과 설치·라이선스 문서. 사이트 소스의 다운로드 링크·팩 이름은 `client-1.1.8`로 바꿨다. **`client-1.1.8` Release는 아직 만들지 않았고 사이트도 배포하지 않았다.** 1.1.8은 Modonomicon만 26.3-2.7.0으로 바꾼 판이며, 서버도 같은 파일로 바꾼다. 순서는 Release 공개 → (Pages 보호 규칙 해소 뒤) 사이트 배포 → 서버 Modonomicon 교체·재시작이다. 서버 lock은 2.7.0을 가리키지만 운영 서버에는 아직 2.6.0이 설치되어 있다. 2.7.0 서버에 1.1.7 클라이언트가 접속되는지는 확인하지 않았다. 아래는 1.1.7 기록이다. `client-1.1.7` 사전 릴리스는 2026-09-25 공개했다. 세 아카이브와 `README.md`, `LICENSES.md`, `SHA256SUMS.txt`가 업로드되어 있고 크기·SHA-256을 확인했다. 1.1.7 당시 사이트 소스의 링크는 `client-1.1.7`을 가리켰지만 [배포 실행](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36117840610)은 `github-pages` 환경 브랜치 보호 규칙에 거부됐다. 허용 브랜치는 `main`과 `feat/join-guide`이며, 현재 작업 브랜치는 제외되어 있다. PR #7을 `main`에 병합한 뒤 배포 성공을 확인해야 한다. 환경 보호 규칙은 변경하지 않았다. 1.1.7은 모드 구성이 1.1.6과 같고 리소스팩만 더했으므로 서버 재시작이 필요 없으며, 1.1.6 인스턴스도 계속 접속할 수 있다. (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
@@ -16,7 +16,7 @@ Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 
 ## 안내 내용과 확인 범위
 
 Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인스턴스로 가져오기,
-멀티플레이 접속 순서로 안내한다. 1.1.5 이하 인스턴스를 쓰던 사람에게는 1.1.7을 새 인스턴스로 다시 가져오도록 안내한다. 1.1.6 인스턴스는 그대로 접속할 수 있고, 한국어 번역을 쓰려면 새로 가져오도록 안내한다. 1.1.5 이후 팩으로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
+멀티플레이 접속 순서로 안내한다. 이전 팩을 쓰던 사람에게는 1.1.8을 새 인스턴스로 다시 가져오도록 안내한다. 1.1.8은 책 화면(Modonomicon 노드 화면)의 왼쪽 버튼 끌기 수정을 담았고, 1.1.5 이하 인스턴스는 Simple Tomb이 없어 접속할 수 없다고 밝힌다. 2.7.0 서버에 1.1.6·1.1.7 인스턴스가 접속되는지는 확인하지 않았으므로 그대로 접속할 수 있다고 안내하지 않는다. 1.1.5 이후 팩으로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
 `Aziran`(`mc.aziran.uk`) 서버가 이미 들어 있으며, 목록에 없는 기존 인스턴스는 `mc.aziran.uk`를 직접 추가하도록 안내한다. `.mrpack`을 압축 해제하거나 기존 모드
 폴더에 덮어쓰지 않는다. 팩은 Minecraft 26.3, NeoForge 26.3.0.8-beta, Java 25를 사용한다.
 
@@ -26,8 +26,8 @@ Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인�
 실행은 Occultism 사역마 단축키(`key.keyboard.-1`) 문제로 실패했다. 기존 인스턴스 복사본에서
 그 값을 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·접속에 성공했다. 1.1.5는 모드·셰이더 구성이
 1.1.4와 같고 `servers.dat`만 더했다. 1.1.6은 1.1.5에 Simple Tomb 1.9.0만 더했다. 1.1.7은 1.1.6의 모드·셰이더·`servers.dat`에 리소스팩 세 개와
-`options.txt`의 언어(`lang:ko_kr`)·기본 리소스팩 줄을 더했다. 1.1.5·1.1.6·1.1.7 아카이브로 새로 만든 인스턴스의
-게임 실행과 멀티플레이 목록 표시, 1.1.7의 번역 표시·리소스팩 적용은 아직 확인하지 않았다. 안내 페이지의 다운로드
+`options.txt`의 언어(`lang:ko_kr`)·기본 리소스팩 줄을 더했다. 1.1.8은 1.1.7에서 Modonomicon만 26.3-2.7.0으로 바꿨다(상류 커밋 `d74b6f2`). 1.1.5~1.1.8 아카이브로 새로 만든 인스턴스의
+게임 실행과 멀티플레이 목록 표시, 1.1.7의 번역 표시·리소스팩 적용, 1.1.8의 책 화면 끌기 수정은 아직 확인하지 않았다. 안내 페이지의 다운로드
 제공과 파일 검증은 게임 실행 검증을 뜻하지 않는다. JourneyMap JAR과 Complementary Reimagined
 셰이더 팩, Vanilla Experience+ 리소스팩은 팩 안에 포함하지 않으며, 런처가 설치 중 공식 Modrinth 배포처에서 받는다.
 페이지는 셰이더 켜는 법, 리소스팩 기본값(한국어·번역 팩 켜짐, Stay True·Vanilla Experience+ 꺼짐)과

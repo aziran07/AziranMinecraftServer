@@ -22,6 +22,14 @@
 
 lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
+### Modonomicon 2.7.0 교체 준비 (2026-09-25, 서버 미적용)
+
+lock의 Modonomicon을 `26.3-2.6.0`(`CPBu0enR`)에서 공식 Modrinth 버전 `SFKjMnCe` `26.3-2.7.0`(`modonomicon-26.3-neoforge-2.7.0.jar`, 2987945바이트, SHA-512 `7d16cb18…904d70e`)으로 바꿨다. Minecraft 26.3부터 마우스 버튼 번호가 SDL 기준(왼쪽 = 1)이라 2.6.0의 `BookCategoryNodeScreen.mouseDragged`가 `event.button() != 0` 비교로 왼쪽 끌기를 거부해 책 노드 화면을 움직일 수 없었다. 2.7.0은 이를 `InputConstants.MOUSE_BUTTON_LEFT` 비교로 고친 상류 커밋 [`d74b6f2dbba9956182f11808f82e1a22911cb5ee`](https://github.com/klikli-dev/modonomicon/commit/d74b6f2dbba9956182f11808f82e1a22911cb5ee)를 담는다(2.7.0 변경 기록에 포함). **게임 화면에서 끌기가 고쳐졌는지는 확인하지 않았다.**
+
+받은 JAR의 크기·SHA-512는 Modrinth 메타데이터와 일치한다. `neoforge.mods.toml`은 모드 ID `modonomicon`, 선언 버전 `2.7.0`, 필수 의존성 NeoForge `[26.3.0.3-beta,)`, 선택 의존성 JEI·Patchouli로 2.6.0과 같고, JarJar의 commonmark 0.30.0 JAR 3개도 크기·SHA-512가 2.6.0과 같다. Occultism의 요구 `[2.5.0,)`를 충족한다.
+
+**운영 서버에는 아직 적용하지 않았다.** `server-data-26.3-neoforge/mods/`에는 2.6.0이 그대로 있으므로 이 lock과 설치 JAR이 서버 교체 전까지 일치하지 않는다(`tests/test_modonomicon_update.py`의 서버 검사가 실패하는 것이 정상). 교체는 `client-1.1.8` Release 공개 뒤 후속 작업에서 [정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업) 3-B와 오프라인 보호 백업을 거쳐 JAR만 바꾸고 재시작한다. 2.7.0 서버에 1.1.7(2.6.0) 클라이언트가 접속되는지는 확인하지 않았다.
+
 ### SableCraft Standards 명령 설정 (2026-09-25)
 
 `standards-1.10.0+mc26.3.jar`는 서버에만 설치했다. `config/standards-common.toml`에서 명령군 `homes`, `back`, `tpa`, `spawn`만 켰고 `warps`, `top`, `economy`를 포함한 나머지 명령군은 껐다. `/home`, `/sethome`, `/homes`, `/delhome`, `/back`, `/tpa`, `/spawn`은 일반 유저에게 기본 허용된다. 사망 지점 `/back`은 `commands.backOnDeathAccess = "everyone"`와 `teleport.backOnDeath = true`로 허용했다. 관리자용 `/setspawn` 등은 일반 유저에게 열지 않았다. 모드가 항상 등록하는 `/actions`, `/perm`, `/rank`, `/standards`는 명령군 설정으로 끌 수 없으며 관리자 기능은 별도 권한을 요구한다.
@@ -55,7 +63,7 @@ Structures(GaraKrral, 프로젝트 ID `1391238`, 파일 ID `8849254`, `Structure
 
 | 모드 | 고정 버전 | 채널 | 비고 |
 | --- | --- | --- | --- |
-| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.6.0 | 정식 | Occultism 요구 `[2.5.0,)` 충족 |
+| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.7.0 (서버 설치는 아직 2.6.0) | 정식 | Occultism 요구 `[2.5.0,)` 충족. 위 교체 준비 절 참고 |
 | [GeckoLib](https://modrinth.com/mod/geckolib) | 5.5.7 | 정식 | Occultism 요구 `[5.5.6,)` 충족. 자체적으로 NeoForge `[26.3.0.7-beta,)` 요구 |
 | [Curios API](https://modrinth.com/mod/curios) | 17.0.0-beta+26.3 | 베타 | 아래 제한 사항 참고 |
 
@@ -141,6 +149,8 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb도 무덤 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 23개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
+
+클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). 로컬에서 빌드했으며 Release는 아직 만들지 않았다. `1.1.7`은 사전 릴리스 `client-1.1.7`로 공개되어 있다. 아래는 이전 판 기록이다.
 
 클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화했으므로 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 

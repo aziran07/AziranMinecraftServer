@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class MultiMCPackTests(unittest.TestCase):
     def test_instance_and_mods(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        path = ROOT / 'dist/aziran-26.3-client-1.1.7-multimc.zip'
+        path = ROOT / 'dist/aziran-26.3-client-1.1.8-multimc.zip'
         self.assertEqual(list((ROOT / 'dist').glob('aziran-26.3-client-*-multimc.zip')), [path])
         with zipfile.ZipFile(path) as z:
             self.assertIsNone(z.testzip())
@@ -29,7 +29,7 @@ class MultiMCPackTests(unittest.TestCase):
             cfg = configparser.ConfigParser()
             cfg.read_string('[instance]\n' + z.read('instance.cfg').decode())
             self.assertEqual(cfg['instance']['InstanceType'], 'OneSix')
-            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.7')
+            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.8')
             for key in ('JavaPath', 'PreLaunchCommand', 'PostExitCommand', 'WrapperCommand'):
                 self.assertFalse(cfg['instance'].get(key, ''))
             jars = {n for n in names if n.startswith('.minecraft/mods/') and n.endswith('.jar')}
