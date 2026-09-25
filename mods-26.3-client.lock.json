@@ -1,11 +1,11 @@
 {
   "pack_name": "Aziran 26.3 Client",
-  "pack_version": "1.1.6",
+  "pack_version": "1.1.7",
   "minecraft_version": "26.3",
   "loader": "neoforge",
   "loader_version": "26.3.0.8-beta",
   "java_version": 25,
-  "release_note": "1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
+  "release_note": "1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. 이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. 이하는 1.1.6 기록이다. 1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, 셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. 1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 아카이브로 새로 만든 인스턴스의 실행은 아직 확인하지 않았다. 이하는 1.1.4 기록이다. 1.1.4는 1.1.3에 셰이더 구성을 더한 판이다. Iris 미병합 PR #3354의 커밋 10d3598cd96b0566497b66efe66256f468cd977e를 로컬 빌드한 JAR과 그 필수 의존성인 Sodium 0.9.2를 넣고, Complementary Reimagined r5.9.3 셰이더 팩을 .mrpack의 Modrinth CDN 다운로드 항목으로 지정한다(기본으로 켜지 않는다). Sodium은 1.1.0의 Windows 크래시(0xc0000409) 때문에 1.1.1부터 뺐던 같은 파일이며 그 원인은 규명하지 않았다. 사용자의 이전 1.1.4 시험 인스턴스는 options.txt를 초기화한 첫 실행에서 셰이더 적용과 서버 접속에 성공했지만, 두 번째 실행에서 Occultism 사역마 단축키가 key.keyboard.-1로 저장된 options.txt 때문에 InputConstants.isKeyDown의 IndexOutOfBoundsException으로 실패했다. Occultism 26.3 소스(커밋 631457c)의 ClientSetupEventHandler.java 218행이 사역마 단축키 18개를 Type.KEYBOARD, -1로 등록하는 것이 상류 결함이다. 1.1.4는 이를 고치지 못하며, 사역마 단축키 18개를 key.keyboard.unknown(미지정)으로 적은 최소 options.txt를 함께 담아 우회한다. 사용자가 기존 인스턴스의 복사본에서 -1을 unknown으로 바꾼 뒤 두 번 연속 실행·접속에 성공했다. 1.1.4 공개 뒤 사용자가 1.1.4 팩으로 새로 만든 인스턴스를 Windows에서 두 번 연속 실행하는 데 성공했다고 알려 왔다(서버 접속·셰이더 적용 여부는 보고에 없다).",
   "source_locks": [
     "mods-26.3.lock.json",
     "mods-26.3-client-extra.lock.json"
@@ -47,13 +47,129 @@
       "enabled_by_default": false
     }
   ],
+  "resourcepacks": [
+    {
+      "title": "Occultism 한국어 번역",
+      "filename": "occultism-ko-1.256.0-mc26.3.zip",
+      "path": "resourcepacks/occultism-ko-1.256.0-mc26.3.zip",
+      "source": "repository-build",
+      "project_slug": null,
+      "project_url": null,
+      "author": null,
+      "version_number": "1.256.0-mc26.3",
+      "url": null,
+      "build": {
+        "command": "python3 scripts/build_occultism_resource_pack.py",
+        "output": "dist/occultism-ko-1.256.0-mc26.3.zip",
+        "inputs": [
+          "translations/occultism/ko_kr/",
+          "translations/occultism/pack.mcmeta",
+          "translations/occultism/LICENSE",
+          "translations/occultism/NOTICE.md"
+        ],
+        "note": "이 저장소에서 만드는 번역 팩이라 해시를 입력 lock에 고정하지 않는다. build_client_pack.py가 패키징 직전에 번역 빌더를 실행해 새로 만들고, 그 결과의 크기·해시를 생성 lock에 기록한다."
+      },
+      "size": 105993,
+      "sha1": "f306579c1f0853fa5e1c1688ed6dea7818245d58",
+      "sha512": "feb0a731dbe75d51463c4fd42574de6fc3a5ad56fa030ac27a9a375b5e288e0713bc5c94ec78be1db473652f9c45e233c5d97bfda0b474ee175eccea5e5115e9",
+      "sha256": "5affd2607b882309e6a93013654c4f6fadb512a21b50c74fb2fabc18d7242f44",
+      "pack_format": {
+        "min_format": [
+          97,
+          1
+        ],
+        "max_format": [
+          97,
+          1
+        ]
+      },
+      "compatibility_note": null,
+      "license": {
+        "id": "MIT",
+        "name": "MIT License (원작 Occultism)",
+        "url": "https://github.com/klikli-dev/occultism/blob/version/26.3/LICENSE",
+        "note": "Occultism 원작의 MIT License 전문과 기존 한국어 번역 기여자 표기를 팩 안 LICENSE·NOTICE.md에 담는다. 비공식 번역이며 원작자가 검토하지 않았다."
+      },
+      "bundle_file": true,
+      "bundle_reason": "이 저장소가 만든 번역이며, 원작 Occultism의 MIT License 조건대로 팩 안의 LICENSE·NOTICE.md에 원작 저작권 고지와 라이선스 전문을 담는다. 세 아카이브 모두에 같은 바이트로 담는다.",
+      "enabled_by_default": true
+    },
+    {
+      "title": "Stay True",
+      "filename": "Stay True 1.21.5.zip",
+      "path": "resourcepacks/Stay True 1.21.5.zip",
+      "source": "curseforge",
+      "project_slug": "stay-true",
+      "project_url": "https://www.curseforge.com/minecraft/texture-packs/stay-true",
+      "author": "haimcyfly",
+      "version_number": "1.21.5",
+      "url": "https://mediafilez.forgecdn.net/files/6534/716/Stay%20True%201.21.5.zip",
+      "build": null,
+      "size": 2252799,
+      "sha1": "b752181fa17cf99a67bc46a2c1569be621021493",
+      "sha512": "7a5c8bd9574da27a7fd2caaf7224aeef730529748329eb644cd9c2f3babfca3f1f5d815392c162d91251992517fa6e6e50825aa67c3aa2dc473ba2f49adad92c",
+      "sha256": "c61397d8e9d1f15e069f718c0bd61c5c347be1f3e18603ea576dccb570302c82",
+      "pack_format": {
+        "pack_format": 55
+      },
+      "compatibility_note": "2026-09-25 기준 CurseForge 최신 파일은 2025-05-16에 올린 1.21.5용(pack_format 55)이며 26.3(리소스 형식 97.1)용 파일은 없다. 26.3에서는 리소스팩 목록에 '이전 버전용'으로 표시되고, 동작 여부는 확인하지 않았다. ZIP의 assets/minecraft/optifine/ 항목 1,494개(연결 텍스처, 오버레이, 분홍 자작나무 잎 등)는 OptiFine 전용이라 이 NeoForge 팩에서는 적용되지 않는다. 이 팩은 OptiFine이나 대체 모드를 추가하지 않는다.",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩 사용 허가 있음)",
+        "url": "https://www.curseforge.com/minecraft/texture-packs/stay-true",
+        "note": "CurseForge 프로젝트 라이선스는 All Rights Reserved다. 같은 페이지 FAQ의 모드팩 사용 문답이 출처 표기 조건의 모드팩 포함을 허락한다.",
+        "distribution_note": "FAQ: \"Can I have permission to use this in my modpack I will give credit?\" — \"Yes :)\""
+      },
+      "bundle_file": true,
+      "bundle_reason": "제작자 FAQ가 'Can I have permission to use this in my modpack I will give credit?'에 'Yes :)'로 답해 출처를 밝힌 모드팩 사용을 허락한다. 공식 CurseForge CDN에서 받은 원본 ZIP을 수정 없이 세 아카이브에 담고 README·LICENSES.md에 출처를 적는다. CurseForge 파일은 Modrinth CDN URL이 없어 .mrpack 다운로드 항목으로 넣을 수 없다.",
+      "enabled_by_default": false
+    },
+    {
+      "title": "Vanilla Experience+",
+      "filename": "§6§lVanilla Experience+§0.zip",
+      "path": "resourcepacks/§6§lVanilla Experience+§0.zip",
+      "source": "modrinth",
+      "project_slug": "vanilla-exp",
+      "project_url": "https://modrinth.com/resourcepack/vanilla-exp",
+      "author": "Kryqu",
+      "version_number": "2.0",
+      "url": "https://cdn.modrinth.com/data/8bf2GogI/versions/UBuTOpY1/%C2%A76%C2%A7lVanilla%20Experience%2B%C2%A70.zip",
+      "build": null,
+      "size": 2271703,
+      "sha1": "1e0261372bcd3ae294ea073f330302f824918786",
+      "sha512": "49ee05cc8e995b576cff053f2a24fbf62775f56c1a6a9701907abc8e42667b7c1999c1c023be2b73a1722b72e7b26191d80ad0830e8e632c2f2920051192709f",
+      "sha256": "391b6546431106723ef091e68755046c2b3aaca85d30e14265724a995f922507",
+      "pack_format": {
+        "min_format": 75,
+        "max_format": 97
+      },
+      "compatibility_note": "Modrinth 버전 2.0이 26.1~26.3 지원을 표시하고 pack.mcmeta가 min_format 75, max_format 97이다. 몹 변형 텍스처는 OptiFine 또는 Entity Texture Features가 있어야 보이며 이 팩은 둘 다 추가하지 않는다. 게임에서의 적용은 확인하지 않았다.",
+      "license": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (모드팩 의존성 허가 있음)",
+        "url": "https://modrinth.com/resourcepack/vanilla-exp",
+        "note": "Modrinth 프로젝트 라이선스는 All Rights Reserved다. 같은 페이지 FAQ가 모드팩 의존성 사용을 허락한다.",
+        "distribution_note": "FAQ: \"Redistribution or reuse of assets is not allowed without my explicit permission. However, you may safely use this pack as a dependency.\" / \"Yes, this resource pack may be included in modpacks as a dependency.\""
+      },
+      "bundle_file": false,
+      "bundle_reason": "제작자 FAQ가 모드팩에 의존성(dependency)으로 넣는 것은 허락하지만 에셋 재배포는 명시적 허가 없이 금지한다. 그래서 .mrpack에는 Modrinth CDN 다운로드 항목(resourcepacks/)으로만 넣고, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 담지 않는다. client-mods-cache/의 로컬 사본은 크기·해시 검증용이다.",
+      "enabled_by_default": false
+    }
+  ],
   "seeded_options": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.6.mrpack": "client-overrides/options.txt",
-      "aziran-26.3-client-1.1.6-manual.zip": "options.txt",
-      "aziran-26.3-client-1.1.6-multimc.zip": ".minecraft/options.txt"
+      "aziran-26.3-client-1.1.7.mrpack": "client-overrides/options.txt",
+      "aziran-26.3-client-1.1.7-manual.zip": "options.txt",
+      "aziran-26.3-client-1.1.7-multimc.zip": ".minecraft/options.txt"
     },
     "version": 5023,
+    "lang": "ko_kr",
+    "resource_packs": [
+      "vanilla",
+      "mod_resources",
+      "file/occultism-ko-1.256.0-mc26.3.zip"
+    ],
+    "resource_packs_reason": "목록 뒤쪽이 우선한다. NeoForge가 required·Position.TOP으로 만드는 mod_resources를 적지 않으면 게임이 맨 위에 끼워 Occultism JAR의 옛 ko_kr.json이 번역 팩을 덮으므로 mod_resources를 번역 팩 아래에 적는다.",
     "unbound_key_mappings": [
       "key_key.occultism.familiar.greedy_familiar",
       "key_key.occultism.familiar.drikwing",
@@ -79,9 +195,9 @@
   },
   "seeded_servers": {
     "archive_paths": {
-      "aziran-26.3-client-1.1.6.mrpack": "client-overrides/servers.dat",
-      "aziran-26.3-client-1.1.6-manual.zip": "servers.dat",
-      "aziran-26.3-client-1.1.6-multimc.zip": ".minecraft/servers.dat"
+      "aziran-26.3-client-1.1.7.mrpack": "client-overrides/servers.dat",
+      "aziran-26.3-client-1.1.7-manual.zip": "servers.dat",
+      "aziran-26.3-client-1.1.7-multimc.zip": ".minecraft/servers.dat"
     },
     "format": "압축하지 않은 NBT",
     "servers": [
@@ -160,17 +276,17 @@
     }
   ],
   "archives": {
-    "aziran-26.3-client-1.1.6.mrpack": {
-      "size": 7706612,
-      "sha256": "82ad216765efba20ba22b85917a149fbf12425e3f6cf389351b342c5a50c994f"
+    "aziran-26.3-client-1.1.7.mrpack": {
+      "size": 8937364,
+      "sha256": "19f3231aaf1ca176feeb38f1b70cdb4bc0183ea37b4253f16cc69c9bc00cfe85"
     },
-    "aziran-26.3-client-1.1.6-manual.zip": {
-      "size": 28570326,
-      "sha256": "e2db5cc2d22edc16682d5ae5a7e63e627404bf3050eda5083c016653d7018b8b"
+    "aziran-26.3-client-1.1.7-manual.zip": {
+      "size": 29801079,
+      "sha256": "6afb70eadd39e04256e466c1cb9be368afec214b610db5f0176ff1d9d62b35ad"
     },
-    "aziran-26.3-client-1.1.6-multimc.zip": {
-      "size": 28571371,
-      "sha256": "bd04838b9ffdd85b4f552945980411943cea386375f4baf404f6b225cf1a7501"
+    "aziran-26.3-client-1.1.7-multimc.zip": {
+      "size": 29802168,
+      "sha256": "20b48372012a28e618a67f9c27925b366143372ebb7d175523f41d8f869319d6"
     }
   },
   "mods": [

@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class MultiMCPackTests(unittest.TestCase):
     def test_instance_and_mods(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        path = ROOT / 'dist/aziran-26.3-client-1.1.6-multimc.zip'
+        path = ROOT / 'dist/aziran-26.3-client-1.1.7-multimc.zip'
         self.assertEqual(list((ROOT / 'dist').glob('aziran-26.3-client-*-multimc.zip')), [path])
         with zipfile.ZipFile(path) as z:
             self.assertIsNone(z.testzip())
@@ -29,7 +29,7 @@ class MultiMCPackTests(unittest.TestCase):
             cfg = configparser.ConfigParser()
             cfg.read_string('[instance]\n' + z.read('instance.cfg').decode())
             self.assertEqual(cfg['instance']['InstanceType'], 'OneSix')
-            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.6')
+            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.7')
             for key in ('JavaPath', 'PreLaunchCommand', 'PostExitCommand', 'WrapperCommand'):
                 self.assertFalse(cfg['instance'].get(key, ''))
             jars = {n for n in names if n.startswith('.minecraft/mods/') and n.endswith('.jar')}
@@ -45,7 +45,13 @@ class MultiMCPackTests(unittest.TestCase):
             manifest = json.loads(z.read('manifest.json'))
             base = manifest.get('install_root', '.')
             manifest_paths = {str(Path(base) / f['path']) for f in manifest['files']}
-            self.assertEqual(manifest_paths, jars)
+            resources = {'.minecraft/resourcepacks/' + p['filename']
+                         for p in lock['resourcepacks'] if p['bundle_file']}
+            self.assertEqual(manifest_paths, jars | resources)
+            for entry in manifest['files']:
+                data = z.read(str(Path(base) / entry['path']))
+                self.assertEqual(len(data), entry['size'])
+                self.assertEqual(hashlib.sha512(data).hexdigest(), entry['sha512'])
             for mod in lock['mods']:
                 if mod['filename'] == journey_name:
                     continue
@@ -55,7 +61,7 @@ class MultiMCPackTests(unittest.TestCase):
             self.assertIn('README.md', names)
             self.assertIn('LICENSES.md', names)
             self.assertIn('sources/iris/Iris-10d3598cd96b0566497b66efe66256f468cd977e-source.tar.gz', names)
-            self.assertTrue(all(n in jars or n.startswith('sources/iris/') or n in {'mmc-pack.json', 'instance.cfg', 'README.md', 'LICENSES.md', 'manifest.json', '.minecraft/options.txt', '.minecraft/servers.dat'} for n in names))
+            self.assertTrue(all(n in jars | resources or n.startswith('sources/iris/') or n in {'mmc-pack.json', 'instance.cfg', 'README.md', 'LICENSES.md', 'manifest.json', '.minecraft/options.txt', '.minecraft/servers.dat'} for n in names))
 
 
 if __name__ == '__main__':

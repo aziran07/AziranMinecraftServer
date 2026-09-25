@@ -24,6 +24,12 @@ OCCULTISM_FAMILIARS의 설명을 참고한다.
 
 세 아카이브 모두 멀티플레이 목록에 Aziran 서버 하나만 적은 servers.dat도 담는다.
 render_servers_dat의 설명을 참고한다.
+
+입력 lock의 리소스팩(resourcepacks)은 bundle_file에 따라 세 아카이브의 resourcepacks/에 원본을
+그대로 담거나, .mrpack의 Modrinth CDN 다운로드 항목으로만 넣는다. Occultism 한국어 번역 팩은 이
+저장소에서 만드는 파일이라 패키징 직전에 scripts/build_occultism_resource_pack.py를 실행해 새로
+만든다. options.txt는 게임 언어를 한국어로 두고 번역 팩만 켠다. load_resourcepacks와
+render_options_txt의 설명을 참고한다.
 """
 
 import hashlib
@@ -31,6 +37,7 @@ import json
 import struct
 import shutil
 import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
@@ -41,14 +48,24 @@ CLIENT_EXTRA_LOCK = REPO / "mods-26.3-client-extra.lock.json"
 CLIENT_CACHE = REPO / "client-mods-cache"
 CLIENT_LOCK = REPO / "mods-26.3-client.lock.json"
 DIST = REPO / "dist"
+TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.6"
+PACK_VERSION = "1.1.7"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.6 구성과 그 바탕인 1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을
-# 산출물에도 남긴다.
+# 1.1.7 구성과 그 바탕인 1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
+# 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.7은 1.1.6의 모드 19개, 셰이더 팩, servers.dat를 그대로 두고 리소스팩 세 개를 더한 판이다. "
+    "이 저장소에서 만든 Occultism 1.256.0 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)은 세 "
+    "아카이브에 담고 기본으로 켠다. CurseForge의 Stay True 1.21.5(파일 6534716)는 제작자 FAQ의 모드팩 "
+    "사용 허락에 따라 원본 ZIP을 세 아카이브에 담지만 기본으로 켜지 않으며, 1.21.5용이라 26.3 호환은 "
+    "확인하지 않았고 일부 표현은 OptiFine이 있어야 한다. Modrinth의 Vanilla Experience+ 2.0은 제작자가 "
+    "모드팩 의존성 사용만 허락하므로 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣고 켜지 않는다. "
+    "options.txt에 lang:ko_kr와 resourcePacks(vanilla, mod_resources, 번역 팩 순)를 더했고 사역마 단축키 "
+    "18줄은 그대로다. 1.1.7 아카이브로 새로 만든 인스턴스의 실행과 번역 표시는 아직 확인하지 않았다. "
+    "이하는 1.1.6 기록이다. "
     "1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, "
     "simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 "
     "모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, "
@@ -103,6 +120,18 @@ OCCULTISM_FAMILIARS = [
 # Minecraft 26.3이 options.txt에 쓰는 데이터 버전. 이보다 낮으면 게임이 옛 형식으로 보고 변환한다.
 OPTIONS_DATA_VERSION = 5023
 UNBOUND_KEY = "key.keyboard.unknown"
+
+# 새 인스턴스의 게임 언어. Options.languageCode의 options.txt 키는 lang이다.
+OPTIONS_LANGUAGE = "ko_kr"
+
+# 새 인스턴스에서 켤 리소스팩. 목록은 아래가 먼저이고 뒤에 올수록 우선한다. options.txt의 resourcePacks는
+# Options가 Gson으로 읽고 쓰는 문자열 JSON 배열이며, resourcepacks/ 폴더의 파일은 "file/<파일 이름>" ID다
+# (FolderRepositorySource).
+# mod_resources를 반드시 적는다. NeoForge 26.3 ResourcePackLoader.makePack이 모드 리소스를 required,
+# Position.TOP으로 만들고, PackRepository.rebuildSelected는 목록에 없는 required 팩을 맨 위에 끼운다.
+# 적지 않으면 mod_resources가 번역 팩보다 위에 놓여 Occultism JAR에 들어 있는 옛
+# assets/occultism/lang/ko_kr.json이 새 번역을 덮는다. 번역 팩 외의 리소스팩은 켜지 않는다.
+MOD_RESOURCES_PACK_ID = "mod_resources"
 
 # 새 인스턴스의 멀티플레이 목록에 미리 넣어 두는 서버 항목.
 SERVER_LIST_NAME = "Aziran"
@@ -397,12 +426,118 @@ def load_shaderpacks(extra_lock):
     return packs
 
 
-def render_options_txt():
-    """사역마 단축키 18개만 미지정으로 적은 최소 options.txt. 나머지 설정은 게임 기본값을 따른다.
+def build_translation_pack():
+    """Occultism 한국어 번역 팩을 번역 빌더로 새로 만든다. 이전 빌드의 ZIP을 그대로 쓰지 않는다."""
+    result = subprocess.run([sys.executable, str(TRANSLATION_BUILDER)])
+    if result.returncode != 0:
+        raise SystemExit(
+            f"번역 빌더가 실패해(종료 코드 {result.returncode}) 클라이언트 팩을 만들지 않는다: {TRANSLATION_BUILDER}"
+        )
 
-    그래픽·언어·마지막 접속 서버 같은 개인 설정은 넣지 않는다.
+
+def read_pack_format(path):
+    """리소스팩 ZIP을 검사하고 pack.mcmeta가 밝힌 형식 필드만 돌려준다."""
+    try:
+        with zipfile.ZipFile(path) as archive:
+            broken = archive.testzip()
+            if broken is not None:
+                raise SystemExit(f"리소스팩 ZIP 항목이 손상됐다: {path.name} ({broken})")
+            if "pack.mcmeta" not in archive.namelist():
+                raise SystemExit(f"리소스팩 ZIP 루트에 pack.mcmeta가 없다: {path.name}")
+            metadata = json.loads(archive.read("pack.mcmeta").decode("utf-8"))
+    except zipfile.BadZipFile as error:
+        raise SystemExit(f"리소스팩이 올바른 ZIP이 아니다: {path.name} ({error})") from error
+    pack = metadata.get("pack")
+    if not isinstance(pack, dict):
+        raise SystemExit(f"리소스팩 pack.mcmeta에 pack 객체가 없다: {path.name}")
+    return {key: pack[key] for key in ("pack_format", "min_format", "max_format") if key in pack}
+
+
+def load_resourcepacks(extra_lock):
+    """입력 lock의 리소스팩을 읽고 실제 파일을 검증한다.
+
+    이 저장소에서 만드는 번역 팩(source=repository-build)은 먼저 번역 빌더로 새로 만든 뒤 그 결과를
+    읽는다. 외부 리소스팩은 client-mods-cache/의 사본을 입력 lock의 크기·SHA-512와 대조한다.
+    모든 팩은 ZIP 무결성과 pack.mcmeta 형식을 확인하고, 번역 팩만 기본으로 켤 수 있다.
+    bundle_file=false인 팩은 .mrpack의 Modrinth CDN 다운로드 항목으로만 넣으므로 CDN URL이 필수다.
     """
-    lines = [f"version:{OPTIONS_DATA_VERSION}"]
+    locked = extra_lock["resourcepacks"]
+    if any(pack["source"] == "repository-build" for pack in locked):
+        build_translation_pack()
+
+    packs = []
+    for pack in locked:
+        if pack["source"] == "repository-build":
+            path = REPO / pack["build"]["output"]
+            if not path.is_file():
+                raise SystemExit(f"번역 빌더가 끝났는데 번역 팩이 없다: {path}")
+        else:
+            path = CLIENT_CACHE / pack["filename"]
+            if not path.is_file():
+                raise SystemExit(
+                    f"클라이언트 캐시에 리소스팩이 없다: {path}\n"
+                    f"  {pack['url']} 를 받아 이 경로에 두고 다시 실행한다."
+                )
+        actual = file_hashes(path)
+        if pack["source"] != "repository-build":
+            if actual["sha512"] != pack["sha512"] or actual["size"] != pack["size"]:
+                raise SystemExit(f"클라이언트 lock과 리소스팩이 일치하지 않는다: {pack['filename']}")
+        pack_format = read_pack_format(path)
+        if pack_format != pack["pack_format"]:
+            raise SystemExit(
+                f"리소스팩 pack.mcmeta 형식이 lock과 다르다: {pack['filename']} "
+                f"(lock {pack['pack_format']}, 파일 {pack_format})"
+            )
+        if pack["enabled_by_default"] and pack["source"] != "repository-build":
+            raise SystemExit(f"외부 리소스팩은 기본으로 켜지 않는다: {pack['filename']}")
+        url = pack.get("url")
+        if not pack["bundle_file"] and not (url or "").startswith(ALLOWED_DOWNLOAD_PREFIX):
+            raise SystemExit(
+                f"bundle_file=false인 리소스팩에 Modrinth CDN URL이 없어 설치 경로가 없다: {pack['filename']}"
+            )
+        packs.append({
+            "title": pack["title"],
+            "filename": pack["filename"],
+            "path": f"resourcepacks/{pack['filename']}",
+            "source": pack["source"],
+            "project_slug": pack.get("project_slug"),
+            "project_url": pack.get("project_url"),
+            "author": pack.get("author"),
+            "version_number": pack["version_number"],
+            "url": url,
+            "build": pack.get("build"),
+            "size": actual["size"],
+            "sha1": actual["sha1"],
+            "sha512": actual["sha512"],
+            "sha256": actual["sha256"],
+            "pack_format": pack_format,
+            "compatibility_note": pack.get("compatibility_note"),
+            "license": pack["license"],
+            "bundle_file": pack["bundle_file"],
+            "bundle_reason": pack["bundle_reason"],
+            "enabled_by_default": pack["enabled_by_default"],
+            "local_path": path,
+        })
+    if [pack["filename"] for pack in packs if pack["enabled_by_default"]] != [
+        pack["filename"] for pack in packs if pack["source"] == "repository-build"
+    ]:
+        raise SystemExit("기본으로 켜는 리소스팩은 번역 팩 하나여야 한다.")
+    return packs
+
+
+def render_options_txt(resourcepacks):
+    """사역마 단축키 18개를 미지정으로 두고 언어와 기본 리소스팩을 정한 최소 options.txt.
+
+    나머지 설정은 게임 기본값을 따른다. 그래픽·마지막 접속 서버 같은 개인 설정은 넣지 않는다.
+    """
+    enabled = ["vanilla", MOD_RESOURCES_PACK_ID]
+    enabled += [f"file/{pack['filename']}" for pack in resourcepacks if pack["enabled_by_default"]]
+    lines = [
+        f"version:{OPTIONS_DATA_VERSION}",
+        f"lang:{OPTIONS_LANGUAGE}",
+        # Gson이 쓰는 것과 같은 공백 없는 JSON 배열.
+        "resourcePacks:" + json.dumps(enabled, ensure_ascii=False, separators=(",", ":")),
+    ]
     lines += [f"key_key.occultism.familiar.{name}:{UNBOUND_KEY}" for name in OCCULTISM_FAMILIARS]
     return "\n".join(lines) + "\n"
 
@@ -477,8 +612,11 @@ def check_dependency_closure(mods):
     return sorted(provided)
 
 
-def render_readme(server_lock, mods, shaderpacks):
+def render_readme(server_lock, mods, shaderpacks, resourcepacks):
     external = [mod for mod in mods if not mod["bundle_jar"]]
+    external_resourcepacks = [pack for pack in resourcepacks if not pack["bundle_file"]]
+    translation = next(pack for pack in resourcepacks if pack["enabled_by_default"])
+    optional_packs = [pack for pack in resourcepacks if not pack["enabled_by_default"]]
     bundled_count = len(mods) - len(external)
     iris = next(mod for mod in mods if mod["declared_mod_ids"] == ["iris"])
     lines = [
@@ -487,6 +625,7 @@ def render_readme(server_lock, mods, shaderpacks):
         f"Aziran Minecraft `{server_lock['minecraft_version']}` NeoForge 서버에 접속하기 위한 클라이언트 모드 구성이다.",
         "서버와 공유하는 모드는 서버와 같은 파일을 담았고, 여기에 서버가 쓰지 않는 클라이언트 전용",
         "최적화·편의·셰이더 모드를 더했다. 서버 전용 모드와 서버 설정·월드·로그는 포함하지 않는다.",
+        "새 인스턴스는 게임 언어가 한국어이고 Occultism 한국어 번역 리소스팩이 켜진 상태로 시작한다.",
         "",
         "## 먼저 읽을 것: ZIP 두 개에는 모든 파일이 들어 있지 않다",
         "",
@@ -500,19 +639,26 @@ def render_readme(server_lock, mods, shaderpacks):
         lines.append(f"- 모드 {mod['title']} {mod['version_number']} (`mods/`)")
     for pack in shaderpacks:
         lines.append(f"- 셰이더 팩 {pack['title']} {pack['version_number']} (`shaderpacks/`)")
+    for pack in external_resourcepacks:
+        lines.append(f"- 리소스팩 {pack['title']} {pack['version_number']} (`resourcepacks/`, 기본으로 꺼 둠)")
     lines += [
         "",
         f"- **권장: `{mrpack_name()}`을 쓴다.** 런처가 설치 중에 Modrinth에서 위 파일을 직접 내려받으므로",
-        f"  라이선스 조건을 만족하면서 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰진다.",
+        f"  라이선스 조건을 만족하면서 모드 {len(mods)}개와 셰이더 팩, 리소스팩이 모두 갖춰진다.",
         "  MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있다.",
         "  MultiMC 위키의 Import Instance 문서가 가져올 수 있는 형식으로 Modrinth `.mrpack`을 적고 있다",
         "  (https://github.com/MultiMC/Launcher/wiki/Import-Instance).",
-        f"- ZIP 두 개를 쓰면 모드 {bundled_count}개만 설치되고 셰이더 팩은 없다. 나머지는 아래 절차로 직접 받아 넣는다.",
+        f"- ZIP 두 개를 쓰면 모드 {bundled_count}개와 위 목록 밖의 리소스팩만 설치되고 셰이더 팩은 없다.",
+        "  나머지는 아래 절차로 직접 받아 넣는다. 셰이더 팩과 위 리소스팩은 선택 사항이라 넣지 않아도 접속할 수 있다.",
         "",
         "### 직접 받아 넣는 절차 (ZIP으로 설치할 때만)",
         "",
     ]
-    downloads = [(mod, "mod", "mods") for mod in external] + [(pack, "shader", "shaderpacks") for pack in shaderpacks]
+    downloads = (
+        [(mod, "mod", "mods") for mod in external]
+        + [(pack, "shader", "shaderpacks") for pack in shaderpacks]
+        + [(pack, "resourcepack", "resourcepacks") for pack in external_resourcepacks]
+    )
     for item, kind, folder in downloads:
         lines += [
             f"**{item['title']} {item['version_number']}**",
@@ -533,7 +679,63 @@ def render_readme(server_lock, mods, shaderpacks):
             "",
         ]
 
+    stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
     lines += [
+        "## 1.1.7 변경: 한국어 기본값과 리소스팩 추가",
+        "",
+        "모드 19개, 셰이더 팩, `servers.dat`는 1.1.6과 같다. 리소스팩 세 개를 더하고 `options.txt`에",
+        "언어와 기본 리소스팩 설정을 더했다.",
+        "",
+        f"- **{translation['title']}** (`{translation['filename']}`) — **기본으로 켜진다.** 이 서버 프로젝트가",
+        "  Occultism 1.256.0의 영어 원문 전체를 다시 번역한 언어 파일이다. 게임 언어가 한국어일 때만 보인다.",
+        "  세 아카이브 모두 같은 파일을 `resourcepacks/`에 담는다.",
+        f"- **{stay_true['title']} {stay_true['version_number']}** — 기본으로 꺼져 있다. 제작자 FAQ가 출처를 밝힌",
+        "  모드팩 사용을 허락해 원본 ZIP을 수정 없이 세 아카이브에 담았다.",
+        f"  **{stay_true['version_number']}용 팩이라 26.3에서 제대로 보이는지는 확인하지 않았다.** 게임은 이 팩을",
+        "  이전 버전용으로 표시한다. 연결 텍스처·오버레이 같은 일부 표현은 OptiFine이 있어야 하는데, 이 팩은",
+        "  OptiFine이나 대체 모드를 넣지 않았으므로 그 부분은 적용되지 않는다.",
+    ]
+    for pack in external_resourcepacks:
+        lines += [
+            f"- **{pack['title']} {pack['version_number']}** — 기본으로 꺼져 있다. 제작자가 모드팩 의존성 사용만",
+            "  허락하고 파일 재배포는 금지하므로 `.mrpack`으로 설치할 때 런처가 Modrinth에서 받아",
+            "  `resourcepacks/`에 넣는다. ZIP 두 개에는 들어 있지 않으며 위 \"직접 받아 넣는 절차\"대로 넣는다.",
+            "  몹 변형 텍스처는 OptiFine이나 Entity Texture Features가 있어야 보이며 이 팩은 둘 다 넣지 않았다.",
+        ]
+    lines += [
+        "",
+        "### 언어와 리소스팩 기본값 (options.txt)",
+        "",
+        f"`options.txt`에 `lang:{OPTIONS_LANGUAGE}`(한국어)와 아래 한 줄을 더했다.",
+        "",
+        "```",
+        "resourcePacks:" + json.dumps(
+            ["vanilla", MOD_RESOURCES_PACK_ID, f"file/{translation['filename']}"],
+            ensure_ascii=False, separators=(",", ":"),
+        ),
+        "```",
+        "",
+        "목록은 뒤에 있을수록 우선한다. `mod_resources`(모드 리소스)를 번역 팩 아래에 적은 것은 일부러다.",
+        "적지 않으면 게임이 모드 리소스를 맨 위에 올려 Occultism 모드에 원래 들어 있는 옛 한국어 번역이",
+        "이 팩의 번역을 덮는다. 나머지 리소스팩은 켜지 않는다.",
+        "",
+        "### 리소스팩 켜고 끄는 법",
+        "",
+        "1. `Options`(설정) → `Resource Packs...`(리소스팩)으로 간다.",
+        "2. 켜려면 왼쪽 `Available`(사용 가능) 목록에서 팩의 화살표를 눌러 오른쪽 `Selected`(선택됨)로 옮긴다.",
+        "   끄려면 오른쪽 목록에서 왼쪽으로 옮긴다.",
+        "3. 오른쪽 목록은 **위에 있는 팩이 우선한다.** 새로 켠 팩은 맨 위에 붙으므로, 번역이 계속 보이게",
+        f"   `{translation['filename']}`를 위/아래 화살표로 **맨 위**(적어도 켠 팩들과 `Mod Resources`보다 위)로 올린다.",
+        "4. `Done`(완료)을 누르면 리소스를 다시 불러온다.",
+        "",
+        f"- {stay_true['title']}처럼 이전 버전용 팩을 켜면 게임이 호환성 경고를 띄운다. 켜기로 하면 화면이 깨지거나",
+        "  일부가 바뀌지 않을 수 있다. 그럴 때는 같은 화면에서 다시 끈다.",
+        "- 선택 리소스팩끼리는 같은 텍스처를 서로 덮을 수 있다. 둘을 함께 켜면 위에 있는 팩의 모습이 보인다.",
+        "- 셰이더(Iris)와는 별개 설정이다. 셰이더는 아래 \"셰이더 켜는 법\"을 따른다.",
+        "- 언어를 바꾸려면 `Options` → `Language...`(언어)에서 고른다. 번역 팩은 한국어일 때만 쓰인다.",
+        "- **이 기본값은 새로 만드는 인스턴스에만 적용된다.** 이미 `options.txt`가 있는 인스턴스는 소급해서",
+        "  바뀌지 않는다. 기존 인스턴스에 설치했다면 위 절차로 번역 팩을 직접 켜고 언어를 한국어로 바꾼다.",
+        "",
         "## 1.1.6 변경: Simple Tomb 추가",
         "",
         "서버에 무덤 모드 Simple Tomb 1.9.0을 설치하면서 클라이언트에도 **서버와 같은 파일**",
@@ -585,8 +787,9 @@ def render_readme(server_lock, mods, shaderpacks):
         "",
         "그래서 이 팩은 사역마 단축키 18개를 `key.keyboard.unknown`(미지정)으로 적은 최소 `options.txt`를",
         "함께 담는다(`.mrpack`은 `client-overrides/options.txt`, 수동 ZIP은 `options.txt`, MultiMC ZIP은",
-        "`.minecraft/options.txt`). 파일에는 `version` 줄과 이 18줄만 있고, 그래픽·언어·마지막 접속 서버·",
-        "계정 같은 개인 설정은 없다. 나머지 설정은 게임 기본값으로 시작한다.",
+        "`.minecraft/options.txt`). 파일에는 `version` 줄과 이 18줄, 1.1.7에서 더한 언어(`lang`)·리소스팩",
+        "(`resourcePacks`) 두 줄만 있고, 그래픽·마지막 접속 서버·계정 같은 개인 설정은 없다. 나머지 설정은",
+        "게임 기본값으로 시작한다.",
         "사용자가 기존 인스턴스의 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자",
         "두 번 연속 실행과 서버 접속에 성공했고 `-1`이 다시 생기지 않았다.",
         "",
@@ -645,10 +848,14 @@ def render_readme(server_lock, mods, shaderpacks):
         "",
         f"`{mrpack_name()}`은 Modrinth 모드팩 형식이다. Modrinth App, Prism Launcher, ATLauncher,",
         "MultiMC 등 모드팩 가져오기를 지원하는 런처에서 파일을 열면 Minecraft와 NeoForge, 모드를",
-        f"함께 설치한다. 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰지는 방식은 이것뿐이다.",
-        "모드 대부분과 셰이더 팩은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판과",
-        "Simple Tomb(CurseForge 배포), Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`와 Aziran 서버를 적은",
-        "`servers.dat`도 함께 설치된다.",
+        f"함께 설치한다. 모드 {len(mods)}개와 셰이더 팩, 리소스팩 {len(resourcepacks)}개가 모두 갖춰지는 방식은 이것뿐이다.",
+        "모드 대부분과 셰이더 팩, 리소스팩 "
+        + ", ".join(pack["title"] for pack in external_resourcepacks)
+        + "은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판과",
+        "Simple Tomb(CurseForge 배포), Iris 로컬 빌드, 리소스팩 "
+        + ", ".join(pack["title"] for pack in bundled_resourcepacks(resourcepacks))
+        + "은 팩 안에 들어 있다.",
+        "언어·리소스팩·사역마 단축키를 정한 `options.txt`와 Aziran 서버를 적은 `servers.dat`도 함께 설치된다.",
         "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
         "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
         "런처에 따라 기존 인스턴스에 덮어쓸 때 `servers.dat`가 팩의 파일로 바뀌어 저장해 둔 서버 목록이",
@@ -657,31 +864,35 @@ def render_readme(server_lock, mods, shaderpacks):
         "### 2. 수동 ZIP",
         "",
         f"`{manual_zip_name()}`은 런처를 쓰지 않는 설치용이다.",
-        f"모드 JAR {bundled_count}개와 `options.txt`, `servers.dat`가 들어 있고, 위에서 안내한 파일은 직접 받아",
-        "넣어야 한다.",
+        f"모드 JAR {bundled_count}개, `resourcepacks/`의 리소스팩 {len(bundled_resourcepacks(resourcepacks))}개, "
+        "`options.txt`, `servers.dat`가 들어 있고,",
+        "위에서 안내한 파일은 직접 받아 넣어야 한다.",
         "",
         "1. Minecraft 런처에 NeoForge "
         f"`{server_lock['loader_version']}` 설치 프로파일을 먼저 만든다.",
         "2. 해당 프로파일의 게임 디렉터리를 연다(기본값은 `.minecraft`). 가능하면 새 디렉터리를 쓴다.",
         "3. 이전 버전을 설치했던 디렉터리라면 `mods/xaerominimap-neoforge-26.3-26.5.3.jar`를 먼저 지운다.",
-        "4. ZIP 안의 `mods/` 폴더 내용을 게임 디렉터리의 `mods/` 폴더에 넣는다.",
+        "4. ZIP 안의 `mods/`와 `resourcepacks/` 폴더 내용을 게임 디렉터리의 같은 이름 폴더에 넣는다.",
         "5. 게임 디렉터리에 `options.txt`가 **없으면** ZIP의 `options.txt`를 넣는다. **이미 있으면 덮어쓰지",
-        "   말고** 위 \"이미 있는 인스턴스를 고치는 방법\"대로 `key.keyboard.-1`만 바꾼다.",
+        "   말고** 위 \"이미 있는 인스턴스를 고치는 방법\"대로 `key.keyboard.-1`만 바꾸고, 게임에서 언어를",
+        "   한국어로 바꾼 뒤 위 \"리소스팩 켜고 끄는 법\"대로 번역 팩을 켠다.",
         "6. 게임 디렉터리에 `servers.dat`가 **없으면** ZIP의 `servers.dat`를 넣는다. **이미 있으면 덮어쓰지",
         f"   말고** 게임의 멀티플레이 화면에서 `{SERVER_LIST_ADDRESS}`를 직접 추가한다. 덮어쓰면 기존 서버 목록이",
         "   사라진다.",
-        "7. 위 \"직접 받아 넣는 절차\"대로 나머지 모드와 셰이더 팩을 넣는다.",
+        "7. 위 \"직접 받아 넣는 절차\"대로 나머지 모드와, 원하면 셰이더 팩·리소스팩을 넣는다.",
         "8. `manifest.json`의 SHA-1/SHA-512와 실제 파일을 대조해 무결성을 확인한다.",
-        "   `manifest.json`에는 ZIP에 담은 모드 JAR만 적혀 있다.",
+        "   `manifest.json`에는 ZIP에 담은 모드 JAR과 리소스팩만 적혀 있다.",
         "",
         "`sources/` 폴더는 Iris 대응 소스라 게임 디렉터리에 넣지 않아도 된다.",
         "",
         "### 3. MultiMC 인스턴스 ZIP",
         "",
         f"`{multimc_zip_name()}`은 MultiMC 인스턴스 내보내기 형식이다.",
-        f"모드 JAR {bundled_count}개와 `.minecraft/options.txt`, `.minecraft/servers.dat`가 팩 안에 들어 있다.",
+        f"모드 JAR {bundled_count}개, `.minecraft/resourcepacks/`의 리소스팩 "
+        f"{len(bundled_resourcepacks(resourcepacks))}개, `.minecraft/options.txt`,",
+        "`.minecraft/servers.dat`가 팩 안에 들어 있다.",
         "**MultiMC를 쓴다면 이 ZIP 대신 `.mrpack`을 가져오는 쪽을 권한다.** `.mrpack`은 나머지 모드와",
-        "셰이더 팩까지 런처가 받아 주므로 수작업이 없다.",
+        "셰이더 팩, 리소스팩까지 런처가 받아 주므로 수작업이 없다.",
         "",
         "이전 버전 인스턴스를 그대로 쓰지 말고 **새 인스턴스로 가져온다.** 가져오기는 기존 인스턴스의",
         "`mods/`를 지우지 않으므로, 이전 인스턴스를 재사용하면 이전 JAR이 남아 이번 구성과 달라진다.",
@@ -694,7 +905,8 @@ def render_readme(server_lock, mods, shaderpacks):
         f"Java {server_lock['java_version']} 실행 파일을 고른다. "
         "팩에는 Java 경로를 넣지 않았으므로 런처에서 직접 지정해야 한다.",
         "5. `Edit Instance` → `Folder`로 인스턴스 폴더를 열고, 위 \"직접 받아 넣는 절차\"대로",
-        "   `.minecraft/mods/`에 나머지 모드를, `.minecraft/shaderpacks/`에 셰이더 팩을 넣는다.",
+        "   `.minecraft/mods/`에 나머지 모드를 넣는다. 원하면 `.minecraft/shaderpacks/`에 셰이더 팩을,",
+        "   `.minecraft/resourcepacks/`에 리소스팩을 넣는다.",
         "6. 인스턴스를 실행한다.",
         "",
         f"Minecraft `{server_lock['minecraft_version']}`와 NeoForge "
@@ -738,6 +950,25 @@ def render_readme(server_lock, mods, shaderpacks):
 
     lines += [
         "",
+        "## 리소스팩",
+        "",
+        "| 리소스팩 | 버전 | 대상 게임 버전(pack.mcmeta) | 팩 포함 | 기본 상태 |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for pack in resourcepacks:
+        state = "켜짐" if pack["enabled_by_default"] else "꺼짐(직접 켠다)"
+        delivery = "세 아카이브에 파일 포함" if pack["bundle_file"] else ".mrpack 설치 중 Modrinth 다운로드"
+        pack_format = ", ".join(f"{key} {value}" for key, value in pack["pack_format"].items())
+        lines.append(
+            f"| {pack['title']} | {pack['version_number']} | {pack_format} | {delivery} | {state} |"
+        )
+    lines += [
+        "",
+        "Minecraft 26.3의 리소스 형식은 97.1이다. 대상 버전이 다른 팩은 게임이 호환성 경고를 띄운다.",
+    ]
+
+    lines += [
+        "",
         "JEI, Occultism, Modonomicon, Balm은 각각 `mezz_config`, `codedefinedgui`·`magicparticleslib`,",
         "`commonmark`, `kuma_api`를 JAR 안에 내장하므로 따로 설치하지 않는다.",
         "JourneyMap도 `commonnetworking`, `journeymap_api`, `pngj`를 내장한다.",
@@ -769,6 +1000,21 @@ def render_readme(server_lock, mods, shaderpacks):
         "    이 팩에서 생기는 문제의 책임은 셰이더 제작자가 아니라 이 모드팩 운영자에게 있다.",
         f"- Iris (coderbot, IMS212) — 로컬 빌드, 소스: {iris['build']['repository']}"
         f" 커밋 `{iris['build']['commit']}`",
+        f"- {stay_true['title']} ({stay_true['author']}) — 리소스팩, 원본 ZIP을 수정 없이 담았다.",
+        f"  - CurseForge: {stay_true['project_url']}",
+        f"  - 받은 파일: {stay_true['url']}",
+        "  - 모드팩 사용 허락: 같은 페이지 FAQ \"Can I have permission to use this in my modpack I will give credit?\" — \"Yes :)\"",
+    ]
+    for pack in external_resourcepacks:
+        lines += [
+            f"- {pack['title']} ({pack['author']}) — 리소스팩, 팩에 담지 않고 `.mrpack`이 Modrinth에서 받게 한다.",
+            f"  - Modrinth: {pack['project_url']}",
+            f"  - 받는 파일: {pack['url']}",
+            "  - 모드팩 사용 허락: 같은 페이지 FAQ \"Yes, this resource pack may be included in modpacks as a dependency.\"",
+        ]
+    lines += [
+        f"- {translation['title']} — 이 서버 프로젝트의 비공식 번역. 원작 Occultism(klikli-dev, MIT)의 저작권",
+        "  고지와 라이선스 전문, 기존 한국어 번역 기여자 표기를 번역 팩 안의 `LICENSE`·`NOTICE.md`에 담았다.",
         "",
         "나머지 모드의 라이선스와 출처는 `LICENSES.md`에 있다.",
         "",
@@ -802,10 +1048,16 @@ def render_readme(server_lock, mods, shaderpacks):
         "  알려 왔다. 그 보고는 실행 성공만 다루며, 두 실행의 서버 접속과 셰이더 적용 여부는 보고에 없다.",
         "- 리눅스에서 파일 무결성(크기·SHA-512), 모드 메타데이터의 필수 의존성, 아카이브 구성을 검증했다.",
         f"- 세 아카이브의 `servers.dat`가 `{SERVER_LIST_ADDRESS}` 서버 하나만 담은 NBT인지 파일 수준에서 검증했다.",
+        "- 리소스팩의 크기·SHA-512, ZIP 무결성, `pack.mcmeta` 형식과, 번역 팩이 세 아카이브에 같은 바이트로",
+        "  들어 있는지를 파일 수준에서 검증했다. 26.3 `options.txt` 형식은 26.3 클라이언트 소스로 확인했다.",
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.6 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Simple Tomb의 무덤 생성과",
+        "- **이 1.1.7 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 한국어 기본값, 번역 팩의",
+        "  표시와 우선순위, 리소스팩 켜기·끄기를 게임에서 확인하지 않았다.",
+        f"- {stay_true['title']}는 {stay_true['version_number']}용이라 26.3에서의 표시를 확인하지 않았고, OptiFine 전용 표현은",
+        "  적용되지 않는다. Vanilla Experience+도 게임에서 적용해 보지 않았다.",
+        "- 1.1.6 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Simple Tomb의 무덤 생성과",
         "  아이템 회수, 멀티플레이 화면의 서버 표시도 게임에서 확인하지 않았다.",
         "- Iris는 미병합 PR의 로컬 빌드다. 빌드 당시 NeoForge 26.3.0.7-beta를 기준으로 컴파일했으며,",
         "  공식 릴리스가 아니므로 다른 PC·드라이버에서의 안정성은 알 수 없다.",
@@ -824,7 +1076,7 @@ def render_readme(server_lock, mods, shaderpacks):
     return "\n".join(lines) + "\n"
 
 
-def render_licenses(mods, shaderpacks):
+def render_licenses(mods, shaderpacks, resourcepacks):
     lines = [
         "# 라이선스와 출처 표기",
         "",
@@ -885,6 +1137,35 @@ def render_licenses(mods, shaderpacks):
             f"- 제외 근거: {pack['bundle_jar_reason']}",
             "",
         ]
+    for pack in resourcepacks:
+        lic = pack["license"]
+        lines += [
+            f"## {pack['title']} {pack['version_number']} (리소스팩)",
+            "",
+            f"- 라이선스: {lic['name']} (`{lic['id']}`)",
+        ]
+        if pack["author"]:
+            lines.append(f"- 제작자: {pack['author']}")
+        if pack["url"]:
+            lines.append(f"- 원본 배포: {pack['url']}")
+        if pack["build"]:
+            lines.append(f"- 빌드: `{pack['build']['command']}` → `{pack['build']['output']}`")
+        lines.append(f"- 근거: {lic['url']}")
+        lines.append(f"- 비고: {lic['note']}")
+        if lic.get("distribution_note"):
+            lines.append(f"- 배포 범위: {lic['distribution_note']}")
+        if pack["bundle_file"]:
+            lines.append(f"- 팩 포함 방식: 원본 파일을 세 아카이브의 `{pack['path']}`에 수정 없이 담는다.")
+        else:
+            lines.append(
+                "- 팩 포함 방식: 파일을 담지 않는다. `.mrpack`이 Modrinth CDN 다운로드 항목"
+                f"(`{pack['path']}`)으로만 지정하며, 수동 ZIP과 MultiMC 인스턴스 ZIP에는 들어 있지 않다."
+            )
+        lines.append(f"- 근거: {pack['bundle_reason']}")
+        if pack["compatibility_note"]:
+            lines.append(f"- 호환성: {pack['compatibility_note']}")
+        lines.append(f"- 기본 상태: {'켜짐' if pack['enabled_by_default'] else '꺼짐'}")
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -900,10 +1181,15 @@ def multimc_zip_name():
     return f"aziran-26.3-client-{PACK_VERSION}-multimc.zip"
 
 
-def render_manifest(mods):
+def bundled_resourcepacks(resourcepacks):
+    """아카이브에 파일을 담아도 되는 리소스팩만 고른다. 나머지는 .mrpack이 Modrinth CDN에서 받는다."""
+    return [pack for pack in resourcepacks if pack["bundle_file"]]
+
+
+def render_manifest(mods, resourcepacks):
     """수동 설치·MultiMC 양쪽에서 쓰는 무결성 확인용 파일 목록. 경로는 .minecraft 기준이다.
 
-    아카이브에 담은 JAR만 적는다. 라이선스 때문에 담지 않은 모드는 이 목록에 없다.
+    아카이브에 담은 JAR과 리소스팩만 적는다. 라이선스 때문에 담지 않은 파일은 이 목록에 없다.
     """
     return {
         "pack": PACK_NAME,
@@ -917,11 +1203,19 @@ def render_manifest(mods):
                 "sha512": mod["sha512"],
             }
             for mod in bundled_mods(mods)
+        ] + [
+            {
+                "path": pack["path"],
+                "size": pack["size"],
+                "sha1": pack["sha1"],
+                "sha512": pack["sha512"],
+            }
+            for pack in bundled_resourcepacks(resourcepacks)
         ],
     }
 
 
-def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt, servers_dat):
+def build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses, options_txt, servers_dat):
     index = {
         "formatVersion": 1,
         "game": "minecraft",
@@ -954,6 +1248,17 @@ def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt, 
             "downloads": [pack["url"]],
             "fileSize": pack["size"],
         })
+    # 파일 재배포를 허락하지 않은 리소스팩도 같은 방식으로 받는다. 설치만 하고 켜는 것은 options.txt가 정한다.
+    for pack in resourcepacks:
+        if pack["bundle_file"]:
+            continue
+        index["files"].append({
+            "path": pack["path"],
+            "hashes": {"sha1": pack["sha1"], "sha512": pack["sha512"]},
+            "env": {"client": "required", "server": "unsupported"},
+            "downloads": [pack["url"]],
+            "fileSize": pack["size"],
+        })
 
     out = DIST / mrpack_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -965,14 +1270,16 @@ def build_mrpack(server_lock, mods, shaderpacks, readme, licenses, options_txt, 
         for mod in mods:
             if mod["mrpack_delivery"] == "client-overrides":
                 zf.write(jar_path(mod), f"client-overrides/mods/{mod['filename']}")
+        for pack in bundled_resourcepacks(resourcepacks):
+            zf.write(pack["local_path"], f"client-overrides/{pack['path']}")
         # 대응 소스는 게임 디렉터리에 설치하지 않도록 overrides 밖(팩 루트)에 둔다.
         for source, archive_path in source_bundle_entries(mods):
             zf.write(source, archive_path)
     return out, index
 
 
-def build_manual_zip(mods, readme, licenses, options_txt, servers_dat):
-    manifest = render_manifest(mods)
+def build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat):
+    manifest = render_manifest(mods, resourcepacks)
     out = DIST / manual_zip_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("README.md", readme)
@@ -982,12 +1289,14 @@ def build_manual_zip(mods, readme, licenses, options_txt, servers_dat):
         zf.writestr("servers.dat", servers_dat)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f"mods/{mod['filename']}")
+        for pack in bundled_resourcepacks(resourcepacks):
+            zf.write(pack["local_path"], pack["path"])
         for source, archive_path in source_bundle_entries(mods):
             zf.write(source, archive_path)
     return out, manifest
 
 
-def build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_dat):
+def build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses, options_txt, servers_dat):
     """MultiMC 인스턴스 내보내기 형식으로 묶는다.
 
     Minecraft와 NeoForge는 파일로 담지 않고 mmc-pack.json의 컴포넌트로만 지정한다.
@@ -1031,7 +1340,7 @@ def build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_
         "OverrideMemory=false",
         "OverrideWindow=false",
     ]) + "\n"
-    manifest = render_manifest(mods)
+    manifest = render_manifest(mods, resourcepacks)
     out = DIST / multimc_zip_name()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("mmc-pack.json", json.dumps(pack, ensure_ascii=False, indent=4) + "\n")
@@ -1043,6 +1352,8 @@ def build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_
         zf.writestr(".minecraft/servers.dat", servers_dat)
         for mod in bundled_mods(mods):
             zf.write(jar_path(mod), f".minecraft/mods/{mod['filename']}")
+        for pack in bundled_resourcepacks(resourcepacks):
+            zf.write(pack["local_path"], f".minecraft/{pack['path']}")
         # 소스는 인스턴스 폴더 루트에 둔다. .minecraft 밖이라 게임이 읽지 않는다.
         for source, archive_path in source_bundle_entries(mods):
             zf.write(source, archive_path)
@@ -1092,7 +1403,7 @@ def prune_old_multimc_zips():
     return [path.name for path in stale]
 
 
-def write_client_lock(server_lock, mods, shaderpacks, provided_mod_ids, archives):
+def write_client_lock(server_lock, mods, shaderpacks, resourcepacks, provided_mod_ids, archives):
     lock = {
         "pack_name": PACK_NAME,
         "pack_version": PACK_VERSION,
@@ -1116,6 +1427,11 @@ def write_client_lock(server_lock, mods, shaderpacks, provided_mod_ids, archives
             for mod in mods if not mod["bundle_jar"]
         ],
         "shaderpacks": shaderpacks,
+        # 로컬 경로(local_path)는 빌드 머신에만 의미가 있어 lock에 적지 않는다.
+        "resourcepacks": [
+            {key: value for key, value in pack.items() if key != "local_path"}
+            for pack in resourcepacks
+        ],
         "seeded_options": {
             "archive_paths": {
                 mrpack_name(): "client-overrides/options.txt",
@@ -1123,6 +1439,13 @@ def write_client_lock(server_lock, mods, shaderpacks, provided_mod_ids, archives
                 multimc_zip_name(): ".minecraft/options.txt",
             },
             "version": OPTIONS_DATA_VERSION,
+            "lang": OPTIONS_LANGUAGE,
+            "resource_packs": ["vanilla", MOD_RESOURCES_PACK_ID] + [
+                f"file/{pack['filename']}" for pack in resourcepacks if pack["enabled_by_default"]
+            ],
+            "resource_packs_reason": "목록 뒤쪽이 우선한다. NeoForge가 required·Position.TOP으로 만드는 "
+                                     "mod_resources를 적지 않으면 게임이 맨 위에 끼워 Occultism JAR의 옛 "
+                                     "ko_kr.json이 번역 팩을 덮으므로 mod_resources를 번역 팩 아래에 적는다.",
             "unbound_key_mappings": [f"key_key.occultism.familiar.{name}" for name in OCCULTISM_FAMILIARS],
             "value": UNBOUND_KEY,
             "reason": "Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행이 사역마 단축키를 "
@@ -1150,6 +1473,7 @@ def main():
     server_lock, shared_mods = load_client_mods()
     extra_lock, extra_mods = load_client_extras()
     shaderpacks = load_shaderpacks(extra_lock)
+    resourcepacks = load_resourcepacks(extra_lock)
     mods = shared_mods + extra_mods
 
     duplicate_ids = sorted(
@@ -1163,14 +1487,15 @@ def main():
 
     DIST.mkdir(exist_ok=True)
 
-    readme = render_readme(server_lock, mods, shaderpacks)
-    licenses = render_licenses(mods, shaderpacks)
-    options_txt = render_options_txt()
+    readme = render_readme(server_lock, mods, shaderpacks, resourcepacks)
+    licenses = render_licenses(mods, shaderpacks, resourcepacks)
+    options_txt = render_options_txt(resourcepacks)
     servers_dat = render_servers_dat()
-    mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, readme, licenses,
+    mrpack_path, index = build_mrpack(server_lock, mods, shaderpacks, resourcepacks, readme, licenses,
                                       options_txt, servers_dat)
-    zip_path, manifest = build_manual_zip(mods, readme, licenses, options_txt, servers_dat)
-    multimc_path, _ = build_multimc_zip(server_lock, mods, readme, licenses, options_txt, servers_dat)
+    zip_path, manifest = build_manual_zip(mods, resourcepacks, readme, licenses, options_txt, servers_dat)
+    multimc_path, _ = build_multimc_zip(server_lock, mods, resourcepacks, readme, licenses,
+                                        options_txt, servers_dat)
 
     archives = {}
     for path in (mrpack_path, zip_path, multimc_path):
@@ -1185,7 +1510,7 @@ def main():
         "".join(f"{archives[name]['sha256']}  {name}\n" for name in sorted(archives)),
         encoding="utf-8",
     )
-    write_client_lock(server_lock, mods, shaderpacks, provided, archives)
+    write_client_lock(server_lock, mods, shaderpacks, resourcepacks, provided, archives)
 
     external = [mod for mod in mods if not mod["bundle_jar"]]
     overrides = [mod for mod in mods if mod["mrpack_delivery"] == "client-overrides"]
@@ -1197,6 +1522,10 @@ def main():
         print(f"라이선스상 JAR을 담지 않는다(설치 중 Modrinth에서 받음): {mod['filename']}")
     for pack in shaderpacks:
         print(f"라이선스상 셰이더 팩을 담지 않는다(설치 중 Modrinth에서 받음): {pack['filename']}")
+    for pack in resourcepacks:
+        delivery = "세 아카이브에 담음" if pack["bundle_file"] else "라이선스상 담지 않음(설치 중 Modrinth에서 받음)"
+        state = "켬" if pack["enabled_by_default"] else "끔"
+        print(f"리소스팩 {pack['filename']}: {delivery}, 기본 {state}, sha256={pack['sha256']}")
     for name, info in sorted(archives.items()):
         print(f"{name}: {info['size']} bytes sha256={info['sha256']}")
     for name in removed_zips:
