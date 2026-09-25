@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 22,
+  "mod_count": 23,
   "mods": [
     {
       "title": "Almanac",
@@ -853,6 +853,49 @@
           "declared_mod_ids": []
         }
       ],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Simple Tomb",
+      "source": "curseforge",
+      "project_id": 399669,
+      "project_slug": "simple-tomb",
+      "project_url": "https://www.curseforge.com/minecraft/mc-mods/simple-tomb",
+      "file_id": 8925463,
+      "version_number": "1.9.0",
+      "version_type": "beta",
+      "date_published": "2026-09-19T21:54:36.46Z",
+      "filename": "simpletomb-26.3-1.9.0.jar",
+      "url": "https://mediafilez.forgecdn.net/files/8925/463/simpletomb-26.3-1.9.0.jar",
+      "size": 285662,
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "curseforge_reported_size": 285662,
+      "cdn_etag": "dd45afd340426bc5b2cb1bf1cd9f6e17-1",
+      "github_repository": "https://github.com/Lothrazar/SimpleTomb",
+      "note": "사망 시 아이템을 담은 무덤 블록을 만드는 모드. 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일을 설치한다. JAR 메타데이터 license=\"LGPL2\", GitHub 저장소 라이선스는 LGPL-2.1이다.",
+      "md5": "191e78cf329cd156b6cd677fe734230b",
+      "sha1": "00e8e0c2d0af816e4c182ae7c062c48eb37ee7c2",
+      "sha256": "df855fccf310088624dfc942bfdadb826001c192fac52864179113c65fd87876",
+      "sha512": "83fa6e0a143e6e0538788cb301c36c5104df526878bc7cd6fc34f5044bb25e606b62cfdcf3ff1706fdefaf00602df99e724437fbceb482b054b04ba6d796c183",
+      "declared_mod_ids": [
+        "simpletomb"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.2.0.0-alpha,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.2,)"
+        }
+      ],
+      "bundled_jars": [],
       "has_fabric_metadata": false
     },
     {

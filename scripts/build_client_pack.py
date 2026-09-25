@@ -43,12 +43,17 @@ CLIENT_LOCK = REPO / "mods-26.3-client.lock.json"
 DIST = REPO / "dist"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.5"
+PACK_VERSION = "1.1.6"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.5 구성과 그 바탕인 1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을
+# 1.1.6 구성과 그 바탕인 1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은 내용을
 # 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.6은 1.1.5에 서버와 같은 파일인 Simple Tomb 1.9.0(CurseForge 파일 8925463, "
+    "simpletomb-26.3-1.9.0.jar)을 더한 판이다. 사망 시 아이템을 담는 무덤 블록과 열쇠 아이템을 등록하는 "
+    "모드라 서버에 설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 나머지 모드 18개, "
+    "셰이더 팩 1개, options.txt, servers.dat는 1.1.5와 같다. 1.1.6 아카이브로 새로 만든 인스턴스의 "
+    "실행은 아직 확인하지 않았다. 이하는 1.1.5 기록이다. "
     "1.1.5는 1.1.4와 같은 모드 18개와 셰이더 팩 1개를 그대로 두고, 멀티플레이 목록에 Aziran 서버"
     "(mc.aziran.uk) 하나만 적은 기본 servers.dat를 더한 판이다. 새로 만든 인스턴스는 멀티플레이 화면에 "
     "이 서버가 이미 들어 있으며, 이미 만든 인스턴스의 서버 목록은 소급해서 바뀌지 않는다. 1.1.5 "
@@ -117,6 +122,7 @@ CLIENT_TITLES = [
     "Modonomicon",
     "Occultism",
     "Packet Fixer",
+    "Simple Tomb",
     "Tom's Simple Storage Mod",
 ]
 
@@ -189,6 +195,13 @@ LICENSES = {
         "note": "",
     },
     "Packet Fixer": {"id": "MIT", "name": "MIT License", "url": None, "note": ""},
+    "Simple Tomb": {
+        "id": "LGPL-2.1",
+        "name": "GNU LGPL v2.1",
+        "url": "https://github.com/Lothrazar/SimpleTomb/blob/trunk/1.19/LICENSE",
+        "note": "JAR의 neoforge.mods.toml이 license=\"LGPL2\"를 선언하고, 제작자 GitHub 저장소의 LICENSE가 "
+                "GNU LGPL v2.1이다.",
+    },
     "Tom's Simple Storage Mod": {"id": "MIT", "name": "MIT License", "url": None, "note": ""},
 }
 
@@ -521,6 +534,14 @@ def render_readme(server_lock, mods, shaderpacks):
         ]
 
     lines += [
+        "## 1.1.6 변경: Simple Tomb 추가",
+        "",
+        "서버에 무덤 모드 Simple Tomb 1.9.0을 설치하면서 클라이언트에도 **서버와 같은 파일**",
+        "(`simpletomb-26.3-1.9.0.jar`)을 더했다. 죽으면 그 자리에 소지품을 담은 무덤이 생기고,",
+        "무덤 위에서 웅크리면(Shift) 아이템을 되찾는다. 부활하면 무덤 위치를 찾는 데 쓰는 열쇠를 받는다.",
+        "무덤 블록과 열쇠 아이템을 새로 등록하는 모드라 **이 모드가 없는 이전 팩으로는 서버에 접속할 수 없다.**",
+        "나머지 모드 18개, 셰이더 팩, `options.txt`, `servers.dat`는 1.1.5와 같다.",
+        "",
         "## 1.1.5 변경: 기본 멀티플레이 서버 목록 추가",
         "",
         "모드 18개와 셰이더 팩 1개는 1.1.4와 같다. 멀티플레이 목록에",
@@ -626,7 +647,7 @@ def render_readme(server_lock, mods, shaderpacks):
         "MultiMC 등 모드팩 가져오기를 지원하는 런처에서 파일을 열면 Minecraft와 NeoForge, 모드를",
         f"함께 설치한다. 모드 {len(mods)}개와 셰이더 팩이 모두 갖춰지는 방식은 이것뿐이다.",
         "모드 대부분과 셰이더 팩은 런처가 Modrinth CDN에서 직접 내려받고, Farmer's Delight 이식판과",
-        "Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`와 Aziran 서버를 적은",
+        "Simple Tomb(CurseForge 배포), Iris 로컬 빌드는 팩 안에 들어 있다. 사역마 단축키용 `options.txt`와 Aziran 서버를 적은",
         "`servers.dat`도 함께 설치된다.",
         "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
         "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
@@ -784,8 +805,8 @@ def render_readme(server_lock, mods, shaderpacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.5 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 멀티플레이 화면에 서버가",
-        "  실제로 보이는지도 게임에서 확인하지 않았다. 1.1.5는 1.1.4와 모드·셰이더 파일이 같다.",
+        "- **이 1.1.6 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Simple Tomb의 무덤 생성과",
+        "  아이템 회수, 멀티플레이 화면의 서버 표시도 게임에서 확인하지 않았다.",
         "- Iris는 미병합 PR의 로컬 빌드다. 빌드 당시 NeoForge 26.3.0.7-beta를 기준으로 컴파일했으며,",
         "  공식 릴리스가 아니므로 다른 PC·드라이버에서의 안정성은 알 수 없다.",
         "- Sodium이 1.1.0에서 일으킨 `0xc0000409` 크래시의 원인은 규명하지 않았다. 다른 PC에서 재발할 수 있다.",

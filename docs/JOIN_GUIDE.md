@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.5`의 `.mrpack`과 설치·라이선스 문서 (1.1.5는 GitHub 사전 릴리스(prerelease) [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.4는 사전 릴리스 `client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다)
+- 다운로드: GitHub Release `client-1.1.6`의 `.mrpack`과 설치·라이선스 문서 (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지킨다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
@@ -16,7 +16,7 @@ Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 
 ## 안내 내용과 확인 범위
 
 Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인스턴스로 가져오기,
-멀티플레이 접속 순서로 안내한다. 1.1.5로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
+멀티플레이 접속 순서로 안내한다. 1.1.5 이하 인스턴스를 쓰던 사람에게는 1.1.6을 새 인스턴스로 다시 가져오도록 안내한다. 1.1.5 이후 팩으로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
 `Aziran`(`mc.aziran.uk`) 서버가 이미 들어 있으며, 목록에 없는 기존 인스턴스는 `mc.aziran.uk`를 직접 추가하도록 안내한다. `.mrpack`을 압축 해제하거나 기존 모드
 폴더에 덮어쓰지 않는다. 팩은 Minecraft 26.3, NeoForge 26.3.0.8-beta, Java 25를 사용한다.
 
@@ -25,7 +25,7 @@ Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인�
 그 전 사용자의 1.1.4 시험 인스턴스는 첫 실행에서 셰이더 적용과 서버 접속에 성공했고, 두 번째
 실행은 Occultism 사역마 단축키(`key.keyboard.-1`) 문제로 실패했다. 기존 인스턴스 복사본에서
 그 값을 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·접속에 성공했다. 1.1.5는 모드·셰이더 구성이
-1.1.4와 같고 `servers.dat`만 더했다. 1.1.5 아카이브로 새로 만든 인스턴스의 게임 실행과 멀티플레이 목록 표시는
+1.1.4와 같고 `servers.dat`만 더했다. 1.1.6은 1.1.5에 Simple Tomb 1.9.0만 더했다. 1.1.5·1.1.6 아카이브로 새로 만든 인스턴스의 게임 실행과 멀티플레이 목록 표시는
 아직 확인하지 않았다. 안내 페이지의 다운로드
 제공과 파일 검증은 게임 실행 검증을 뜻하지 않는다. JourneyMap JAR과 Complementary Reimagined
 셰이더 팩은 팩 안에 포함하지 않으며, 런처가 설치 중 공식 Modrinth 배포처에서 받는다.

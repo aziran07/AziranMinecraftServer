@@ -20,13 +20,19 @@
 
 ## 설치 명세
 
-lock의 22개 항목에 해당하는 JAR 22개를 설치했다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`을 2026-09-25 추가 설치했다([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 아직 서버 재시작 전이라 활성화되지 않았다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
 ### SableCraft Standards 명령 설정 (2026-09-25)
 
 `standards-1.10.0+mc26.3.jar`는 서버에만 설치했다. `config/standards-common.toml`에서 명령군 `homes`, `back`, `tpa`, `spawn`만 켰고 `warps`, `top`, `economy`를 포함한 나머지 명령군은 껐다. `/home`, `/sethome`, `/homes`, `/delhome`, `/back`, `/tpa`, `/spawn`은 일반 유저에게 기본 허용된다. 사망 지점 `/back`은 `commands.backOnDeathAccess = "everyone"`와 `teleport.backOnDeath = true`로 허용했다. 관리자용 `/setspawn` 등은 일반 유저에게 열지 않았다. 모드가 항상 등록하는 `/actions`, `/perm`, `/rank`, `/standards`는 명령군 설정으로 끌 수 없으며 관리자 기능은 별도 권한을 요구한다.
 
 설치 전 접속자는 0명이었다. 전체 데이터 백업은 사용자 요청에 따라 실행하지 않았다. 정상 종료 후 JAR과 설정을 설치하고 서버를 시작했으며, 컨테이너는 `healthy`, 재시작 0회였다. 설치된 22개 JAR 모두 lock의 SHA-512와 일치했다. RCON 도움말에서 `/home`과 `/back`을 확인하고 `/warp`, `/top`은 등록되지 않은 것을 확인했다. 일반 유저가 직접 사용하거나 사망 지점으로 복귀하는 실제 플레이 검증은 아직 하지 않았다.
+
+### Simple Tomb 설치 (2026-09-25, 재시작 대기)
+
+사망 시 소지품을 담은 무덤 블록을 만드는 Simple Tomb `1.9.0`(CurseForge 프로젝트 `399669`, 파일 `8925463`, `simpletomb-26.3-1.9.0.jar`)을 lock에 고정하고 `mods/`에 넣었다. 공식 CDN(`mediafilez.forgecdn.net`)에서 받은 파일의 크기 285662바이트와 SHA-512가 CurseForge 보고 크기·지정 해시와 일치한 뒤에만 설치했다. JAR의 `neoforge.mods.toml`은 모드 ID `simpletomb`, 필수 의존성 NeoForge `[26.2.0.0-alpha,)`·Minecraft `[26.2,)`를 선언하며 현재 `26.3.0.8-beta`·`26.3`이 이를 만족한다. 라이선스는 JAR 메타데이터 `LGPL2`, 제작자 GitHub 저장소 LGPL-2.1이다.
+
+무덤 블록과 열쇠 아이템을 등록하는 모드라 클라이언트에도 같은 파일이 필요하다. 그래서 클라이언트 팩을 `1.1.6`으로 올려 같은 JAR을 담았다(아래 클라이언트 모드팩 절). 서버가 이 모드를 로드한 뒤에는 이 모드가 없는 `1.1.5` 이하 클라이언트가 접속할 수 없으므로, `1.1.6` 공개 전에는 서버를 재시작하지 않는다. 설치 시점의 최신 정기 월드 백업은 `26.3-world-20260925-043011.tar`이며 tar 목록을 읽을 수 있고 `level.dat`를 포함함을 확인했다. 재시작 후 기동 로그의 모드 로드, healthy 상태, 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
 
 ### 사용자가 지정한 모드
 
@@ -130,17 +136,17 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 22개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb도 무덤 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 23개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
 
-현재 클라이언트 팩 `1.1.5`는 `1.1.4`와 같은 모드 18개와 셰이더 팩 1개에 기본 멀티플레이 목록 `servers.dat`(`mc.aziran.uk`)를 더해 담으며, GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)로 공개되어 있다. `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.4`는 사전 릴리스 `client-1.1.4`로 공개되어 있다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
+클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화하면 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
-SableCraft 제외 사유를 빌더에 추가했지만 공개된 `1.1.5` 아카이브와 클라이언트 lock은 그대로 유지했다. 현재 빌더로 `1.1.5`를 다시 만들면 모드·설정은 같고 포함된 README만 달라져 아카이브 해시가 기존 공개판과 달라진다. 다음 클라이언트 팩 배포 때 버전을 올려 새 산출물을 고정해야 한다.
+`1.1.5` 공개 뒤 빌더에 추가한 SableCraft 제외 사유는 `1.1.6` 산출물과 클라이언트 lock부터 반영된다.
 
 모드는 두 갈래다.
 
-- **서버 공통 13개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Tom's Simple Storage. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
+- **서버 공통 14개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Simple Tomb, Tom's Simple Storage. Farmer's Delight 이식판과 Simple Tomb은 Modrinth CDN에 없어 `.mrpack`의 `client-overrides/mods/`에 JAR을 담는다. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
 - **클라이언트 전용 5개**: 서버에 설치하지 않는 모드다. 입력 고정 목록은 [mods-26.3-client-extra.lock.json](../mods-26.3-client-extra.lock.json)이고 JAR은 Git에서 제외한 `client-mods-cache/`에 둔다. ImmediatelyFast `1.17.1+26.3-neoforge`, Mouse Tweaks `26.3-2.31-neoforge`, JourneyMap `26.3-6.0.9+neoforge`, Sodium `mc26.3-0.9.2-neoforge`, Iris `1.11.6-snapshot+mc26.3-local`(PR #3354 커밋 `10d3598c…` 로컬 빌드).
 - **셰이더 팩 1개**: Complementary Reimagined `r5.9.3`. 입력 lock의 `shaderpacks`에 두며 `.mrpack`의 Modrinth CDN 다운로드 항목으로만 설치한다. 기본으로 켜지 않는다.
 
@@ -166,7 +172,7 @@ Modrinth 프로젝트 `lfHFW1mp`의 버전 `OCuB6UWq`(`journeymap-neoforge-26.3-
 
 `1.1.1`은 `1.1.0`에서 Sodium `mc26.3-0.9.2-neoforge`만 뺀 구성이었고, `1.1.2`·`1.1.3`도 Sodium을 넣지 않는다. 사용자가 `1.1.0` 인스턴스에서 Sodium JAR만 비활성화한 뒤 Windows MultiMC 실행과 서버 접속에 성공했다고 알려 왔기 때문이다. 다만 크래시 로그에 남았던 네이티브 종료 코드 `0xc0000409`의 정확한 원인은 확정하지 못했다. 로그에는 Sodium의 Nvidia 드라이버 워크어라운드가 `IllegalStateException: Command line is already modified`로 실패한 기록이 있었지만, 그 예외가 종료의 직접 원인인지 드라이버·런처·다른 요소와의 조합이 관여했는지는 알 수 없다. 확인된 사실은 "Sodium이 없으면 해당 PC에서 실행·접속된다"까지다. 입력 lock에서는 항목을 지우고 `removed`에 근거와 이후 관찰 결과를 남겼다. 사용자는 이전 인스턴스를 재사용하지 말고 새 MultiMC 인스턴스로 가져와야 이전 Sodium JAR이 남지 않는다.
 
-Farmer's Delight는 CurseForge 배포라 Modrinth CDN 화이트리스트를 쓸 수 없고, Iris는 공식 배포처에 없는 로컬 빌드라 둘 다 `.mrpack`의 `client-overrides/mods/`에 직접 담는다. 나머지 16개 모드와 셰이더 팩은 런처가 Modrinth CDN에서 받는다.
+Farmer's Delight와 Simple Tomb(`1.1.6`부터)은 CurseForge 배포라 Modrinth CDN 화이트리스트를 쓸 수 없고, Iris는 공식 배포처에 없는 로컬 빌드라 셋 다 `.mrpack`의 `client-overrides/mods/`에 직접 담는다. 나머지 16개 모드와 셰이더 팩은 런처가 Modrinth CDN에서 받는다.
 
 빌더는 패키징 전에 두 lock의 크기·SHA-512를 실제 JAR과 대조하고, 서버 공통 모드와 클라이언트 전용 모드의 모드 ID 충돌도 검사한다.
 

@@ -6,7 +6,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.1.5"
+VERSION = "1.1.6"
 FAMILIARS = {
     "greedy_familiar", "drikwing", "wingnis", "bat_familiar",
     "deer_familiar", "cthulhu_familiar", "devil_familiar",

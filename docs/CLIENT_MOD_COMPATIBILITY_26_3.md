@@ -13,6 +13,9 @@
 현재 버전 `1.1.5`(GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5))는 모드·셰이더 구성이 `1.1.4`와 같고, 새 인스턴스의
 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버 하나만 적은 `servers.dat`를 더했다. 모드 호환성 판단은 바뀌지 않는다.
 `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
+`1.1.6`(GitHub 사전 릴리스 `client-1.1.6`)은 `1.1.5`에 서버와 같은 파일인 Simple Tomb `1.9.0`을 더한 모드 19개다.
+Simple Tomb은 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일이 필요하다. JAR 메타데이터의 필수 의존성은
+NeoForge `[26.2.0.0-alpha,)`, Minecraft `[26.2,)`뿐이라 다른 모드와의 의존성 판단은 바뀌지 않는다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
 
 ## 1.1.4: 셰이더(Iris·Sodium·Complementary Reimagined)와 options.txt 우회
 
