@@ -118,6 +118,27 @@ class JoinGuideTests(unittest.TestCase):
         self.assertTrue(any(tag == 'main' for tag, _ in guide.tags))
         self.assert_local_resources_exist(guide)
 
+    def test_player_commands_guide_is_linked_and_covers_enabled_commands(self):
+        guide = Page((SITE / 'commands.html').read_text())
+        links = [attrs.get('href') for tag, attrs in guide.tags if tag == 'a']
+        home_links = [attrs.get('href') for tag, attrs in self.page.tags if tag == 'a']
+        occultism = Page((SITE / 'occultism.html').read_text())
+        occultism_links = [attrs.get('href') for tag, attrs in occultism.tags if tag == 'a']
+        self.assertIn('commands.html', home_links)
+        self.assertIn('commands.html', occultism_links)
+        self.assertIn('index.html', links)
+        self.assertTrue(any(tag == 'html' and attrs.get('lang') == 'ko'
+                            for tag, attrs in guide.tags))
+        self.assertEqual(sum(tag == 'h1' for tag, _ in guide.tags), 1)
+        self.assertTrue(any(tag == 'main' for tag, _ in guide.tags))
+        source = (SITE / 'commands.html').read_text()
+        for command in ('/sethome', '/home', '/homes', '/delhome', '/back',
+                        '/tpa', '/tpahere', '/tpaccept', '/tpdeny',
+                        '/tpacancel', '/spawn'):
+            self.assertIn(command, source)
+        self.assertIn('3개', ' '.join(guide.text))
+        self.assert_local_resources_exist(guide)
+
 
 if __name__ == '__main__':
     unittest.main()

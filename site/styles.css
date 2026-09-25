@@ -562,6 +562,28 @@ main { padding-block: 20px 8px; }
   padding-inline-start: 1.4em;
 }
 
+/* ---------- command list ---------- */
+
+.cmd-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+.cmd {
+  display: grid;
+  gap: 2px 12px;
+  padding: 8px 10px;
+  background: var(--platinum);
+  border-radius: 4px;
+  border-left: 4px solid var(--chrome-indigo);
+}
+@media (min-width: 560px) {
+  .cmd { grid-template-columns: minmax(11em, auto) minmax(0, 1fr); align-items: baseline; }
+}
+.cmd dt { font-weight: 700; }
+.cmd dt code { background: var(--surface); }
+.cmd dd { margin: 0; }
+
 .hint, .links {
   margin: 10px 0 0;
   font-size: 0.93rem;

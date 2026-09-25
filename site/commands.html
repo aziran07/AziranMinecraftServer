@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>명령어 안내 · Aziran 마인크래프트 서버</title>
+<meta name="description" content="Aziran 서버에서 쓸 수 있는 플레이어 명령어. 집 저장과 이동, 이전 위치와 사망 지점 복귀, 순간이동 요청, 스폰 이동.">
+<meta name="color-scheme" content="light">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2321242e'/%3E%3Crect x='2' y='9' width='12' height='5' fill='%237a8aba'/%3E%3Crect x='6' y='4' width='4' height='5' fill='%23f68d1f'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip-link" href="#homes">명령어 목록으로 건너뛰기</a>
+
+<header class="masthead">
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="logo-pill" href="index.html">AZIRAN</a>
+      <nav aria-label="주요 메뉴">
+        <ul class="nav-list">
+          <li><a href="index.html#steps">설치 방법</a></li>
+          <li><a href="index.html#extras">셰이더·지도</a></li>
+          <li><a href="index.html#keys">멈춤 해결</a></li>
+          <li><a href="index.html#java">자바 25</a></li>
+          <li><a href="commands.html" aria-current="page">명령어</a></li>
+          <li class="nav-feature"><a href="occultism.html">Occultism 시작 가이드</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="substrip">
+    <div class="wrap"><p>SableCraft Standards 1.10.0 · 플레이어 명령어</p></div>
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <section class="hero-panel chamfer" aria-labelledby="hero-title">
+    <p class="eyebrow">Aziran 서버 명령어 안내</p>
+    <h1 class="hero-title hero-title-ko" id="hero-title">명령어</h1>
+    <p class="hero-lede">채팅창(<code>T</code> 키)에 입력하는 명령어입니다. 집을 저장해 두고 돌아가거나, 친구에게 순간이동을 요청하거나, 죽은 자리로 돌아갈 수 있습니다.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#homes">명령어 보기</a>
+      <a class="btn btn-quiet" href="index.html">← 접속 안내로 돌아가기</a>
+    </div>
+  </section>
+
+  <aside class="rail" aria-label="명령어 정보와 출처">
+
+    <section class="panel" aria-labelledby="info-title">
+      <h2 class="panel-head" id="info-title">서버 설정</h2>
+      <div class="panel-body">
+        <dl class="spec-grid">
+          <div class="spec">
+            <dt>제공 모드</dt>
+            <dd>SableCraft Standards</dd>
+          </div>
+          <div class="spec">
+            <dt>서버 버전</dt>
+            <dd>1.10.0+mc26.3</dd>
+          </div>
+          <div class="spec">
+            <dt>집 개수</dt>
+            <dd>기본 3개</dd>
+          </div>
+        </dl>
+        <p class="note">
+          <strong>따로 설치하지 않아도 됩니다.</strong> 이 명령어는 서버에서 동작합니다. 클라이언트에 모드를 추가로 설치할 필요가 없습니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="sources-title">
+      <h2 class="panel-head" id="sources-title">출처</h2>
+      <div class="panel-body">
+        <p>명령어 이름과 동작은 모드 제작자의 저장소를 기준으로 했습니다.</p>
+        <ul class="quick-links">
+          <li><a href="https://github.com/Sablednah/SableCraft-Standards/tree/v1.10.0">SableCraft Standards v1.10.0 (GitHub) <span class="arrow" aria-hidden="true">▶</span></a></li>
+        </ul>
+        <p class="hint dotted">이 페이지는 자주 쓰는 명령어만 정리했습니다. 같은 기능 묶음에 다른 명령어가 더 있을 수 있습니다. <code>/warp</code>, <code>/top</code>, 돈 관련 명령어는 이 서버에서 꺼져 있습니다.</p>
+      </div>
+    </section>
+
+  </aside>
+
+  <div class="content">
+
+    <section class="panel" id="homes" aria-labelledby="homes-title">
+      <h2 class="panel-head" id="homes-title">집</h2>
+      <div class="panel-body">
+        <p>지금 서 있는 곳을 집으로 저장하고 나중에 돌아옵니다. 한 사람당 <strong>3개</strong>까지 저장할 수 있습니다.</p>
+        <dl class="cmd-list">
+          <div class="cmd">
+            <dt><code>/sethome [이름]</code></dt>
+            <dd>지금 위치를 집으로 저장합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/home [이름]</code></dt>
+            <dd>저장한 집으로 이동합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/homes</code></dt>
+            <dd>저장한 집 목록을 봅니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/delhome [이름]</code></dt>
+            <dd>저장한 집을 지웁니다.</dd>
+          </div>
+        </dl>
+        <p class="hint"><code>[이름]</code>은 빼도 됩니다. 빼면 <code>home</code>이라는 이름의 집을 씁니다. 이름은 띄어쓰기 없이 영어·숫자로 적습니다. 예: <code>/sethome mine</code>, <code>/home mine</code></p>
+      </div>
+    </section>
+
+    <section class="panel" id="back" aria-labelledby="back-title">
+      <h2 class="panel-head" id="back-title">되돌아가기</h2>
+      <div class="panel-body">
+        <dl class="cmd-list">
+          <div class="cmd">
+            <dt><code>/back</code></dt>
+            <dd>순간이동하기 전 위치로 돌아갑니다. 죽었다면 죽은 자리로 돌아갑니다.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="panel" id="tpa" aria-labelledby="tpa-title">
+      <h2 class="panel-head" id="tpa-title">순간이동 요청</h2>
+      <div class="panel-body">
+        <p>다른 플레이어에게 요청을 보내고, 상대가 받아들이면 이동합니다. 요청은 120초가 지나면 사라집니다.</p>
+        <dl class="cmd-list">
+          <div class="cmd">
+            <dt><code>/tpa &lt;플레이어&gt;</code></dt>
+            <dd>내가 그 플레이어에게 가겠다고 요청합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/tpahere &lt;플레이어&gt;</code></dt>
+            <dd>그 플레이어에게 내 쪽으로 오라고 요청합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/tpaccept</code></dt>
+            <dd>받은 요청을 수락합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/tpdeny</code></dt>
+            <dd>받은 요청을 거절합니다.</dd>
+          </div>
+          <div class="cmd">
+            <dt><code>/tpacancel</code></dt>
+            <dd>내가 보낸 요청을 취소합니다.</dd>
+          </div>
+        </dl>
+        <p class="hint"><code>&lt;플레이어&gt;</code>에는 상대의 마인크래프트 닉네임을 적습니다.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="spawn" aria-labelledby="spawn-title">
+      <h2 class="panel-head" id="spawn-title">스폰</h2>
+      <div class="panel-body">
+        <dl class="cmd-list">
+          <div class="cmd">
+            <dt><code>/spawn</code></dt>
+            <dd>서버 스폰 지점으로 이동합니다.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="promo chamfer" aria-labelledby="back-home-title">
+      <p class="promo-label">아직 접속 전이라면</p>
+      <h2 class="promo-title" id="back-home-title">Aziran</h2>
+      <p>모드팩 다운로드, 서버 주소, 자바 준비는 접속 안내 페이지에 있습니다.</p>
+      <a class="promo-link" href="index.html">접속 안내로 돌아가기 <span class="arrow" aria-hidden="true">▶</span></a>
+    </section>
+
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>
+      SableCraft Standards는 제작자의 모드이며, 이 안내는 제작자의
+      <a href="https://github.com/Sablednah/SableCraft-Standards/tree/v1.10.0">GitHub 저장소</a>와 Aziran 서버 설정을 바탕으로 한 비공식 요약입니다.
+    </p>
+    <p><a href="index.html">Aziran 서버 접속 안내로 돌아가기</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
