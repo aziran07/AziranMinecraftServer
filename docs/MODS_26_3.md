@@ -20,7 +20,7 @@
 
 ## 설치 명세
 
-lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 아직 서버 재시작 전이라 활성화되지 않았다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
 ### SableCraft Standards 명령 설정 (2026-09-25)
 
@@ -28,11 +28,13 @@ lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 �
 
 설치 전 접속자는 0명이었다. 전체 데이터 백업은 사용자 요청에 따라 실행하지 않았다. 정상 종료 후 JAR과 설정을 설치하고 서버를 시작했으며, 컨테이너는 `healthy`, 재시작 0회였다. 설치된 22개 JAR 모두 lock의 SHA-512와 일치했다. RCON 도움말에서 `/home`과 `/back`을 확인하고 `/warp`, `/top`은 등록되지 않은 것을 확인했다. 일반 유저가 직접 사용하거나 사망 지점으로 복귀하는 실제 플레이 검증은 아직 하지 않았다.
 
-### Simple Tomb 설치 (2026-09-25, 재시작 대기)
+### Simple Tomb 설치 (2026-09-25)
 
 사망 시 소지품을 담은 무덤 블록을 만드는 Simple Tomb `1.9.0`(CurseForge 프로젝트 `399669`, 파일 `8925463`, `simpletomb-26.3-1.9.0.jar`)을 lock에 고정하고 `mods/`에 넣었다. 공식 CDN(`mediafilez.forgecdn.net`)에서 받은 파일의 크기 285662바이트와 SHA-512가 CurseForge 보고 크기·지정 해시와 일치한 뒤에만 설치했다. JAR의 `neoforge.mods.toml`은 모드 ID `simpletomb`, 필수 의존성 NeoForge `[26.2.0.0-alpha,)`·Minecraft `[26.2,)`를 선언하며 현재 `26.3.0.8-beta`·`26.3`이 이를 만족한다. 라이선스는 JAR 메타데이터 `LGPL2`, 제작자 GitHub 저장소 LGPL-2.1이다.
 
-무덤 블록과 열쇠 아이템을 등록하는 모드라 클라이언트에도 같은 파일이 필요하다. 그래서 클라이언트 팩을 `1.1.6`으로 올려 같은 JAR을 담았다(아래 클라이언트 모드팩 절). 서버가 이 모드를 로드한 뒤에는 이 모드가 없는 `1.1.5` 이하 클라이언트가 접속할 수 없으므로, `1.1.6` 공개 전에는 서버를 재시작하지 않는다. 설치 시점의 최신 정기 월드 백업은 `26.3-world-20260925-043011.tar`이며 tar 목록을 읽을 수 있고 `level.dat`를 포함함을 확인했다. 재시작 후 기동 로그의 모드 로드, healthy 상태, 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
+무덤 블록과 열쇠 아이템을 등록하는 모드라 클라이언트에도 같은 파일이 필요하다. 그래서 클라이언트 팩을 `1.1.6`으로 올려 같은 JAR을 담았다(아래 클라이언트 모드팩 절). 서버가 이 모드를 로드한 뒤에는 이 모드가 없는 `1.1.5` 이하 클라이언트가 접속할 수 없으므로, GitHub 사전 릴리스 `client-1.1.6` 공개와 접속 안내 사이트 배포를 확인한 뒤에 재시작했다. 설치 시점의 최신 정기 월드 백업은 `26.3-world-20260925-043011.tar`이며 tar 목록을 읽을 수 있고 `level.dat`를 포함함을 확인했다.
+
+2026-09-25 05:30 UTC 정기 백업 `26.3-world-20260925-053014.tar`(`world/level.dat` 포함 확인) 뒤, 접속자 0명 상태에서 15분·5분·1분 전 공지를 하고 [정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업) 3-B(`StopTimeout=660`, `STOP_DURATION=600`)로 `docker compose stop minecraft`를 실행했다. 종료 상태 0, `exited exit=0 oom=false`, 세 차원의 `Saving chunks for level`과 러너 `Done`을 확인한 뒤 `docker compose start minecraft`로 기동했다. 기동 로그에 `Simple Tombstone 26.3-1.9.0 (simpletomb)`와 `mods/simpletomb-26.3-1.9.0.jar`가 나왔고 `Done`까지 도달했으며, 컨테이너는 `healthy`, 재시작 0회였다. 기동 로그의 Occultism `CuriosIntegrationImpl` `ClassNotFoundException`과 log4j `DebugFile` 어펜더의 netty `kqueue.Native` 오류는 변경 전 기동에도 있던 기존 로그다. 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
 
 ### 사용자가 지정한 모드
 
@@ -140,7 +142,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화하면 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
+클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화했으므로 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
 `1.1.5` 공개 뒤 빌더에 추가한 SableCraft 제외 사유는 `1.1.6` 산출물과 클라이언트 lock부터 반영된다.
 

@@ -200,7 +200,7 @@ Orca 명령은 이 문서에 고정하지 않습니다. 작업 시 설치된 `or
 
 `1.1.5` 추가 사항: 모드·셰이더 구성은 `1.1.4`와 같다. 빌더의 `render_servers_dat`가 멀티플레이 목록에 `SERVER_LIST_NAME`(`Aziran`)·`SERVER_LIST_ADDRESS`(`mc.aziran.uk`) 항목 하나만 적은 압축하지 않은 NBT `servers.dat`를 만들어 `.mrpack` `client-overrides/servers.dat`, 수동 ZIP `servers.dat`, MultiMC ZIP `.minecraft/servers.dat`에 넣고, lock의 `seeded_servers`에 기록한다. 새 인스턴스에만 적용되며 기존 인스턴스의 서버 목록은 바꾸지 않는다. 검증은 `tests/test_client_servers.py`다. `1.1.5` 아카이브로 새로 만든 인스턴스의 게임 실행은 확인하지 않았다.
 
-`1.1.6` 추가 사항: 서버 lock에 고정한 Simple Tomb `1.9.0`(CurseForge 파일 `8925463`)을 빌더의 `CLIENT_TITLES`와 `LICENSES`(LGPL-2.1)에 더해 서버 공통 모드가 14개가 됐다. Modrinth CDN URL이 없으므로 `.mrpack`에는 `client-overrides/mods/`로 JAR을 담는다. 서버는 JAR을 `mods/`에 두었지만 `client-1.1.6` 공개 전에는 재시작하지 않는다(모드 활성화 뒤 `1.1.5` 이하 클라이언트는 접속 불가). 검증은 `tests/test_simple_tomb_deployment.py`, `tests/test_client_pack.py`다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 확인하지 않았다.
+`1.1.6` 추가 사항: 서버 lock에 고정한 Simple Tomb `1.9.0`(CurseForge 파일 `8925463`)을 빌더의 `CLIENT_TITLES`와 `LICENSES`(LGPL-2.1)에 더해 서버 공통 모드가 14개가 됐다. Modrinth CDN URL이 없으므로 `.mrpack`에는 `client-overrides/mods/`로 JAR을 담는다. 서버는 GitHub 사전 릴리스 `client-1.1.6` 공개와 사이트 배포 뒤 2026-09-25에 재시작해 모드를 활성화했다(`1.1.5` 이하 클라이언트는 접속 불가). 검증은 `tests/test_simple_tomb_deployment.py`, `tests/test_client_pack.py`다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 확인하지 않았다.
 
 ## Chunky 무인 프리젠
 

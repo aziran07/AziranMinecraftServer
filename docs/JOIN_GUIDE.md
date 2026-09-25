@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.6`의 `.mrpack`과 설치·라이선스 문서 (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지킨다)
+- 다운로드: GitHub Release `client-1.1.6`의 `.mrpack`과 설치·라이선스 문서 (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
