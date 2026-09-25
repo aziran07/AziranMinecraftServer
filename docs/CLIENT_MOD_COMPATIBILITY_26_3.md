@@ -16,6 +16,21 @@
 `1.1.6`(GitHub 사전 릴리스 `client-1.1.6`)은 `1.1.5`에 서버와 같은 파일인 Simple Tomb `1.9.0`을 더한 모드 19개다.
 Simple Tomb은 무덤 블록과 열쇠 아이템을 등록하므로 서버와 클라이언트에 같은 파일이 필요하다. JAR 메타데이터의 필수 의존성은
 NeoForge `[26.2.0.0-alpha,)`, Minecraft `[26.2,)`뿐이라 다른 모드와의 의존성 판단은 바뀌지 않는다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다.
+`1.1.7`은 리소스팩, `1.1.8`은 Modonomicon 2.7.0 교체였고, `1.1.9`는 서버와 같은 Traveler's Backpack `11.4.0`을 더한 모드 20개다. 필수 의존성은 Minecraft `[26.3]`, NeoForge `[26.3.0.1-beta,)`뿐이다.
+
+### 1.1.9: Traveler's Backpack 단축키 중복
+
+팩에 들어 있는 모든 클라이언트 모드와 Minecraft 26.3 클라이언트 JAR의 `KeyMapping` 기본값을 바이트코드에서 읽어 대조했다(26.3 키 코드는 SDL 스캔코드, `InputConstants.KEY_B`=5, `KEY_Z`=29). Traveler's Backpack은 배낭 열기 `B`, 도구 바꾸기/호스 모드 `Z`이고 나머지 6개는 `InputConstants.UNKNOWN`(미지정)이다. 모두 기본 충돌 컨텍스트·수식 키 없음이다. 미지정 키를 상수 `UNKNOWN`으로 등록하므로 Occultism 사역마 단축키처럼 `key.keyboard.-1`이 저장되는 문제의 근거는 찾지 못했다(게임에서는 확인하지 않음).
+
+| 기본 `B` 단축키 | 모드 | 컨텍스트 |
+| --- | --- | --- |
+| `key.travelersbackpack.inventory` | Traveler's Backpack(1.1.9 추가) | 기본 |
+| `key.occultism.backpack`(가방 열기) | Occultism | 기본 |
+| `key.toms_storage.open_terminal` | Tom's Simple Storage | `IN_GAME` |
+| `key.journeymap.create_waypoint` | JourneyMap | `IN_GAME` |
+| `key.journeymap.fullscreen_create_waypoint` | JourneyMap | 전체 지도 화면(`GUI`) |
+
+`B`는 1.1.8까지도 세 모드가 함께 쓰던 기본값이다. `Z`는 바닐라와 다른 모드에 기본 지정이 없다. 새로 더하는 배낭 열기 하나만 다른 키로 옮기기로 하고 후보를 대조했다. `N`은 Occultism `key.occultism.storage_remote`(게임 중)·JourneyMap 전체 지도 웨이포인트 목록·바닐라 `F3+N`, `H`는 바닐라 디버그 `F3+H`, `G`는 바닐라 `key.quickActions`·Curios 인벤토리 열기·JourneyMap 엔티티 이름·`F3+G`, 앞서 검토한 `V`는 Occultism `key.occultism.ender_bag`·`F3+V`와 겹친다. `Y`만 바닐라와 팩의 모든 모드에 기본 지정이 없어서, 새 인스턴스의 `options.txt`에 `key_key.travelersbackpack.inventory:key.keyboard.y` 한 줄을 더했다. 기존 모드의 단축키는 바꾸지 않았다. 대조에는 각 모드의 `KeyMapping` 생성 바이트코드를 읽었고, 자체 등록 방식을 쓰는 Jade(키패드 89~98, 왼쪽 Shift 225)와 Iris(`R`·`K`·`I`)는 따로 확인했다. 이미 있는 인스턴스는 `B`로 남는다. `Y` 단축키와 겹침 해소는 게임에서 확인하지 않았다.
 
 ## 1.1.4: 셰이더(Iris·Sodium·Complementary Reimagined)와 options.txt 우회
 

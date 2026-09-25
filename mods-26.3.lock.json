@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 23,
+  "mod_count": 24,
   "mods": [
     {
       "title": "Almanac",
@@ -1052,6 +1052,45 @@
         {
           "mod_id": "minecraft",
           "version_range": "[26.3,26.4)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Traveler's Backpack",
+      "source": "modrinth",
+      "project_slug": "travelersbackpack",
+      "project_id": "rlloIFEV",
+      "version_id": "Gdy0zkAN",
+      "version_number": "26.3-11.4.0",
+      "version_type": "release",
+      "date_published": "2026-09-24T16:13:06.751035Z",
+      "filename": "travelersbackpack-neoforge-26.3-11.4.0.jar",
+      "url": "https://cdn.modrinth.com/data/rlloIFEV/versions/Gdy0zkAN/travelersbackpack-neoforge-26.3-11.4.0.jar",
+      "size": 1475945,
+      "sha1": "2ab79e56eb86bd13c89c1fcc686d39dd6461011b",
+      "sha512": "0ec5ad7a9f87cb5a303a374a9a9f2655be80513fa65570f8e267b12a03bacbb41e1afe4dcc15682574be67cacef26ff674d09836dc6244a1d434fb4155f0fce1",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "travelersbackpack"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
         }
       ],
       "bundled_jars": [],

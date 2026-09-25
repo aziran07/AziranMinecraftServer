@@ -22,6 +22,16 @@
 
 lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
+### Traveler's Backpack 추가 준비 (2026-09-25, 서버 미적용)
+
+사용자 요청으로 배낭 모드 [Traveler's Backpack](https://modrinth.com/mod/travelersbackpack)(Modrinth 프로젝트 `rlloIFEV`, 버전 `Gdy0zkAN` `26.3-11.4.0`, 2026-09-24 공개, `travelersbackpack-neoforge-26.3-11.4.0.jar`, 1475945바이트, SHA-512 `0ec5ad7a…5f0fce1`)을 lock에 더해 24개가 됐다. CurseForge 프로젝트(`travelers-backpack`)와 같은 제작자(Tiviacz1337)의 공식 Modrinth 배포 파일이며 수정하지 않았다. Modrinth 메타데이터는 NeoForge, `26.3`, `client_and_server`(서버·클라이언트 모두 required)이다.
+
+호환성·의존성: JAR의 `neoforge.mods.toml`은 모드 ID `travelersbackpack` `11.4.0`, 필수 의존성 Minecraft `[26.3]`·NeoForge `[26.3.0.1-beta,)`만 선언하고 JarJar 번들 JAR이 없다. 현재 NeoForge `26.3.0.8-beta`가 범위를 충족하며 추가 필수 라이브러리는 없다. Modrinth의 선택 의존성(Curios, JEI 등) 중 Curios `17.0.0-beta+26.3`과 JEI `31.4.0.21`은 이미 설치되어 있고, 다른 선택 모드는 더하지 않았다. JAR에 `assets/travelersbackpack/lang/ko_kr.json`이 있다. 라이선스는 Modrinth 메타데이터의 LGPL-3.0-only(JAR은 `GNU LESSER GENERAL PUBLIC LICENSE`로 표기)이고, 제작자 프로젝트 설명이 "You are allowed to use this mod in public/private modpacks."라고 모드팩 사용을 허락한다. 소스는 https://github.com/Tiviacz1337/Travelers-Backpack 이다.
+
+설정 기본값(26.3 JAR 바이트코드와 상류 26.1 소스로 확인): `backSlotIntegration=true`(Curios가 설치된 이 서버에서는 배낭을 Curios의 Back 슬롯에만 착용), `backpackDeathPlace=true`(죽을 때 멘 배낭을 그 자리에 블록으로 놓음), `backpackForceDeathPlace=false`. **Simple Tomb 무덤과의 사망 처리, Curios 착용은 게임에서 확인하지 않았다.** 이전 기동 로그에 Occultism의 Curios 통합 대체(`Failed to initialize Curios integration`) 경고가 있으나 Traveler's Backpack의 Curios 연동과는 별개이며 이 연동도 확인하지 않았다.
+
+**운영 서버에는 아직 설치하지 않았다.** `server-data-26.3-neoforge/mods/`는 23개 그대로이며 `tests/test_travelers_backpack_deployment.py`의 서버 검사는 설치 전까지 실패하는 것이 정상이다. 순서는 GitHub 초안(draft) 릴리스 `client-1.1.9`에 자산을 올려 해시 확인 → 월드만 백업한 뒤 서버에 설치·재시작 → 서버 기동 확인 뒤 초안을 일반 릴리스(latest)로 공개다. 서버 설치 전에는 [오프라인 월드 보호 백업](BACKUPS.md#오프라인-월드-보호-백업)만 한다. 이 모드가 서버에 설치되면 모드가 없는 1.1.8 이하 클라이언트는 접속할 수 없으므로 클라이언트 `1.1.9`를 함께 낸다.
+
 ### Modonomicon 2.7.0 교체 (2026-09-25)
 
 lock의 Modonomicon을 `26.3-2.6.0`(`CPBu0enR`)에서 공식 Modrinth 버전 `SFKjMnCe` `26.3-2.7.0`(`modonomicon-26.3-neoforge-2.7.0.jar`, 2987945바이트, SHA-512 `7d16cb18…904d70e`)으로 바꿨다. Minecraft 26.3부터 마우스 버튼 번호가 SDL 기준(왼쪽 = 1)이라 2.6.0의 `BookCategoryNodeScreen.mouseDragged`가 `event.button() != 0` 비교로 왼쪽 끌기를 거부해 책 노드 화면을 움직일 수 없었다. 2.7.0은 이를 `InputConstants.MOUSE_BUTTON_LEFT` 비교로 고친 상류 커밋 [`d74b6f2dbba9956182f11808f82e1a22911cb5ee`](https://github.com/klikli-dev/modonomicon/commit/d74b6f2dbba9956182f11808f82e1a22911cb5ee)를 담는다(2.7.0 변경 기록에 포함). **게임 화면에서 끌기가 고쳐졌는지는 확인하지 않았다.**
@@ -158,9 +168,11 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb도 무덤 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 23개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 24개)를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
+
+클라이언트 팩 `1.1.9`는 `1.1.8`에 서버와 같은 Traveler's Backpack `11.4.0`을 더한 판이다(모드 20개: 서버 공통 15개·클라이언트 전용 5개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap은 계속 `.mrpack` 다운로드 전용). 셰이더 팩, 리소스팩 3개와 기본 활성화, `servers.dat`는 `1.1.8`과 같고, `options.txt`에는 배낭 열기를 상류 기본값 `B` 대신 `Y`로 적은 한 줄(`key_key.travelersbackpack.inventory:key.keyboard.y`)만 더했다. 빌드는 마쳤고 Release는 아직 만들지 않았다. `1.1.9`부터 일반 릴리스로 공개하며 순서는 GitHub 초안(draft) 릴리스 `client-1.1.9`에 자산을 올려 해시 확인 → 월드만 백업한 뒤 서버에 설치·재시작 → 서버 기동 확인 뒤 초안을 일반 릴리스(latest)로 공개다. Iris는 계속 미병합 PR 로컬 빌드다. `B` 중복과 `Y`를 고른 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#119-travelers-backpack-단축키-중복)에 적었다.
 
 클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). GitHub 사전 릴리스 [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했고, 서버도 같은 날 2.7.0으로 교체했다. 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 이전 판 기록이다.
 
@@ -170,7 +182,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 모드는 두 갈래다.
 
-- **서버 공통 14개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Simple Tomb, Tom's Simple Storage. Farmer's Delight 이식판과 Simple Tomb은 Modrinth CDN에 없어 `.mrpack`의 `client-overrides/mods/`에 JAR을 담는다. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
+- **서버 공통 15개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Simple Tomb, Tom's Simple Storage, Traveler's Backpack. Farmer's Delight 이식판과 Simple Tomb은 Modrinth CDN에 없어 `.mrpack`의 `client-overrides/mods/`에 JAR을 담는다. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
 - **클라이언트 전용 5개**: 서버에 설치하지 않는 모드다. 입력 고정 목록은 [mods-26.3-client-extra.lock.json](../mods-26.3-client-extra.lock.json)이고 JAR은 Git에서 제외한 `client-mods-cache/`에 둔다. ImmediatelyFast `1.17.1+26.3-neoforge`, Mouse Tweaks `26.3-2.31-neoforge`, JourneyMap `26.3-6.0.9+neoforge`, Sodium `mc26.3-0.9.2-neoforge`, Iris `1.11.6-snapshot+mc26.3-local`(PR #3354 커밋 `10d3598c…` 로컬 빌드).
 - **셰이더 팩 1개**: Complementary Reimagined `r5.9.3`. 입력 lock의 `shaderpacks`에 두며 `.mrpack`의 Modrinth CDN 다운로드 항목으로만 설치한다. 기본으로 켜지 않는다.
 

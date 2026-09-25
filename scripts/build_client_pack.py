@@ -19,8 +19,8 @@ MultiMC 인스턴스 ZIP에서는 빠진다. 대신 README가 공식 배포처�
 공식 배포처에 없는 로컬 빌드 JAR(Iris)은 입력 lock의 source_bundle에 적힌 대응 소스와 라이선스
 전문을 JAR과 함께 모든 아카이브의 sources/ 아래에 담는다.
 
-세 아카이브 모두 Occultism 사역마 단축키만 미지정으로 적은 최소 options.txt를 담는다.
-OCCULTISM_FAMILIARS의 설명을 참고한다.
+세 아카이브 모두 Occultism 사역마 단축키를 미지정으로, Traveler's Backpack 배낭 열기를 Y로 적은 최소
+options.txt를 담는다. OCCULTISM_FAMILIARS와 BACKPACK_KEY의 설명을 참고한다.
 
 세 아카이브 모두 멀티플레이 목록에 Aziran 서버 하나만 적은 servers.dat도 담는다.
 render_servers_dat의 설명을 참고한다.
@@ -51,12 +51,23 @@ DIST = REPO / "dist"
 TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.8"
+PACK_VERSION = "1.1.9"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.8 구성과 그 바탕인 1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
+# 1.1.9 구성과 그 바탕인 1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과 같은
 # 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.9는 1.1.8에 서버와 같은 파일인 Traveler's Backpack 11.4.0(Modrinth 버전 Gdy0zkAN, "
+    "travelersbackpack-neoforge-26.3-11.4.0.jar)을 더한 판이다. 배낭 아이템·블록을 등록하는 모드라 서버에 "
+    "설치된 뒤로는 클라이언트에도 같은 파일이 있어야 접속할 수 있다. 필수 의존성은 Minecraft [26.3]과 "
+    "NeoForge [26.3.0.1-beta,)뿐이다. 상류 기본 단축키는 배낭 열기 B, 도구 바꾸기/호스 모드 Z인데, B는 이미 "
+    "Occultism 가방(satchel) 열기, Tom's Simple Storage 터미널, JourneyMap 웨이포인트 만들기의 기본값이기도 하다. 그래서 새 인스턴스의 options.txt에 배낭 열기 "
+    "하나만 바닐라와 팩의 모든 모드에 기본 지정이 없는 Y로 적었고 다른 단축키는 바꾸지 않았다. 나머지 모드 19개, "
+    "셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt의 기존 줄은 "
+    "1.1.8과 같다. 1.1.9부터 GitHub 일반 릴리스로 배포하지만 Iris는 여전히 미병합 PR #3354(커밋 10d3598)의 "
+    "로컬 빌드이며 공식 안정판이 아니다. 1.1.9 아카이브로 새로 만든 인스턴스의 실행과 배낭 사용은 게임에서 "
+    "확인하지 않았다. "
+    "이하는 1.1.8 기록이다. "
     "1.1.8은 1.1.7에서 Modonomicon만 26.3-2.6.0에서 26.3-2.7.0(Modrinth 버전 SFKjMnCe, "
     "modonomicon-26.3-neoforge-2.7.0.jar)으로 바꾼 판이다. 2.7.0에는 Minecraft 26.3의 SDL 입력에서 "
     "책(Occultism의 Dictionary of Spirits 등)의 노드 화면을 왼쪽 버튼으로 끌어 움직이지 못하던 문제의 상류 수정(커밋 "
@@ -129,6 +140,13 @@ OCCULTISM_FAMILIARS = [
 OPTIONS_DATA_VERSION = 5023
 UNBOUND_KEY = "key.keyboard.unknown"
 
+# Traveler's Backpack 11.4.0의 배낭 열기 기본 키는 B(ModClientEventHandler, 스캔코드 5)인데, Occultism 가방 열기,
+# Tom's Simple Storage 터미널 열기, JourneyMap 웨이포인트 만들기도 기본값이 B다. 바닐라 26.3과 팩의 모든
+# 모드의 기본 단축키를 대조해 아무 데도 지정되지 않은 Y로 새 인스턴스의 이 키 하나만 바꾼다. 다른 단축키는
+# 그대로 둔다.
+BACKPACK_KEY_MAPPING = "key_key.travelersbackpack.inventory"
+BACKPACK_KEY = "key.keyboard.y"
+
 # 새 인스턴스의 게임 언어. Options.languageCode의 options.txt 키는 lang이다.
 OPTIONS_LANGUAGE = "ko_kr"
 
@@ -161,6 +179,7 @@ CLIENT_TITLES = [
     "Packet Fixer",
     "Simple Tomb",
     "Tom's Simple Storage Mod",
+    "Traveler's Backpack",
 ]
 
 # 제외한 모드와 근거. 서버에만 두고 클라이언트에서는 뺀다.
@@ -240,6 +259,15 @@ LICENSES = {
                 "GNU LGPL v2.1이다.",
     },
     "Tom's Simple Storage Mod": {"id": "MIT", "name": "MIT License", "url": None, "note": ""},
+    "Traveler's Backpack": {
+        "id": "LGPL-3.0-only",
+        "name": "GNU LGPL v3.0 only (모드팩 사용 허가 있음)",
+        "url": "https://modrinth.com/mod/travelersbackpack",
+        "note": "Modrinth 프로젝트 메타데이터가 LGPL-3.0-only를, JAR의 neoforge.mods.toml이 "
+                "license=\"GNU LESSER GENERAL PUBLIC LICENSE\"를 선언한다. 제작자 프로젝트 설명: \"You are "
+                "allowed to use this mod in public/private modpacks.\" 같은 설명이 다른 사이트에 모드를 "
+                "다시 올리는 것은 허락 없이 금지한다. 소스: https://github.com/Tiviacz1337/Travelers-Backpack",
+    },
 }
 
 # mrpack의 downloads에 쓸 수 있는 호스트. Modrinth가 허용한 CDN만 사용한다.
@@ -534,7 +562,7 @@ def load_resourcepacks(extra_lock):
 
 
 def render_options_txt(resourcepacks):
-    """사역마 단축키 18개를 미지정으로 두고 언어와 기본 리소스팩을 정한 최소 options.txt.
+    """사역마 단축키 18개를 미지정으로, 배낭 열기를 Y로 두고 언어와 기본 리소스팩을 정한 최소 options.txt.
 
     나머지 설정은 게임 기본값을 따른다. 그래픽·마지막 접속 서버 같은 개인 설정은 넣지 않는다.
     """
@@ -547,6 +575,7 @@ def render_options_txt(resourcepacks):
         "resourcePacks:" + json.dumps(enabled, ensure_ascii=False, separators=(",", ":")),
     ]
     lines += [f"key_key.occultism.familiar.{name}:{UNBOUND_KEY}" for name in OCCULTISM_FAMILIARS]
+    lines.append(f"{BACKPACK_KEY_MAPPING}:{BACKPACK_KEY}")
     return "\n".join(lines) + "\n"
 
 
@@ -688,8 +717,30 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         ]
 
     modonomicon = next(mod for mod in mods if "modonomicon" in mod["declared_mod_ids"])
+    backpack = next(mod for mod in mods if "travelersbackpack" in mod["declared_mod_ids"])
     stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
     lines += [
+        f"## 1.1.9 변경: {backpack['title']} {backpack['version_number']} 추가",
+        "",
+        f"서버에 설치하는 배낭 모드 {backpack['title']}(`{backpack['filename']}`, LGPL-3.0-only)과 같은 파일을",
+        "더했다. 배낭 아이템·블록을 등록하므로 서버와 클라이언트에 같은 모드가 있어야 한다. 필수 의존성은",
+        "Minecraft `[26.3]`과 NeoForge `[26.3.0.1-beta,)`뿐이다. 나머지 모드, 셰이더 팩, 리소스팩 세 개와 기본",
+        "활성화, `servers.dat`와 `options.txt`의 기존 줄은 1.1.8과 같고, `options.txt`에 배낭 열기 한 줄을 더했다.",
+        "",
+        "- 배낭을 손에 들고 우클릭하면 열린다. 이 팩에는 Curios가 있고 배낭 설정 기본값이 `backSlotIntegration=true`라,",
+        "  배낭은 Curios 인벤토리의 **Back(등) 슬롯**에 넣어 멘다(제작자 설명과 설정 기본값 기준, 게임에서 확인하지 않음).",
+        "- **이 팩의 새 인스턴스는 멘 배낭 열기 단축키가 `Y`다.** 상류 기본값은 `B`인데 Occultism 가방 열기",
+        "  (`key.occultism.backpack`), Tom's Simple Storage 터미널 열기, JourneyMap 웨이포인트 만들기도 기본값이 `B`라서,",
+        "  바닐라와 팩의 모든 모드에 기본 지정이 없는 `Y`로 `options.txt`에 적었다. 다른 단축키는 바꾸지 않았다.",
+        "- 도구 바꾸기/호스 모드는 상류 기본값 `Z` 그대로다(다른 기본 지정 없음). 정렬, 특수 능력 켜기·끄기,",
+        "  업그레이드 칸 1~4 전환은 지정되어 있지 않다.",
+        "- 이미 만든 인스턴스의 `options.txt`는 바뀌지 않으므로 그 인스턴스에서는 배낭 열기가 `B`로 남는다.",
+        "  설정 → 조작 → 키 설정에서 바꿀 수 있다.",
+        "- 서버 설정 기본값은 죽을 때 멘 배낭을 그 자리에 블록으로 놓는다(`backpackDeathPlace=true`). 무덤 모드",
+        "  Simple Tomb, Curios와 함께 쓸 때의 동작은 게임에서 확인하지 않았다.",
+        "- 1.1.9부터 GitHub 일반 릴리스로 배포한다. 셰이더용 Iris는 여전히 미병합 PR #3354(커밋",
+        "  `10d3598cd96b0566497b66efe66256f468cd977e`)의 로컬 빌드이며 공식 안정판이 아니다(아래 확인하지 않은 것 참고).",
+        "",
         f"## 1.1.8 변경: Modonomicon {modonomicon['version_number']}",
         "",
         f"1.1.7에서 Modonomicon만 26.3-2.6.0에서 {modonomicon['version_number']}(`{modonomicon['filename']}`)로",
@@ -781,7 +832,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "  빼 두었던 것과 **같은 파일**이다. 그 크래시의 원인은 규명하지 않았으므로 다시 날 수 있다.",
         "- **Complementary Reimagined r5.9.3** — 셰이더 팩. `.mrpack`으로 설치하면 런처가 Modrinth에서",
         "  받아 `shaderpacks/`에 넣는다. **기본으로 켜 두지 않는다.** 아래 절차로 직접 켠다.",
-        "- **`options.txt`** — Occultism 사역마 단축키 18개를 미지정으로 적은 최소 설정 파일. 아래 설명 참고.",
+        "- **`options.txt`** — Occultism 사역마 단축키 18개를 미지정으로, 배낭 열기를 `Y`로 적은 최소 설정 파일. 아래 설명 참고.",
         "",
         "### 셰이더 켜는 법",
         "",
@@ -806,7 +857,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "그래서 이 팩은 사역마 단축키 18개를 `key.keyboard.unknown`(미지정)으로 적은 최소 `options.txt`를",
         "함께 담는다(`.mrpack`은 `client-overrides/options.txt`, 수동 ZIP은 `options.txt`, MultiMC ZIP은",
         "`.minecraft/options.txt`). 파일에는 `version` 줄과 이 18줄, 1.1.7에서 더한 언어(`lang`)·리소스팩",
-        "(`resourcePacks`) 두 줄만 있고, 그래픽·마지막 접속 서버·계정 같은 개인 설정은 없다. 나머지 설정은",
+        f"(`resourcePacks`) 두 줄, 1.1.9에서 더한 배낭 열기(`{BACKPACK_KEY_MAPPING}:{BACKPACK_KEY}`) 한 줄만 있고, 그래픽·마지막 접속 서버·계정 같은 개인 설정은 없다. 나머지 설정은",
         "게임 기본값으로 시작한다.",
         "사용자가 기존 인스턴스의 복사본에서 `key.keyboard.-1`을 모두 `key.keyboard.unknown`으로 바꾸자",
         "두 번 연속 실행과 서버 접속에 성공했고 `-1`이 다시 생기지 않았다.",
@@ -873,7 +924,7 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "Simple Tomb(CurseForge 배포), Iris 로컬 빌드, 리소스팩 "
         + ", ".join(pack["title"] for pack in bundled_resourcepacks(resourcepacks))
         + "은 팩 안에 들어 있다.",
-        "언어·리소스팩·사역마 단축키를 정한 `options.txt`와 Aziran 서버를 적은 `servers.dat`도 함께 설치된다.",
+        "언어·리소스팩·사역마 단축키·배낭 열기 키를 정한 `options.txt`와 Aziran 서버를 적은 `servers.dat`도 함께 설치된다.",
         "이전 버전 인스턴스에 덮어쓰지 말고 **새 인스턴스로 만든다.** 이 팩은 기존 `mods/`를 정리하지",
         "않으므로 덮어쓰면 이전 구성의 JAR(예: Xaero's Minimap)이 남고, 기존 `options.txt`가 남을 수 있다.",
         "런처에 따라 기존 인스턴스에 덮어쓸 때 `servers.dat`가 팩의 파일로 바뀌어 저장해 둔 서버 목록이",
@@ -1071,7 +1122,10 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.8 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Modonomicon 2.7.0의 책 화면",
+        "- **이 1.1.9 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** Traveler's Backpack의 배낭",
+        "  열기·Curios Back 슬롯 착용·`Y` 단축키, 사망 시 배낭 처리(Simple Tomb·Curios와의 상호작용)를 게임에서",
+        "  확인하지 않았다.",
+        "- 1.1.8 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Modonomicon 2.7.0의 책 화면",
         "  왼쪽 버튼 끌기 수정을 게임에서 확인하지 않았다.",
         "- 1.1.7 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. 한국어 기본값, 번역 팩의",
         "  표시와 우선순위, 리소스팩 켜기·끄기를 게임에서 확인하지 않았다.",
@@ -1471,6 +1525,10 @@ def write_client_lock(server_lock, mods, shaderpacks, resourcepacks, provided_mo
             "reason": "Occultism 26.3(커밋 631457c) ClientSetupEventHandler.java 218행이 사역마 단축키를 "
                       "Type.KEYBOARD, -1로 등록해 key.keyboard.-1이 저장되고 다음 실행에서 "
                       "InputConstants.isKeyDown이 IndexOutOfBoundsException으로 실패하는 상류 결함의 우회.",
+            "rebound_key_mappings": {BACKPACK_KEY_MAPPING: BACKPACK_KEY},
+            "rebound_reason": "Traveler's Backpack 배낭 열기의 상류 기본값 B가 Occultism 가방 열기, Tom's Simple "
+                              "Storage 터미널 열기, JourneyMap 웨이포인트 만들기의 기본값과 겹친다. 바닐라 26.3과 팩의 "
+                              "모든 모드에 기본 지정이 없는 Y로 바꾼다. 다른 단축키는 바꾸지 않는다.",
         },
         "seeded_servers": {
             "archive_paths": {

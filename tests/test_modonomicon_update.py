@@ -39,18 +39,18 @@ class ModonomiconUpdateTests(unittest.TestCase):
 
     def test_all_client_formats_deliver_the_same_fix(self):
         lock = json.loads((ROOT / "mods-26.3-client.lock.json").read_text())
-        self.assertEqual(lock["pack_version"], "1.1.8")
+        self.assertEqual(lock["pack_version"], "1.1.9")
         mods = [m for m in lock["mods"] if "modonomicon" in m.get("declared_mod_ids", [])]
         self.assertEqual(len(mods), 1)
         self.assertEqual(mods[0]["filename"], FILENAME)
         self.assertEqual(mods[0]["sha512"], SHA512)
         for suffix, prefix in (("-manual.zip", ""), ("-multimc.zip", ".minecraft/")):
             with self.subTest(format=suffix):
-                with zipfile.ZipFile(ROOT / f"dist/aziran-26.3-client-1.1.8{suffix}") as archive:
+                with zipfile.ZipFile(ROOT / f"dist/aziran-26.3-client-1.1.9{suffix}") as archive:
                     entries = [n for n in archive.namelist() if n.startswith(prefix + "mods/modonomicon")]
                     self.assertEqual(entries, [prefix + "mods/" + FILENAME])
                     self.assertEqual(hashlib.sha512(archive.read(entries[0])).hexdigest(), SHA512)
-        with zipfile.ZipFile(ROOT / "dist/aziran-26.3-client-1.1.8.mrpack") as archive:
+        with zipfile.ZipFile(ROOT / "dist/aziran-26.3-client-1.1.9.mrpack") as archive:
             index = json.loads(archive.read("modrinth.index.json"))
             entries = [e for e in index["files"] if e["path"].startswith("mods/modonomicon")]
             self.assertEqual(len(entries), 1)
