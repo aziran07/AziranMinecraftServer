@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.6`의 `.mrpack`과 설치·라이선스 문서 (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
+- 다운로드: GitHub Release `client-1.1.9`의 `.mrpack`과 설치·라이선스 문서. 사이트 소스의 다운로드 링크·팩 이름·모드 수(20개)는 `client-1.1.9`로 바꿨고 Traveler's Backpack 안내 절(`#backpack`)을 더했다. **`client-1.1.9`는 2026-09-25 일반 릴리스(latest)로 공개했다**(https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9). 1.1.9는 1.1.8에 Traveler's Backpack을 더한 판이다. 순서는 초안 릴리스에 자산을 올려 크기·SHA-256 확인 → 월드만 보호 백업한 뒤 서버에 설치·재시작(13:44~13:46 UTC, healthy 확인) → 초안을 일반 릴리스로 공개였다. 사용자 결정으로 1.1.9부터 일반 릴리스로 공개하며, Iris는 계속 미병합 PR 로컬 빌드라고 밝힌다. **사이트는 아래와 같이 Pages 보호 규칙 때문에 아직 배포되지 않았다**(PR #7의 `main` 병합 뒤 배포 확인 필요). 아래는 1.1.8 기록이다. **`client-1.1.8` 사전 릴리스는 2026-09-25 공개했고**(https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8) 6개 자산의 크기·SHA-256을 로컬 산출물과 대조했다. 1.1.8은 Modonomicon만 26.3-2.7.0으로 바꾼 판이다. 순서는 Release 공개 → 서버 Modonomicon 교체·재시작(2026-09-25 13:13~13:19 UTC 완료. 이때 만든 전체 데이터 백업은 사용자 요청으로 13:23 UTC 영구 삭제해 남아 있지 않다) → 사이트 배포다. **사이트 배포는 아래 1.1.7과 같은 Pages 환경 보호 규칙 때문에 아직 되지 않았다.** 서버가 2.7.0으로 바뀌었으므로 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 1.1.7 기록이다. `client-1.1.7` 사전 릴리스는 2026-09-25 공개했다. 세 아카이브와 `README.md`, `LICENSES.md`, `SHA256SUMS.txt`가 업로드되어 있고 크기·SHA-256을 확인했다. 1.1.7 당시 사이트 소스의 링크는 `client-1.1.7`을 가리켰지만 [배포 실행](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36117840610)은 `github-pages` 환경 브랜치 보호 규칙에 거부됐다. 허용 브랜치는 `main`과 `feat/join-guide`이며, 현재 작업 브랜치는 제외되어 있다. PR #7을 `main`에 병합한 뒤 배포 성공을 확인해야 한다. 환경 보호 규칙은 변경하지 않았다. 1.1.7은 모드 구성이 1.1.6과 같고 리소스팩만 더했으므로 서버 재시작이 필요 없었고, 당시 1.1.6 인스턴스도 접속할 수 있었다(서버 2.7.0 교체 이후는 확인하지 않음). (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
@@ -16,7 +16,7 @@ Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 
 ## 안내 내용과 확인 범위
 
 Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인스턴스로 가져오기,
-멀티플레이 접속 순서로 안내한다. 1.1.5 이하 인스턴스를 쓰던 사람에게는 1.1.6을 새 인스턴스로 다시 가져오도록 안내한다. 1.1.5 이후 팩으로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
+멀티플레이 접속 순서로 안내한다. 이전 팩을 쓰던 사람에게는 1.1.9를 새 인스턴스로 다시 가져오도록 안내한다. 서버에 Traveler's Backpack을 설치했으므로(2026-09-25) 이 모드가 없는 1.1.8 이하 인스턴스는 접속할 수 없다고 밝힌다(실제 접속 거부는 시험하지 않음). 배낭 절은 Curios Back 슬롯 착용, 팩의 단축키(배낭 열기 `Y`, 도구 바꾸기 `Z`)와 상류 기본값 `B`가 Occultism 가방·Tom's Simple Storage 터미널·JourneyMap 웨이포인트와 겹쳐 새 인스턴스만 `Y`로 정했다는 점, 기존 인스턴스는 조작 설정에서 바꾸는 방법, 서버 기본 설정의 사망 시 배낭 처리를 안내하고 무덤 모드·Curios와의 동작은 확인하지 않았다고 밝힌다. 1.1.5 이후 팩으로 새로 만든 인스턴스는 팩의 `servers.dat` 덕분에 멀티플레이 목록에
 `Aziran`(`mc.aziran.uk`) 서버가 이미 들어 있으며, 목록에 없는 기존 인스턴스는 `mc.aziran.uk`를 직접 추가하도록 안내한다. `.mrpack`을 압축 해제하거나 기존 모드
 폴더에 덮어쓰지 않는다. 팩은 Minecraft 26.3, NeoForge 26.3.0.8-beta, Java 25를 사용한다.
 
@@ -25,12 +25,14 @@ Prism Launcher 설치와 Minecraft Java 계정 로그인, `.mrpack`을 새 인�
 그 전 사용자의 1.1.4 시험 인스턴스는 첫 실행에서 셰이더 적용과 서버 접속에 성공했고, 두 번째
 실행은 Occultism 사역마 단축키(`key.keyboard.-1`) 문제로 실패했다. 기존 인스턴스 복사본에서
 그 값을 `key.keyboard.unknown`으로 바꾸자 두 번 연속 실행·접속에 성공했다. 1.1.5는 모드·셰이더 구성이
-1.1.4와 같고 `servers.dat`만 더했다. 1.1.6은 1.1.5에 Simple Tomb 1.9.0만 더했다. 1.1.5·1.1.6 아카이브로 새로 만든 인스턴스의 게임 실행과 멀티플레이 목록 표시는
-아직 확인하지 않았다. 안내 페이지의 다운로드
+1.1.4와 같고 `servers.dat`만 더했다. 1.1.6은 1.1.5에 Simple Tomb 1.9.0만 더했다. 1.1.7은 1.1.6의 모드·셰이더·`servers.dat`에 리소스팩 세 개와
+`options.txt`의 언어(`lang:ko_kr`)·기본 리소스팩 줄을 더했다. 1.1.8은 1.1.7에서 Modonomicon만 26.3-2.7.0으로 바꿨다(상류 커밋 `d74b6f2`). 1.1.9는 1.1.8에 Traveler's Backpack 11.4.0을 더했다. 1.1.5~1.1.9 아카이브로 새로 만든 인스턴스의
+게임 실행과 멀티플레이 목록 표시, 1.1.7의 번역 표시·리소스팩 적용, 1.1.8의 책 화면 끌기 수정, 1.1.9의 배낭 사용은 아직 확인하지 않았다. 안내 페이지의 다운로드
 제공과 파일 검증은 게임 실행 검증을 뜻하지 않는다. JourneyMap JAR과 Complementary Reimagined
-셰이더 팩은 팩 안에 포함하지 않으며, 런처가 설치 중 공식 Modrinth 배포처에서 받는다.
-페이지는 셰이더 켜는 법, JourneyMap 전체 지도 단축키, 기존 인스턴스의 `options.txt` 수정 방법을
-함께 안내한다.
+셰이더 팩, Vanilla Experience+ 리소스팩은 팩 안에 포함하지 않으며, 런처가 설치 중 공식 Modrinth 배포처에서 받는다.
+페이지는 셰이더 켜는 법, 리소스팩 기본값(한국어·번역 팩 켜짐, Stay True·Vanilla Experience+ 꺼짐)과
+켜고 끄는 법·우선순위, JourneyMap 전체 지도 단축키, 기존 인스턴스의 `options.txt` 수정 방법을
+함께 안내한다. Stay True는 1.21.5용이라 26.3 호환을 확인하지 않았고 일부 표현은 OptiFine이 필요하다고 밝힌다.
 
 ## 검증
 
@@ -69,3 +71,8 @@ HTTP 접속은 HTTPS로 리다이렉트해야 하며 `mc.aziran.uk`의 게임 �
 루트 Compose에서는 Minecraft와 웹 RCON만 활성화한다. 웹 RCON은 Docker 내부 포트만
 사용하므로 공개 웹사이트에 관리자 화면이나 RCON 자격 증명을 제공하지 않는다.
 나머지 보조 서비스 정의는 복원할 수 있도록 주석으로 보존한다.
+
+
+### 1.1.7 독립 검증 기록
+
+Codex가 클라이언트 빌더를 다시 실행했고, 클라이언트·번역·가이드 관련 Python 검사 30개와 JavaScript 검사 2개가 통과했다. 내부 링크·앵커와 HTML ID 중복을 확인했고, 기존 모드 19개의 목록·해시, 셰이더, 서버 목록이 유지됨을 확인했다. 공개한 6개 Release 자산의 크기·SHA-256이 로컬 파일과 일치한다. Orca 브라우저 스냅샷은 `runtime_unavailable`(연결 종료)로 실패해 시각적 화면 검증을 완료하지 못했다. 게임 내 확인도 아직 수행하지 않았다.

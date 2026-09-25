@@ -20,7 +20,49 @@
 
 ## 설치 명세
 
-lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 24개 항목에 해당하는 JAR 24개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+
+### Traveler's Backpack 추가 (2026-09-25)
+
+사용자 요청으로 배낭 모드 [Traveler's Backpack](https://modrinth.com/mod/travelersbackpack)(Modrinth 프로젝트 `rlloIFEV`, 버전 `Gdy0zkAN` `26.3-11.4.0`, 2026-09-24 공개, `travelersbackpack-neoforge-26.3-11.4.0.jar`, 1475945바이트, SHA-512 `0ec5ad7a…5f0fce1`)을 lock에 더해 24개가 됐다. CurseForge 프로젝트(`travelers-backpack`)와 같은 제작자(Tiviacz1337)의 공식 Modrinth 배포 파일이며 수정하지 않았다. Modrinth 메타데이터는 NeoForge, `26.3`, `client_and_server`(서버·클라이언트 모두 required)이다.
+
+호환성·의존성: JAR의 `neoforge.mods.toml`은 모드 ID `travelersbackpack` `11.4.0`, 필수 의존성 Minecraft `[26.3]`·NeoForge `[26.3.0.1-beta,)`만 선언하고 JarJar 번들 JAR이 없다. 현재 NeoForge `26.3.0.8-beta`가 범위를 충족하며 추가 필수 라이브러리는 없다. Modrinth의 선택 의존성(Curios, JEI 등) 중 Curios `17.0.0-beta+26.3`과 JEI `31.4.0.21`은 이미 설치되어 있고, 다른 선택 모드는 더하지 않았다. JAR에 `assets/travelersbackpack/lang/ko_kr.json`이 있다. 라이선스는 Modrinth 메타데이터의 LGPL-3.0-only(JAR은 `GNU LESSER GENERAL PUBLIC LICENSE`로 표기)이고, 제작자 프로젝트 설명이 "You are allowed to use this mod in public/private modpacks."라고 모드팩 사용을 허락한다. 소스는 https://github.com/Tiviacz1337/Travelers-Backpack 이다.
+
+설정 기본값(26.3 JAR 바이트코드와 상류 26.1 소스로 확인): `backSlotIntegration=true`(Curios가 설치된 이 서버에서는 배낭을 Curios의 Back 슬롯에만 착용), `backpackDeathPlace=true`(죽을 때 멘 배낭을 그 자리에 블록으로 놓음), `backpackForceDeathPlace=false`. **Simple Tomb 무덤과의 사망 처리, Curios 착용은 게임에서 확인하지 않았다.** 이전 기동 로그에 Occultism의 Curios 통합 대체(`Failed to initialize Curios integration`) 경고가 있으나 Traveler's Backpack의 Curios 연동과는 별개이며 이 연동도 확인하지 않았다.
+
+2026-09-25 운영 서버에 설치했다. 초안 릴리스 `client-1.1.9`의 6개 자산 검증 뒤 사용자가 요청한 즉시 재시작으로 진행했고, 접속자는 0명이었다. 서버 기동을 확인한 뒤 Codex가 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)를 일반 릴리스(latest)로 공개했다.
+
+| 단계 | 시각(UTC) | 결과 |
+| --- | --- | --- |
+| 사전 확인 | 13:43 | `StopTimeout=660`, `STOP_DURATION=600`, healthy·재시작 0회, `world/` 11GB, 여유 1.1TB, 접속자 0명, 설치할 JAR의 크기 1475945바이트·SHA-512 확인 |
+| 정상 종료 3-B | 13:44:53 → 13:44:54 | RCON 재시작 공지 후 `docker compose stop minecraft` 종료 상태 0, `exited exit=0 oom=false`, `Stopping server` → `Saving players` → `Saving worlds` → 세 차원 `Saving chunks for level` → 러너 `Done`, 저장 오류 없음 |
+| 월드 보호 백업 | 13:45:04 → 13:45:31 | [오프라인 월드 보호 백업](BACKUPS.md#오프라인-월드-보호-백업) 절차로 `server-data-26.3-neoforge/world/`만 묶었다. `/home/pilon1945/aziran-26.3-protected-backups/pre-travelersbackpack-world-2026-09-25-134504.tar`(11450746880바이트, SHA-256 `80bd0722c6444f9a54c0b76acc6c7a5f98a1301049ba72f1f8e11893e6ff4830`). 목록 3830개 항목이 모두 `world/` 아래이고 `level.dat`와 세 차원 `region/` 4개 필수 항목이 있다. `BACKUP VERIFIED`, 종료 상태 0, 파일 `600`·디렉터리 `700`. 모드·설정·BlueMap은 백업하지 않았고 다른 백업은 건드리지 않았다 |
+| JAR 설치 | 13:45:39 | 공식 JAR을 `mods/travelersbackpack-neoforge-26.3-11.4.0.jar`로 다른 JAR과 같은 소유자·권한(`pilon1945`, `664`)으로 설치. `mods/` 24개 파일이 모두 lock의 SHA-512와 일치, 기존 23개 SHA-256 설치 전후 동일 |
+| 기동 | 13:45:43 → 13:45:59 | `docker compose start minecraft` 종료 상태 0, 13:45:57 `Done (0.533s)`, RCON 기동, `running healthy` 재시작 0회, `rcon-cli list` 응답(0명) |
+
+기동 로그의 모드 목록에 `Traveler's Backpack 11.4.0 (travelersbackpack)`(`mods/travelersbackpack-neoforge-26.3-11.4.0.jar`)과 `Modonomicon 2.7.0`이 있다. 13:18 UTC 기동과 비교해 새 경고·오류는 없고, 그때의 Modonomicon 버전 차이 알림은 사라졌다. 남은 경고는 모두 이전부터 있던 것이다: 모드 refmap 3건, udev, Occultism의 Curios 통합 대체(`Failed to initialize Curios integration`와 `ClassNotFoundException: ...CuriosIntegrationImpl`), `apothic_enchanting` 데이터 맵, log4j `DebugFile` 부록의 `io.netty.channel.kqueue.Native` 예외. 처음 기동하며 만든 `config/travelersbackpack-server.toml`은 `backSlotIntegration = true`, `backpackDeathPlace = true`, `backpackForceDeathPlace = false`이고 `travelersbackpack-common.toml`은 `enableLoot = true`, `enableVillagerTrade = true`다. 설정은 수정하지 않았다.
+
+설치 뒤 Python 검사 69개(`tests/test_travelers_backpack_deployment.py` 서버 검사 포함)와 JavaScript 검사 2개가 통과했고, Codex가 서버 상태·JAR 해시·백업 목록·검사를 따로 확인했다. **배낭 화면, Curios Back 슬롯 착용, `Y` 단축키, Simple Tomb과의 사망 처리, 1.1.8 이하 클라이언트의 접속 거부는 게임에서 확인하지 않았다.** 롤백이 필요하면 서버를 정상 종료한 뒤 이 JAR을 빼고 lock을 이전 커밋으로 되돌린다. 배낭 모드가 월드에 남긴 블록·아이템 데이터 때문에 되돌릴 월드가 필요하면 위 월드 백업으로 [보호 월드 백업 복원](BACKUPS.md#보호-월드-백업-복원)을 판단한다.
+
+### Modonomicon 2.7.0 교체 (2026-09-25)
+
+lock의 Modonomicon을 `26.3-2.6.0`(`CPBu0enR`)에서 공식 Modrinth 버전 `SFKjMnCe` `26.3-2.7.0`(`modonomicon-26.3-neoforge-2.7.0.jar`, 2987945바이트, SHA-512 `7d16cb18…904d70e`)으로 바꿨다. Minecraft 26.3부터 마우스 버튼 번호가 SDL 기준(왼쪽 = 1)이라 2.6.0의 `BookCategoryNodeScreen.mouseDragged`가 `event.button() != 0` 비교로 왼쪽 끌기를 거부해 책 노드 화면을 움직일 수 없었다. 2.7.0은 이를 `InputConstants.MOUSE_BUTTON_LEFT` 비교로 고친 상류 커밋 [`d74b6f2dbba9956182f11808f82e1a22911cb5ee`](https://github.com/klikli-dev/modonomicon/commit/d74b6f2dbba9956182f11808f82e1a22911cb5ee)를 담는다(2.7.0 변경 기록에 포함). **게임 화면에서 끌기가 고쳐졌는지는 확인하지 않았다.**
+
+받은 JAR의 크기·SHA-512는 Modrinth 메타데이터와 일치한다. `neoforge.mods.toml`은 모드 ID `modonomicon`, 선언 버전 `2.7.0`, 필수 의존성 NeoForge `[26.3.0.3-beta,)`, 선택 의존성 JEI·Patchouli로 2.6.0과 같고, JarJar의 commonmark 0.30.0 JAR 3개도 크기·SHA-512가 2.6.0과 같다. Occultism의 요구 `[2.5.0,)`를 충족한다.
+
+`client-1.1.8`([사전 릴리스](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)) 공개와 Codex의 자산 크기·SHA-256 검증 뒤 운영 서버에 적용했다. 유일한 접속자였던 사용자가 즉시 재시작을 요청해 시간차 공지 없이 RCON으로 재시작 공지만 보냈다.
+
+| 단계 | 시각(UTC) | 결과 |
+| --- | --- | --- |
+| 사전 확인 | 13:12 | `StopTimeout=660`, `STOP_DURATION=600`, healthy·재시작 0회, 데이터 34GB, 여유 1.1TB, 접속자 1명(사용자) |
+| 정상 종료 3-B | 13:13:40 → 13:13:42 | `docker compose stop minecraft` 종료 상태 0, `exited exit=0 oom=false`, `Stopping server` → `Saving players` → `Saving worlds` → 세 차원 `Saving chunks for level` → 러너 `Done`, 저장 오류 없음 |
+| 보호 백업 | 13:13:51 → 13:18:23 | 당시 문서 절차대로 데이터 디렉터리 **전체** tar(`pre-modonomicon-2.7-2026-09-25-131351.tar`, 35616133120바이트, `.list`·`.sha256` 포함)를 만들고 `BACKUP VERIFIED`를 확인했다. 사용자가 월드만 백업하도록 정하고 이 전체 백업의 삭제를 지시해 **13:23:21에 tar·`.list`·`.sha256`을 영구 삭제했다.** 이 배포의 보호 백업은 남아 있지 않으며 이 백업으로는 복원할 수 없다. 종료 직전의 월드 사본은 정기 백업 `minecraft_backups/26.3-world-20260925-123013.tar`(12:30:13 생성)가 가장 가깝다 |
+| JAR 교체 | 13:18:41 | 2.6.0 JAR을 `/home/pilon1945/aziran-26.3-protected-backups/modonomicon-26.3-neoforge-2.6.0.jar.pre-modonomicon-2.7`로 옮겼다(SHA-512 lock 기록과 일치). 월드만 백업하는 사용자 방침이 정해지기 전에 한 조치이며, 이후 배포에서는 모드 JAR 사본을 만들지 않는다. 2.7.0을 이전 파일과 같은 소유자·권한(`pilon1945`, `664`)으로 설치. `mods/` JAR 23개가 모두 lock의 SHA-512와 일치, 2.6.0 없음, 나머지 22개 SHA-256 교체 전후 동일 |
+| 기동 | 13:18:47 → 13:19:06 | `docker compose start minecraft` 종료 상태 0, 13:19:02 `Done (0.594s)`, RCON 기동, `running healthy` 재시작 0회, `rcon-cli list` 응답(0명) |
+
+기동 로그의 모드 목록에 `modonomicon (jar(mods/modonomicon-26.3-neoforge-2.7.0.jar))`와 `Modonomicon 2.7.0`이 있고, commonmark JarJar 3개도 2.7.0 JAR에서 읽었다. 이전 기동(05:37 UTC)과 비교해 새로 생긴 경고는 NeoForge `CommonHooks`의 `modonomicon (version 2.6.0 -> 2.7.0)` 버전 차이 알림 하나다. 월드에 기록된 모드 버전과 달라서 나오는 알림으로 교체에 따른 예상 결과다. 기존 경고(모드 refmap, udev, Occultism의 Curios 통합 대체, `apothic_enchanting` 데이터 맵, log4j `DebugFile` 부록의 `io.netty.channel.kqueue.Native` 예외)는 이전 기동에도 있었다. 이전 기동 로그의 Modonomicon 레시피 경고(`null recipe book category`, 레시피 3개 `not found`)는 이번 기동 직후에는 아직 나오지 않았고 플레이어 접속 등으로 책을 불러올 때 다시 나올 수 있다. 월드·청크 로드 오류는 없었다. `chunky-idle-pregen` 컨테이너는 이번 작업 전(2일 전)에 이미 정상 종료(`Exited (0)`)한 상태라 재연결 대상이 아니었고, 웹 RCON `rcon` 컨테이너는 계속 실행 중이다.
+
+교체 뒤 `tests/test_modonomicon_update.py`를 포함한 관련 검사 34개와 전체 Python 검사 67개, JavaScript 검사 2개가 통과했다. **책 화면 끌기 수정과 1.1.8 클라이언트 접속은 게임에서 확인하지 않았다.** 1.1.7 이하 클라이언트가 2.7.0 서버에 접속되는지도 확인하지 않았다. 롤백이 필요하면 서버를 정상 종료한 뒤 2.7.0 JAR을 빼고, 이전 lock(커밋 `464e9ae`)에 고정된 공식 Modrinth URL `https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar`에서 2.6.0을 다시 받아 크기 2973738바이트·SHA-512를 확인해 설치하고 lock을 되돌린다. 월드 복원이 필요하면 [월드 백업](BACKUPS.md#월드-복원-시-주의)을 쓴다. 이 배포의 전체 백업은 삭제되어 복원에 쓸 수 없다.
 
 ### SableCraft Standards 명령 설정 (2026-09-25)
 
@@ -34,7 +76,7 @@ lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 �
 
 무덤 블록과 열쇠 아이템을 등록하는 모드라 클라이언트에도 같은 파일이 필요하다. 그래서 클라이언트 팩을 `1.1.6`으로 올려 같은 JAR을 담았다(아래 클라이언트 모드팩 절). 서버가 이 모드를 로드한 뒤에는 이 모드가 없는 `1.1.5` 이하 클라이언트가 접속할 수 없으므로, GitHub 사전 릴리스 `client-1.1.6` 공개와 접속 안내 사이트 배포를 확인한 뒤에 재시작했다. 설치 시점의 최신 정기 월드 백업은 `26.3-world-20260925-043011.tar`이며 tar 목록을 읽을 수 있고 `level.dat`를 포함함을 확인했다.
 
-2026-09-25 05:30 UTC 정기 백업 `26.3-world-20260925-053014.tar`(`world/level.dat` 포함 확인) 뒤, 접속자 0명 상태에서 15분·5분·1분 전 공지를 하고 [정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업) 3-B(`StopTimeout=660`, `STOP_DURATION=600`)로 `docker compose stop minecraft`를 실행했다. 종료 상태 0, `exited exit=0 oom=false`, 세 차원의 `Saving chunks for level`과 러너 `Done`을 확인한 뒤 `docker compose start minecraft`로 기동했다. 기동 로그에 `Simple Tombstone 26.3-1.9.0 (simpletomb)`와 `mods/simpletomb-26.3-1.9.0.jar`가 나왔고 `Done`까지 도달했으며, 컨테이너는 `healthy`, 재시작 0회였다. 기동 로그의 Occultism `CuriosIntegrationImpl` `ClassNotFoundException`과 log4j `DebugFile` 어펜더의 netty `kqueue.Native` 오류는 변경 전 기동에도 있던 기존 로그다. 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
+2026-09-25 05:30 UTC 정기 백업 `26.3-world-20260925-053014.tar`(`world/level.dat` 포함 확인) 뒤, 접속자 0명 상태에서 15분·5분·1분 전 공지를 하고 [정상 종료 절차](BACKUPS.md#오프라인-월드-보호-백업) 3-B(`StopTimeout=660`, `STOP_DURATION=600`)로 `docker compose stop minecraft`를 실행했다. 종료 상태 0, `exited exit=0 oom=false`, 세 차원의 `Saving chunks for level`과 러너 `Done`을 확인한 뒤 `docker compose start minecraft`로 기동했다. 기동 로그에 `Simple Tombstone 26.3-1.9.0 (simpletomb)`와 `mods/simpletomb-26.3-1.9.0.jar`가 나왔고 `Done`까지 도달했으며, 컨테이너는 `healthy`, 재시작 0회였다. 기동 로그의 Occultism `CuriosIntegrationImpl` `ClassNotFoundException`과 log4j `DebugFile` 어펜더의 netty `kqueue.Native` 오류는 변경 전 기동에도 있던 기존 로그다. 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
 
 ### 사용자가 지정한 모드
 
@@ -55,7 +97,7 @@ Structures(GaraKrral, 프로젝트 ID `1391238`, 파일 ID `8849254`, `Structure
 
 | 모드 | 고정 버전 | 채널 | 비고 |
 | --- | --- | --- | --- |
-| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.6.0 | 정식 | Occultism 요구 `[2.5.0,)` 충족 |
+| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.7.0 | 정식 | Occultism 요구 `[2.5.0,)` 충족. 2026-09-25 2.6.0에서 교체(위 절) |
 | [GeckoLib](https://modrinth.com/mod/geckolib) | 5.5.7 | 정식 | Occultism 요구 `[5.5.6,)` 충족. 자체적으로 NeoForge `[26.3.0.7-beta,)` 요구 |
 | [Curios API](https://modrinth.com/mod/curios) | 17.0.0-beta+26.3 | 베타 | 아래 제한 사항 참고 |
 
@@ -138,9 +180,13 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb도 무덤 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 23개 파일 전체를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 24개)를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
+
+클라이언트 팩 `1.1.9`는 `1.1.8`에 서버와 같은 Traveler's Backpack `11.4.0`을 더한 판이다(모드 20개: 서버 공통 15개·클라이언트 전용 5개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap은 계속 `.mrpack` 다운로드 전용). 셰이더 팩, 리소스팩 3개와 기본 활성화, `servers.dat`는 `1.1.8`과 같고, `options.txt`에는 배낭 열기를 상류 기본값 `B` 대신 `Y`로 적은 한 줄(`key_key.travelersbackpack.inventory:key.keyboard.y`)만 더했다. GitHub 일반 릴리스(latest) [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)로 2026-09-25 공개했고, 서버에도 같은 날 설치했다(위 절). Iris는 계속 미병합 PR 로컬 빌드다. `B` 중복과 `Y`를 고른 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#119-travelers-backpack-단축키-중복)에 적었다.
+
+클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). GitHub 사전 릴리스 [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했고, 서버도 같은 날 2.7.0으로 교체했다. 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 이전 판 기록이다.
 
 클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화했으므로 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
@@ -148,7 +194,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 모드는 두 갈래다.
 
-- **서버 공통 14개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Simple Tomb, Tom's Simple Storage. Farmer's Delight 이식판과 Simple Tomb은 Modrinth CDN에 없어 `.mrpack`의 `client-overrides/mods/`에 JAR을 담는다. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
+- **서버 공통 15개**: 서버 lock(`mods-26.3.lock.json`)에서 고르고 JAR은 `server-data-26.3-neoforge/mods/`에서 읽는다. Balm, Clumps, Cooking for Blockheads, Curios API, Farmer's Delight, GeckoLib, Jade, JEI, Lithium, Modonomicon, Occultism, Packet Fixer, Simple Tomb, Tom's Simple Storage, Traveler's Backpack. Farmer's Delight 이식판과 Simple Tomb은 Modrinth CDN에 없어 `.mrpack`의 `client-overrides/mods/`에 JAR을 담는다. 서버에도 같은 파일이 있으므로 버전을 맞춰야 한다.
 - **클라이언트 전용 5개**: 서버에 설치하지 않는 모드다. 입력 고정 목록은 [mods-26.3-client-extra.lock.json](../mods-26.3-client-extra.lock.json)이고 JAR은 Git에서 제외한 `client-mods-cache/`에 둔다. ImmediatelyFast `1.17.1+26.3-neoforge`, Mouse Tweaks `26.3-2.31-neoforge`, JourneyMap `26.3-6.0.9+neoforge`, Sodium `mc26.3-0.9.2-neoforge`, Iris `1.11.6-snapshot+mc26.3-local`(PR #3354 커밋 `10d3598c…` 로컬 빌드).
 - **셰이더 팩 1개**: Complementary Reimagined `r5.9.3`. 입력 lock의 `shaderpacks`에 두며 `.mrpack`의 Modrinth CDN 다운로드 항목으로만 설치한다. 기본으로 켜지 않는다.
 

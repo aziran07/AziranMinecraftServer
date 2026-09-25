@@ -55,6 +55,13 @@ Synced from the global `~/.dotfiles/agents/AGENTS.md` on 2026-09-22. Its no-bug-
 - Introduce abstractions only when they clearly simplify existing code or eliminate meaningful duplication. Do not design for hypothetical future requirements.
 - Keep related logic together. Do not fragment straightforward behavior across many small functions or files without a clear readability benefit.
 
+## Backup Scope (User Requirement)
+
+- **Back up only `server-data-26.3-neoforge/world/`, including every dimension.** This applies to scheduled backups and protection backups before mod installation, updates, restarts, and other maintenance.
+- Do not create full server-directory backups. Do not include BlueMap render data, mods, configuration, logs, caches, or other recoverable files. The user explicitly chose world-only backups on 2026-09-25.
+- Do not broaden backup scope as a precaution or ask for a full backup during routine work. A broader scope requires a new explicit user instruction.
+- Follow `docs/BACKUPS.md` for consistent world snapshots, archive verification, and safe shutdown. Preserve existing worlds and unrelated backups; changing backup scope does not authorize deleting them.
+
 ## Verification and Repository Care
 
 - Define verification before implementation and choose checks appropriate to the change: focused tests, static checks, configuration validation, or runtime checks as needed.

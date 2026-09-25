@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 23,
+  "mod_count": 24,
   "mods": [
     {
       "title": "Almanac",
@@ -646,15 +646,15 @@
       "source": "modrinth",
       "project_slug": "modonomicon",
       "project_id": "692GClaE",
-      "version_id": "CPBu0enR",
-      "version_number": "26.3-2.6.0",
+      "version_id": "SFKjMnCe",
+      "version_number": "26.3-2.7.0",
       "version_type": "release",
-      "date_published": "2026-09-21T08:39:27.317035Z",
-      "filename": "modonomicon-26.3-neoforge-2.6.0.jar",
-      "url": "https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar",
-      "size": 2973738,
-      "sha1": "02311031457e30527199579f0cb41a3d4559ba07",
-      "sha512": "4dafaf737bafd2420bce6f5857a6908c90c1fe687ad303dce5d1eb5c960f0f3a14019319fdcd22f0c1f7f75e255d77637a1e2041d9e85cda69c296c74fa35433",
+      "date_published": "2026-09-22T15:04:04.854703Z",
+      "filename": "modonomicon-26.3-neoforge-2.7.0.jar",
+      "url": "https://cdn.modrinth.com/data/692GClaE/versions/SFKjMnCe/modonomicon-26.3-neoforge-2.7.0.jar",
+      "size": 2987945,
+      "sha1": "a3f20d15d4a944c6fc8d413661a58f9d8ddaeafd",
+      "sha512": "7d16cb18892339b2ab226de271c06a32410983800bd50989f3e98f1b68d5c3f7a91017eb386a2c4995e893f78c642adb34a6dd0afc47e622705e0a209904d70e",
       "game_versions": [
         "26.3"
       ],
@@ -1052,6 +1052,45 @@
         {
           "mod_id": "minecraft",
           "version_range": "[26.3,26.4)"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false
+    },
+    {
+      "title": "Traveler's Backpack",
+      "source": "modrinth",
+      "project_slug": "travelersbackpack",
+      "project_id": "rlloIFEV",
+      "version_id": "Gdy0zkAN",
+      "version_number": "26.3-11.4.0",
+      "version_type": "release",
+      "date_published": "2026-09-24T16:13:06.751035Z",
+      "filename": "travelersbackpack-neoforge-26.3-11.4.0.jar",
+      "url": "https://cdn.modrinth.com/data/rlloIFEV/versions/Gdy0zkAN/travelersbackpack-neoforge-26.3-11.4.0.jar",
+      "size": 1475945,
+      "sha1": "2ab79e56eb86bd13c89c1fcc686d39dd6461011b",
+      "sha512": "0ec5ad7a9f87cb5a303a374a9a9f2655be80513fa65570f8e267b12a03bacbb41e1afe4dcc15682574be67cacef26ff674d09836dc6244a1d434fb4155f0fce1",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "client_and_server",
+      "server_side": "required",
+      "client_side": "required",
+      "declared_mod_ids": [
+        "travelersbackpack"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.1-beta,)"
+        },
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
         }
       ],
       "bundled_jars": [],

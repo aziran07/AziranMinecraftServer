@@ -584,6 +584,18 @@ main { padding-block: 20px 8px; }
 .cmd dt code { background: var(--surface); }
 .cmd dd { margin: 0; }
 
+/* Default on/off marks for resource packs: amber badge for on, quiet outline for off. */
+.state-on, .state-off {
+  display: inline-block;
+  margin-inline-start: 6px;
+  padding: 0 6px;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  vertical-align: 1px;
+}
+.state-on  { background: var(--amber); color: var(--carbon); border: 1px solid var(--carbon); }
+.state-off { background: var(--surface); color: var(--muted-indigo); border: 1px solid var(--muted-indigo); }
+
 .hint, .links {
   margin: 10px 0 0;
   font-size: 0.93rem;

@@ -1,12 +1,13 @@
 """The distributed defaults must survive a second 26.3 client launch."""
 
 from pathlib import Path
+import json
 import unittest
 import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.1.6"
+VERSION = "1.1.9"
 FAMILIARS = {
     "greedy_familiar", "drikwing", "wingnis", "bat_familiar",
     "deer_familiar", "cthulhu_familiar", "devil_familiar",
@@ -34,7 +35,13 @@ class ClientOptionsTests(unittest.TestCase):
                 self.assertIn("version:5023", lines)
                 self.assertEqual(len(lines), len(set(lines)))
                 settings = dict(line.split(":", 1) for line in lines)
-                self.assertEqual(set(settings) - {"version"}, expected_keys)
+                # Traveler's default B conflicts with JourneyMap's waypoint key.
+                backpack_key = "key_key.travelersbackpack.inventory"
+                self.assertEqual(set(settings) - {"version", "lang", "resourcePacks", backpack_key}, expected_keys)
+                self.assertEqual(settings[backpack_key], "key.keyboard.y")
+                self.assertEqual(settings['lang'], 'ko_kr')
+                self.assertEqual(json.loads(settings['resourcePacks']),
+                                 ['vanilla', 'mod_resources', 'file/occultism-ko-1.256.0-mc26.3.zip'])
                 self.assertTrue(all(settings[key] == "key.keyboard.unknown" for key in expected_keys))
                 self.assertNotIn("key.keyboard.-1", "\n".join(lines))
 

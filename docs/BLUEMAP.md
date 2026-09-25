@@ -119,7 +119,7 @@ EOF
 
 ### 2. 접속자 공지, 정상 종료, 오프라인 백업
 
-BlueMap JAR 설치 전에 서버를 정상 종료하고 `server-data-26.3-neoforge/` 전체를 보호 백업한다. [서버 백업 안내의 오프라인 전체 데이터 보호 백업](BACKUPS.md#오프라인-전체-데이터-보호-백업)을 순서대로 실행하면서 예시의 `BACKUP_LABEL=pre-change`를 `pre-bluemap`으로 바꾼다. BlueMap 배포 당시에는 이전 컨테이너이므로 해당 안내의 3-A 방식으로 종료했다. 현재 컨테이너의 종료 제한을 확인해 3-A/3-B를 고른다.
+BlueMap JAR 설치 전에 서버를 정상 종료하고 `server-data-26.3-neoforge/` 전체를 보호 백업한다. (2026-09-24 당시 절차다. 2026-09-25부터 배포 전 보호 백업은 `world/`만 대상으로 하며, BlueMap 지도 데이터는 다시 렌더링해 복구한다.) [서버 백업 안내의 오프라인 보호 백업](BACKUPS.md#오프라인-월드-보호-백업)을 순서대로 실행하면서 예시의 `BACKUP_LABEL=pre-change`를 `pre-bluemap`으로 바꾼다. BlueMap 배포 당시에는 이전 컨테이너이므로 해당 안내의 3-A 방식으로 종료했다. 현재 컨테이너의 종료 제한을 확인해 3-A/3-B를 고른다.
 
 `BACKUP VERIFIED: <경로>`와 종료 상태 `0`을 확인하기 전에는 JAR을 설치하지 않는다. 출력된 tar 경로와 `.sha256`을 3단계 설치와 아래 롤백에 사용한다. 정기 월드 백업 tar는 전체 데이터 백업을 대신하지 않는다.
 
@@ -179,7 +179,7 @@ docker inspect --format 'StopTimeout={{.Config.StopTimeout}} restart={{.HostConf
 docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' aziran-minecraft-26-3 | grep '^STOP_DURATION='
 ```
 
-`running healthy`, 재시작 0회, RCON 응답, 모드 로드 오류가 없는 것을 확인한다. 기존 20개 모드와 BlueMap이 모두 로드돼야 한다. 재생성된 컨테이너에 새 종료 한도와 재시작 정책이 적용됐는지도 본다: `StopTimeout=660 restart=always`, `STOP_DURATION=600`. 이후의 종료는 [서버 백업 안내의 3-B](BACKUPS.md#오프라인-전체-데이터-보호-백업)(Docker 종료)를 쓴다.
+`running healthy`, 재시작 0회, RCON 응답, 모드 로드 오류가 없는 것을 확인한다. 기존 20개 모드와 BlueMap이 모두 로드돼야 한다. 재생성된 컨테이너에 새 종료 한도와 재시작 정책이 적용됐는지도 본다: `StopTimeout=660 restart=always`, `STOP_DURATION=600`. 이후의 종료는 [서버 백업 안내의 3-B](BACKUPS.md#오프라인-월드-보호-백업)(Docker 종료)를 쓴다.
 
 ### 6. HTTP·렌더링 확인
 
@@ -259,7 +259,7 @@ ss -ltnp | grep -E ':8100\b' || echo "8100 NOT PUBLISHED ON HOST"            # �
 
 ## 롤백
 
-0. 먼저 접속자에게 공지하고 [서버 백업 안내의 정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업)에 따라 서버를 멈춘다. 설치 뒤 재생성된 컨테이너라면 종료 제한을 확인한 뒤 3-B(`docker compose stop minecraft`)를 쓴다. `exited exit=0 oom=false`와 `STOP_AT` 이후 세 차원의 `Saving chunks`·러너 `Done`을 확인한다. 실행 중인 서버의 모드 JAR은 옮기지 않는다.
+0. 먼저 접속자에게 공지하고 [서버 백업 안내의 정상 종료 절차](BACKUPS.md#오프라인-월드-보호-백업)에 따라 서버를 멈춘다. 설치 뒤 재생성된 컨테이너라면 종료 제한을 확인한 뒤 3-B(`docker compose stop minecraft`)를 쓴다. `exited exit=0 oom=false`와 `STOP_AT` 이후 세 차원의 `Saving chunks`·러너 `Done`을 확인한다. 실행 중인 서버의 모드 JAR은 옮기지 않는다.
 1. JAR을 모드 디렉터리에서 치운다(삭제 대신 보관).
 
    ```sh
@@ -270,7 +270,7 @@ ss -ltnp | grep -E ':8100\b' || echo "8100 NOT PUBLISHED ON HOST"            # �
 
 2. 월드 이상 징후가 있으면 서버를 시작하기 전에 4번의 전체 데이터 복원을 판단한다. 그렇지 않으면 `docker compose up -d --no-deps minecraft`로 JAR 없이 다시 시작한다. `expose: 8100`은 Compose 네트워크 안에서만 열리므로 남겨 둬도 된다. 이 브랜치 이전의 `docker-compose.yml`로 돌아갈 때는 먼저 아래 "지도 공개만 끄기"로 `webmap-nginx`를 치운다. 이전 Compose에는 `webmap-nginx` 정의가 없어 그 컨테이너가 고아로 남기 때문이다.
 3. BlueMap은 월드 데이터를 바꾸지 않으므로 보통 JAR 제거로 충분하다. `config/bluemap/`과 `bluemap/`(렌더 결과)은 남아도 서버 동작에 영향이 없다. 공간이 필요하면 보관 후 지운다.
-4. 기동 실패나 월드 이상이 있으면 2번에서 서버를 다시 시작하지 않는다(이미 시작했다면 0번처럼 정상 종료한다). 2단계의 `pre-bluemap-*.tar`로 [전체 데이터 복원](BACKUPS.md#전체-데이터-복원)을 수행한다. 백업 해시가 맞지 않거나 복원이 끝나지 않으면 서버를 시작하지 않는다. 복원 뒤 BlueMap JAR 제거와 지도 공개 설정을 롤백 상태에 맞춘 다음 `docker compose up -d --no-deps minecraft`로 시작한다.
+4. 기동 실패나 월드 이상이 있으면 2번에서 서버를 다시 시작하지 않는다(이미 시작했다면 0번처럼 정상 종료한다). 2단계의 `pre-bluemap-*.tar`로 [전체 데이터 복원](BACKUPS.md#전체-데이터-복원-이전-전체-백업-전용)을 수행한다. 백업 해시가 맞지 않거나 복원이 끝나지 않으면 서버를 시작하지 않는다. 복원 뒤 BlueMap JAR 제거와 지도 공개 설정을 롤백 상태에 맞춘 다음 `docker compose up -d --no-deps minecraft`로 시작한다.
 5. 5단계 상태 확인을 다시 수행한다.
 
 ### 지도 공개만 끄기(서버는 유지)

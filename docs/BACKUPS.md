@@ -1,6 +1,6 @@
 # 26.3 서버 백업과 복원
 
-정기 백업은 운영 서버의 `server-data-26.3-neoforge/world/` 전체(모든 차원)를 `minecraft_backups/`에 tar로 저장한다. 2026-09-24에 첫 수동 백업을 실행해 11GB 파일 생성, `world/level.dat` 확인, 서버 healthy·재시작 0회를 확인했다. 정기 백업은 **월드만** 포함하고 원본과 같은 호스트에 있다. 모드·설정까지 필요한 배포 전 보호 백업과 전체 데이터 복원은 아래 별도 절차를 따른다.
+정기 백업은 운영 서버의 `server-data-26.3-neoforge/world/` 전체(모든 차원)를 `minecraft_backups/`에 tar로 저장한다. 2026-09-24에 첫 수동 백업을 실행해 11GB 파일 생성, `world/level.dat` 확인, 서버 healthy·재시작 0회를 확인했다. 정기 백업은 **월드만** 포함하고 원본과 같은 호스트에 있다. 모드 배포 전 보호 백업도 2026-09-25 사용자 결정에 따라 **월드만** 뜬다(아래 오프라인 월드 보호 백업). 모드·설정·BlueMap 지도 데이터는 백업하지 않는다. 모드는 lock에 고정한 공식 배포처 파일로, 설정은 저장소 기록으로, 지도는 재렌더링으로 복구한다.
 
 ## 정기 월드 백업
 
@@ -30,19 +30,19 @@ tar -tf "$BACKUP" | grep '^world/level.dat$'
 
 ### 월드 복원 시 주의
 
-복원은 자동화돼 있지 않다. 먼저 아래 [정상 종료 절차](#오프라인-전체-데이터-보호-백업)로 Minecraft를 멈추고 `exited exit=0 oom=false`와 월드 저장 로그를 확인한다. 선택한 tar가 읽히고 `world/level.dat`를 포함하는지 검사한다. 현재 `world/`를 삭제하지 말고 별도 보호 경로로 옮긴 뒤, 서버가 멈춘 상태에서 `server-data-26.3-neoforge/` 아래에 tar를 풀어 `world/`를 복원한다. 복원된 `world/level.dat`와 소유권을 확인한 뒤 서버를 시작한다. 백업은 월드만 포함하므로 모드·설정 변경까지 되돌려야 하는 경우에는 별도의 전체 데이터 백업을 사용한다.
+복원은 자동화돼 있지 않다. 먼저 아래 [정상 종료 절차](#오프라인-월드-보호-백업)로 Minecraft를 멈추고 `exited exit=0 oom=false`와 월드 저장 로그를 확인한다. 선택한 tar가 읽히고 `world/level.dat`를 포함하는지 검사한다. 현재 `world/`를 삭제하지 말고 별도 보호 경로로 옮긴 뒤, 서버가 멈춘 상태에서 `server-data-26.3-neoforge/` 아래에 tar를 풀어 `world/`를 복원한다. 복원된 `world/level.dat`와 소유권을 확인한 뒤 서버를 시작한다. 백업은 월드만 포함한다. 모드는 되돌릴 버전의 lock에 고정된 공식 배포처 URL에서 다시 받아 크기·SHA-512를 확인해 설치하고, 설정은 저장소 기록으로 되돌린다.
 
-## 오프라인 전체 데이터 보호 백업
+## 오프라인 월드 보호 백업
 
-모드 설치나 서버 구성 변경 전에 **전체 데이터 디렉터리**가 필요한 경우의 절차다. 정기 `mc_backup.sh`는 `world/`만 포함하고 오래된 정기 백업을 삭제하므로 여기에는 쓰지 않는다. 보호 백업은 자동 삭제 대상 밖인 `/home/pilon1945/aziran-26.3-protected-backups/`에 둔다.
+모드 설치·교체나 서버 구성 변경 전에 쓰는 절차다. **2026-09-25 사용자 결정으로 보호 백업 범위는 `server-data-26.3-neoforge/world/`(모든 차원)뿐이다.** 모드 JAR은 lock과 공식 배포처로, 설정은 저장소 기록으로 복구할 수 있고, BlueMap이 만드는 `server-data-26.3-neoforge/bluemap/`(렌더링 타일 `bluemap/web/maps`와 웹 파일, 2026-09-25 기준 약 24GB)은 다시 렌더링할 수 있으므로 넣지 않는다. BlueMap 설정 `config/bluemap/`도 월드 밖이라 이 백업에 들어가지 않는다. 모드 JAR·설정·로그·캐시 등 월드 밖 파일의 사본을 보호 경로에 따로 만들지 않는다. 모드를 되돌릴 때는 이전 lock에 고정된 공식 배포처 URL에서 같은 파일을 다시 받아 크기·SHA-512를 확인한다. 사용자가 새로 명시하지 않는 한 백업 범위를 넓히지 않는다. 정기 `mc_backup.sh`는 오래된 정기 백업을 삭제하므로 여기에는 쓰지 않는다. 보호 백업은 자동 삭제 대상 밖인 `/home/pilon1945/aziran-26.3-protected-backups/`에 둔다.
 
-백업은 서버를 **완전히 멈춘 뒤** 뜬다. 실행 중 `save-off`/`save-all` 상태로 `tar`를 돌리면 월드 밖 파일(모드 데이터, 설정 등)은 계속 바뀔 수 있고, 절차가 중간에 끊기면 자동 저장이 꺼진 채 남는다. 이 절차에서는 `save-off`를 쓰지 않는다.
+백업은 서버를 **완전히 멈춘 뒤** 뜬다. 실행 중 `save-off`/`save-all` 상태로 `tar`를 돌리면 절차가 중간에 끊겼을 때 자동 저장이 꺼진 채 남는다. 이 절차에서는 `save-off`를 쓰지 않는다.
 
-1. 디스크 여유를 확인한다. 백업 크기는 대략 데이터 디렉터리 크기다. 여유가 부족하면 서버를 멈추기 전에 중단한다.
+1. 디스크 여유를 확인한다. 백업 크기는 대략 `world/` 크기다(2026-09-25 약 11GB). 여유가 부족하면 서버를 멈추기 전에 중단한다.
 
    ```sh
    cd /home/pilon1945/AziranMinecraftServer
-   du -sh server-data-26.3-neoforge
+   du -sh server-data-26.3-neoforge/world
    df -h /home/pilon1945
    ```
 
@@ -124,7 +124,7 @@ tar -tf "$BACKUP" | grep '^world/level.dat$'
 
    두 경우 모두 `chunky-idle-pregen` 컨트롤러는 이 동안 RCON 연결 실패를 기록하며 재연결을 기다린다.
 
-4. 데이터 디렉터리 전체를 보호 경로에 묶고 검증한다. 아래 예시의 `BACKUP_LABEL=pre-change`는 작업 이름으로 바꾼다. 서버가 멈춘 상태에서만 실행한다.
+4. `world/`를 보호 경로에 묶고 검증한다. 아래 예시의 `BACKUP_LABEL=pre-change`는 작업 이름으로 바꾼다(파일 이름은 `<라벨>-world-<시각>.tar`). 서버가 멈춘 상태에서만 실행한다.
 
    아래 블록은 별도 `bash -euo pipefail` 프로세스에서 돈다. 백업 생성(`tar -cf`), 목록 추출(`tar -tf`), 필수 항목 검사, 해시 생성·검증 중 하나라도 실패하면 그 자리에서 멈춘다. 실패 시에는 그때까지 만든 백업·목록·해시 파일 이름에 `.failed`를 붙여 성공한 백업처럼 보이지 않게 하고 `BACKUP FAILED: <원인>`을 출력한 뒤 종료 상태 1로 끝난다. 성공 표시는 모든 검사가 통과한 뒤 마지막 줄에만 나온다.
 
@@ -133,7 +133,7 @@ tar -tf "$BACKUP" | grep '^world/level.dat$'
    bash -euo pipefail <<'EOF'
    BACKUP_DIR=/home/pilon1945/aziran-26.3-protected-backups
    BACKUP_LABEL=pre-change
-   BACKUP="$BACKUP_DIR/$BACKUP_LABEL-$(date +%F-%H%M%S).tar"
+   BACKUP="$BACKUP_DIR/$BACKUP_LABEL-world-$(date +%F-%H%M%S).tar"
    if [ "$(docker inspect --format '{{.State.Running}}' aziran-minecraft-26-3)" != false ]; then
      echo "BACKUP FAILED: aziran-minecraft-26-3 is not stopped" >&2; exit 1
    fi
@@ -149,11 +149,15 @@ tar -tf "$BACKUP" | grep '^world/level.dat$'
    }
    mkdir -p "$BACKUP_DIR" || fail "mkdir $BACKUP_DIR"
    chmod 700 "$BACKUP_DIR" || fail "chmod $BACKUP_DIR"
-   tar -cf "$BACKUP" server-data-26.3-neoforge || fail "tar create"
+   tar -cf "$BACKUP" server-data-26.3-neoforge/world || fail "tar create"
    tar -tf "$BACKUP" > "$BACKUP.list" || fail "tar list"
-   REQUIRED=$(grep -cE '^server-data-26\.3-neoforge/(world/level\.dat|server\.properties|mods/)$' "$BACKUP.list") \
+   REQUIRED=$(grep -cE '^server-data-26\.3-neoforge/world/(level\.dat|dimensions/minecraft/(overworld|the_nether|the_end)/region/)$' "$BACKUP.list") \
      || fail "required entries missing from archive list"
-   [ "$REQUIRED" = 3 ] || fail "required entry count $REQUIRED != 3"
+   [ "$REQUIRED" = 4 ] || fail "required entry count $REQUIRED != 4"
+   awk -v world=server-data-26.3-neoforge/world '
+     $0 != world && $0 != world "/" && index($0, world "/") != 1 { print "outside world/: " $0 > "/dev/stderr"; bad = 1 }
+     END { if (NR == 0) { print "empty archive list" > "/dev/stderr"; bad = 1 } exit bad }
+   ' "$BACKUP.list" || fail "archive list unreadable or has entries outside world/"
    sha256sum "$BACKUP" > "$BACKUP.sha256" || fail "sha256 create"
    sha256sum -c "$BACKUP.sha256" || fail "sha256 verify"
    chmod 600 "$BACKUP" "$BACKUP.list" "$BACKUP.sha256" || fail "chmod backup files"
@@ -161,15 +165,41 @@ tar -tf "$BACKUP" | grep '^world/level.dat$'
    EOF
    ```
 
-   마지막 줄이 `BACKUP VERIFIED: <경로>`이고 셸의 종료 상태(`echo $?`)가 `0`이어야 다음 단계로 간다. `BACKUP FAILED`가 나오거나 종료 상태가 0이 아니면 **여기서 수동으로 멈춘다.** 후속 변경을 실행하지 않는다. 원인을 먼저 확인한다. `.failed`가 붙은 파일은 불완전한 백업이므로 롤백에 쓰지 않는다. 설치 없이 서버만 되살릴 때는 기존 컨테이너를 재생성 없이 그대로 시작한다. 3-A로 멈췄다면 재시작 정책부터 되돌린다(`docker update --restart=always aziran-minecraft-26-3` 후 `docker start aziran-minecraft-26-3`, `restart=always`와 `healthy` 확인). 출력된 백업 경로는 후속 변경과 복원에 쓰므로 기록해 둔다. 백업에는 `server.properties` 등 운영 데이터가 들어 있으므로 Git이나 공개 위치에 두지 않는다. 작업 후 데이터 증가량을 고려해 디스크 여유도 계속 확인한다.
+   마지막 줄이 `BACKUP VERIFIED: <경로>`이고 셸의 종료 상태(`echo $?`)가 `0`이어야 다음 단계로 간다. `BACKUP FAILED`가 나오거나 종료 상태가 0이 아니면 **여기서 수동으로 멈춘다.** 후속 변경을 실행하지 않는다. 원인을 먼저 확인한다. `.failed`가 붙은 파일은 불완전한 백업이므로 롤백에 쓰지 않는다. 설치 없이 서버만 되살릴 때는 기존 컨테이너를 재생성 없이 그대로 시작한다. 3-A로 멈췄다면 재시작 정책부터 되돌린다(`docker update --restart=always aziran-minecraft-26-3` 후 `docker start aziran-minecraft-26-3`, `restart=always`와 `healthy` 확인). 출력된 백업 경로는 후속 변경과 복원에 쓰므로 기록해 둔다. 월드에는 플레이어 데이터 등 운영 데이터가 들어 있으므로 Git이나 공개 위치에 두지 않는다. 작업 후 데이터 증가량을 고려해 디스크 여유도 계속 확인한다.
 
-## 전체 데이터 복원
+## 보호 월드 백업 복원
 
-위 오프라인 보호 백업으로 **서버 데이터 디렉터리 전체**를 되돌릴 때만 사용한다. 정기 `26.3-world-*.tar`는 형식과 범위가 다르므로 이 절차에 넣지 않는다. 접속자에게 알리고 [정상 종료 절차](#오프라인-전체-데이터-보호-백업)에 따라 서버가 완전히 멈췄는지 확인한다. 백업 tar와 `.sha256` 파일은 같은 보호 경로에 있어야 한다. 아래 `BACKUP` 값을 실제 검증된 파일 경로로 바꾼다.
+위 오프라인 월드 보호 백업(`<라벨>-world-*.tar`)으로 `world/`를 되돌릴 때 쓴다. tar 안의 경로는 `server-data-26.3-neoforge/world/...`이다. 모드는 되돌릴 버전의 lock에 고정된 공식 배포처 파일로 따로 되돌린다. 접속자에게 알리고 [정상 종료 절차](#오프라인-월드-보호-백업)에 따라 서버가 완전히 멈췄는지 확인한 뒤, `BACKUP`을 실제 검증된 파일 경로로 바꾼다.
 
 ```sh
 cd /home/pilon1945/AziranMinecraftServer
-BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-change-YYYY-mm-dd-HHMMSS.tar
+BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-change-world-YYYY-mm-dd-HHMMSS.tar
+BACKUP="$BACKUP" bash -euo pipefail <<'EOF'
+[ -f "$BACKUP" ] && [ -f "$BACKUP.sha256" ] || { echo "RESTORE ABORTED: backup or checksum missing" >&2; exit 1; }
+if [ "$(docker inspect --format '{{.State.Running}}' aziran-minecraft-26-3)" != false ]; then
+  echo "RESTORE ABORTED: aziran-minecraft-26-3 is not stopped" >&2; exit 1
+fi
+sha256sum -c "$BACKUP.sha256"
+tar -tf "$BACKUP" | awk '$0 == "server-data-26.3-neoforge/world/level.dat" { found = 1 } END { exit !found }'
+[ -d server-data-26.3-neoforge/world ] || { echo "RESTORE ABORTED: current world directory missing" >&2; exit 1; }
+SAVED="/home/pilon1945/aziran-26.3-protected-backups/world.before-restore-$(date +%F-%H%M%S)"
+[ ! -e "$SAVED" ] || { echo "RESTORE ABORTED: $SAVED already exists" >&2; exit 1; }
+mv server-data-26.3-neoforge/world "$SAVED"
+tar -xf "$BACKUP" server-data-26.3-neoforge/world
+[ -f server-data-26.3-neoforge/world/level.dat ] || { echo "RESTORE FAILED: world/level.dat missing" >&2; exit 1; }
+echo "RESTORE EXTRACTED: $BACKUP; previous world retained at $SAVED"
+EOF
+```
+
+`RESTORE EXTRACTED`와 종료 상태 `0`이 나오지 않으면 서버를 시작하지 말고 현재 `world/`와 옮겨 둔 폴더 상태를 확인한다. 복원한 월드와 함께 쓸 모드 조합(월드가 저장될 때의 모드 버전)과 소유권을 확인한 뒤 서버를 시작한다. 옮겨 둔 이전 월드는 복원 결과를 확인하기 전까지 삭제하지 않는다.
+
+## 전체 데이터 복원 (이전 전체 백업 전용)
+
+2026-09-25 월드 전용으로 바꾸기 전에 만든 전체 데이터 보호 백업(현재 남은 것은 `pre-bluemap-2026-09-24-032421.tar`)으로 **서버 데이터 디렉터리 전체**를 되돌릴 때만 사용한다. 새로 만드는 월드 전용 백업이나 정기 `26.3-world-*.tar`는 형식과 범위가 다르므로 이 절차에 넣지 않는다. 접속자에게 알리고 [정상 종료 절차](#오프라인-월드-보호-백업)에 따라 서버가 완전히 멈췄는지 확인한다. 백업 tar와 `.sha256` 파일은 같은 보호 경로에 있어야 한다. 아래 `BACKUP` 값을 실제 검증된 파일 경로로 바꾼다.
+
+```sh
+cd /home/pilon1945/AziranMinecraftServer
+BACKUP=/home/pilon1945/aziran-26.3-protected-backups/pre-bluemap-2026-09-24-032421.tar
 BACKUP="$BACKUP" bash -euo pipefail <<'EOF'
 [ -f "$BACKUP" ] && [ -f "$BACKUP.sha256" ] || { echo "RESTORE ABORTED: backup or checksum missing" >&2; exit 1; }
 if [ "$(docker inspect --format '{{.State.Running}}' aziran-minecraft-26-3)" != false ]; then
