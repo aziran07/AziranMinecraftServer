@@ -613,7 +613,7 @@ main { padding-block: 20px 8px; }
   color: var(--amber);
 }
 
-/* ---------- promo card (Occultism link) ---------- */
+/* ---------- promo cards (Occultism, command guide) ---------- */
 
 .promo {
   display: grid;
@@ -662,6 +662,7 @@ main { padding-block: 20px 8px; }
 }
 .promo-link:hover { background: var(--amber); color: var(--carbon); }
 .promo :focus-visible { outline-color: var(--surface); box-shadow: 0 0 0 6px var(--carbon); }
+.promo-commands { background-color: var(--chrome-indigo); }
 
 /* ---------- footer ---------- */
 
