@@ -23,7 +23,7 @@ Minecraft Java Edition 26.3 NeoForge 서버를 준비하며 웹 관리·모니�
 | 웹 지도(BlueMap)·HTTPS 원본·배포·롤백 | [docs/BLUEMAP.md](docs/BLUEMAP.md) |
 | 게임 TCP 전달(비활성 Nginx) | [minecraft.conf.template](nginx/templates/minecraft.conf.template) |
 | 컨테이너 지표 수집 | [prometheus.yml](prometheus.yml) |
-| 정기 월드 백업·전체 데이터 보호 백업·복원 | [docs/BACKUPS.md](docs/BACKUPS.md) |
+| 정기 월드 백업·배포 전 월드 보호 백업·복원 | [docs/BACKUPS.md](docs/BACKUPS.md) |
 | 설치 모드·버전·해시 고정 | [mods-26.3.lock.json](mods-26.3.lock.json) |
 
 ## 실행 전 확인
@@ -56,11 +56,11 @@ docker compose ps
 
 현재 버전은 `1.1.8`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 19개, 셰이더 팩 1개, 리소스팩 3개로 구성했습니다. 서버와 공유하는 모드 14개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris 5개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.6.0`에서 `26.3-2.7.0`으로 바꿔 책 화면의 왼쪽 버튼 끌기 수정을 담았습니다. `1.1.7`은 `1.1.6`의 모드·셰이더·`servers.dat`를 그대로 두고, 게임 언어를 한국어로 시작하게 하며 Occultism 한국어 번역 리소스팩(기본 켜짐)과 선택 리소스팩 Stay True·Vanilla Experience+(기본 꺼짐)를 더했습니다. `1.1.6`은 `1.1.5`에 서버와 같은 무덤 모드 Simple Tomb `1.9.0`만 더했습니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
 
-**`1.1.8`은 아직 공개하지 않았습니다.** 아래 링크의 세 아카이브는 로컬 빌드 산출물이며 GitHub 사전 릴리스 `client-1.1.8` 생성은 다음 단계입니다. [서버 고정 목록](mods-26.3.lock.json)은 이미 Modonomicon `26.3-2.7.0`을 가리키지만 **운영 서버의 `mods/`에는 아직 `2.6.0`이 설치되어 있고 서버 교체·재시작도 하지 않았습니다.** 서버 교체는 Release 공개 뒤 후속 작업에서 합니다. 사이트 소스도 `client-1.1.8` 링크로 바꿨지만 아래 `1.1.7`과 같은 Pages 환경 보호 규칙 때문에 배포되지 않은 상태입니다. 2.7.0 서버에 `1.1.7`(2.6.0) 클라이언트가 접속되는지는 확인하지 않았으므로 `1.1.8`을 새 인스턴스로 가져오도록 안내합니다.
+`1.1.8`은 GitHub **사전 릴리스** [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했습니다. 세 아카이브와 설치·라이선스 문서·체크섬 6개 자산의 크기·SHA-256이 로컬 산출물과 일치함을 확인했습니다. 서버도 같은 날 Modonomicon을 `2.7.0`으로 교체했습니다(13:13:42 UTC 정상 종료, 보호 백업 뒤 13:18:47 UTC 시작, 13:19:06 UTC healthy). 교체 기록은 [모드 설치 안내](docs/MODS_26_3.md#modonomicon-270-교체-2026-09-25)에 있습니다. 사이트 소스도 `client-1.1.8` 링크로 바꿨지만 아래 `1.1.7`과 같은 Pages 환경 보호 규칙 때문에 **사이트 배포는 아직 되지 않았습니다.** 2.7.0 서버에 `1.1.7`(2.6.0) 이하 클라이언트가 접속되는지는 확인하지 않았으므로 `1.1.8`을 새 인스턴스로 가져오도록 안내합니다. `1.1.8` 인스턴스의 게임 실행과 책 화면 끌기 수정도 게임에서 확인하지 않았습니다.
 
 `1.1.7`은 GitHub **사전 릴리스** [`client-1.1.7`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.7)으로 공개했습니다. 세 클라이언트 아카이브와 설치·라이선스 문서·체크섬을 올렸고, GitHub의 파일 크기·SHA-256이 로컬 산출물과 일치함을 확인했습니다. 가이드 소스는 새 다운로드 링크와 리소스팩 안내를 포함하지만 **사이트 배포는 아직 완료하지 못했습니다.** [배포 실행](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36117840610)이 `github-pages` 환경의 브랜치 보호 규칙에 거부됐습니다. 허용 브랜치는 `main`과 `feat/join-guide`이며 현재 `feat/occultism-ko-translation`은 제외되어 있습니다. PR #7을 `main`에 병합하면 사이트 변경 경로에 대한 기존 배포 워크플로가 실행됩니다. 보호 규칙은 변경하지 않았습니다.
 
-`1.1.7` 아카이브는 파일 수준 검증만 했고 게임 실행·번역 표시·리소스팩 적용은 확인하지 않았습니다. 리소스팩은 서버에 설치하지 않으므로 서버 구성은 바뀌지 않으며 `1.1.6` 인스턴스도 계속 접속할 수 있습니다.
+`1.1.7` 아카이브는 파일 수준 검증만 했고 게임 실행·번역 표시·리소스팩 적용은 확인하지 않았습니다. `1.1.7` 공개 당시에는 리소스팩만 더해 서버 구성이 바뀌지 않았으므로 `1.1.6` 인스턴스도 접속할 수 있었습니다. 서버가 Modonomicon `2.7.0`으로 바뀐 뒤 `1.1.6`·`1.1.7` 인스턴스의 접속 여부는 확인하지 않았습니다.
 
 `1.1.6`은 GitHub **사전 릴리스(prerelease)** [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있으며, 리소스팩을 추가하기 전 판입니다. 서버는 `client-1.1.6` Release 공개와 사이트 배포를 마친 뒤 2026-09-25에 재시작해 Simple Tomb을 활성화했으므로, 이 모드가 없는 `1.1.5` 이하 팩으로는 접속할 수 없습니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.** 이전 버전 `1.1.5`와 `1.1.4`는 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5), [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)에 `.mrpack`과 설치 안내·라이선스 문서·체크섬으로 공개되어 있고 그대로 둡니다. 서버가 Simple Tomb을 활성화했으므로 두 판으로는 접속할 수 없습니다.
 

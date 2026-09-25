@@ -20,15 +20,27 @@
 
 ## 설치 명세
 
-lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+lock의 23개 항목에 해당하는 JAR 23개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
-### Modonomicon 2.7.0 교체 준비 (2026-09-25, 서버 미적용)
+### Modonomicon 2.7.0 교체 (2026-09-25)
 
 lock의 Modonomicon을 `26.3-2.6.0`(`CPBu0enR`)에서 공식 Modrinth 버전 `SFKjMnCe` `26.3-2.7.0`(`modonomicon-26.3-neoforge-2.7.0.jar`, 2987945바이트, SHA-512 `7d16cb18…904d70e`)으로 바꿨다. Minecraft 26.3부터 마우스 버튼 번호가 SDL 기준(왼쪽 = 1)이라 2.6.0의 `BookCategoryNodeScreen.mouseDragged`가 `event.button() != 0` 비교로 왼쪽 끌기를 거부해 책 노드 화면을 움직일 수 없었다. 2.7.0은 이를 `InputConstants.MOUSE_BUTTON_LEFT` 비교로 고친 상류 커밋 [`d74b6f2dbba9956182f11808f82e1a22911cb5ee`](https://github.com/klikli-dev/modonomicon/commit/d74b6f2dbba9956182f11808f82e1a22911cb5ee)를 담는다(2.7.0 변경 기록에 포함). **게임 화면에서 끌기가 고쳐졌는지는 확인하지 않았다.**
 
 받은 JAR의 크기·SHA-512는 Modrinth 메타데이터와 일치한다. `neoforge.mods.toml`은 모드 ID `modonomicon`, 선언 버전 `2.7.0`, 필수 의존성 NeoForge `[26.3.0.3-beta,)`, 선택 의존성 JEI·Patchouli로 2.6.0과 같고, JarJar의 commonmark 0.30.0 JAR 3개도 크기·SHA-512가 2.6.0과 같다. Occultism의 요구 `[2.5.0,)`를 충족한다.
 
-**운영 서버에는 아직 적용하지 않았다.** `server-data-26.3-neoforge/mods/`에는 2.6.0이 그대로 있으므로 이 lock과 설치 JAR이 서버 교체 전까지 일치하지 않는다(`tests/test_modonomicon_update.py`의 서버 검사가 실패하는 것이 정상). 교체는 `client-1.1.8` Release 공개 뒤 후속 작업에서 [정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업) 3-B와 오프라인 보호 백업을 거쳐 JAR만 바꾸고 재시작한다. 2.7.0 서버에 1.1.7(2.6.0) 클라이언트가 접속되는지는 확인하지 않았다.
+`client-1.1.8`([사전 릴리스](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)) 공개와 Codex의 자산 크기·SHA-256 검증 뒤 운영 서버에 적용했다. 유일한 접속자였던 사용자가 즉시 재시작을 요청해 시간차 공지 없이 RCON으로 재시작 공지만 보냈다.
+
+| 단계 | 시각(UTC) | 결과 |
+| --- | --- | --- |
+| 사전 확인 | 13:12 | `StopTimeout=660`, `STOP_DURATION=600`, healthy·재시작 0회, 데이터 34GB, 여유 1.1TB, 접속자 1명(사용자) |
+| 정상 종료 3-B | 13:13:40 → 13:13:42 | `docker compose stop minecraft` 종료 상태 0, `exited exit=0 oom=false`, `Stopping server` → `Saving players` → `Saving worlds` → 세 차원 `Saving chunks for level` → 러너 `Done`, 저장 오류 없음 |
+| 보호 백업 | 13:13:51 → 13:18:23 | 당시 문서 절차대로 데이터 디렉터리 **전체** tar(`pre-modonomicon-2.7-2026-09-25-131351.tar`, 35616133120바이트, `.list`·`.sha256` 포함)를 만들고 `BACKUP VERIFIED`를 확인했다. 사용자가 월드만 백업하도록 정하고 이 전체 백업의 삭제를 지시해 **13:23:21에 tar·`.list`·`.sha256`을 영구 삭제했다.** 이 배포의 보호 백업은 남아 있지 않으며 이 백업으로는 복원할 수 없다. 종료 직전의 월드 사본은 정기 백업 `minecraft_backups/26.3-world-20260925-123013.tar`(12:30:13 생성)가 가장 가깝다 |
+| JAR 교체 | 13:18:41 | 2.6.0 JAR을 `/home/pilon1945/aziran-26.3-protected-backups/modonomicon-26.3-neoforge-2.6.0.jar.pre-modonomicon-2.7`로 옮겼다(SHA-512 lock 기록과 일치). 월드만 백업하는 사용자 방침이 정해지기 전에 한 조치이며, 이후 배포에서는 모드 JAR 사본을 만들지 않는다. 2.7.0을 이전 파일과 같은 소유자·권한(`pilon1945`, `664`)으로 설치. `mods/` JAR 23개가 모두 lock의 SHA-512와 일치, 2.6.0 없음, 나머지 22개 SHA-256 교체 전후 동일 |
+| 기동 | 13:18:47 → 13:19:06 | `docker compose start minecraft` 종료 상태 0, 13:19:02 `Done (0.594s)`, RCON 기동, `running healthy` 재시작 0회, `rcon-cli list` 응답(0명) |
+
+기동 로그의 모드 목록에 `modonomicon (jar(mods/modonomicon-26.3-neoforge-2.7.0.jar))`와 `Modonomicon 2.7.0`이 있고, commonmark JarJar 3개도 2.7.0 JAR에서 읽었다. 이전 기동(05:37 UTC)과 비교해 새로 생긴 경고는 NeoForge `CommonHooks`의 `modonomicon (version 2.6.0 -> 2.7.0)` 버전 차이 알림 하나다. 월드에 기록된 모드 버전과 달라서 나오는 알림으로 교체에 따른 예상 결과다. 기존 경고(모드 refmap, udev, Occultism의 Curios 통합 대체, `apothic_enchanting` 데이터 맵, log4j `DebugFile` 부록의 `io.netty.channel.kqueue.Native` 예외)는 이전 기동에도 있었다. 이전 기동 로그의 Modonomicon 레시피 경고(`null recipe book category`, 레시피 3개 `not found`)는 이번 기동 직후에는 아직 나오지 않았고 플레이어 접속 등으로 책을 불러올 때 다시 나올 수 있다. 월드·청크 로드 오류는 없었다. `chunky-idle-pregen` 컨테이너는 이번 작업 전(2일 전)에 이미 정상 종료(`Exited (0)`)한 상태라 재연결 대상이 아니었고, 웹 RCON `rcon` 컨테이너는 계속 실행 중이다.
+
+교체 뒤 `tests/test_modonomicon_update.py`를 포함한 관련 검사 34개와 전체 Python 검사 67개, JavaScript 검사 2개가 통과했다. **책 화면 끌기 수정과 1.1.8 클라이언트 접속은 게임에서 확인하지 않았다.** 1.1.7 이하 클라이언트가 2.7.0 서버에 접속되는지도 확인하지 않았다. 롤백이 필요하면 서버를 정상 종료한 뒤 2.7.0 JAR을 빼고, 이전 lock(커밋 `464e9ae`)에 고정된 공식 Modrinth URL `https://cdn.modrinth.com/data/692GClaE/versions/CPBu0enR/modonomicon-26.3-neoforge-2.6.0.jar`에서 2.6.0을 다시 받아 크기 2973738바이트·SHA-512를 확인해 설치하고 lock을 되돌린다. 월드 복원이 필요하면 [월드 백업](BACKUPS.md#월드-복원-시-주의)을 쓴다. 이 배포의 전체 백업은 삭제되어 복원에 쓸 수 없다.
 
 ### SableCraft Standards 명령 설정 (2026-09-25)
 
@@ -42,7 +54,7 @@ lock의 Modonomicon을 `26.3-2.6.0`(`CPBu0enR`)에서 공식 Modrinth 버전 `SF
 
 무덤 블록과 열쇠 아이템을 등록하는 모드라 클라이언트에도 같은 파일이 필요하다. 그래서 클라이언트 팩을 `1.1.6`으로 올려 같은 JAR을 담았다(아래 클라이언트 모드팩 절). 서버가 이 모드를 로드한 뒤에는 이 모드가 없는 `1.1.5` 이하 클라이언트가 접속할 수 없으므로, GitHub 사전 릴리스 `client-1.1.6` 공개와 접속 안내 사이트 배포를 확인한 뒤에 재시작했다. 설치 시점의 최신 정기 월드 백업은 `26.3-world-20260925-043011.tar`이며 tar 목록을 읽을 수 있고 `level.dat`를 포함함을 확인했다.
 
-2026-09-25 05:30 UTC 정기 백업 `26.3-world-20260925-053014.tar`(`world/level.dat` 포함 확인) 뒤, 접속자 0명 상태에서 15분·5분·1분 전 공지를 하고 [정상 종료 절차](BACKUPS.md#오프라인-전체-데이터-보호-백업) 3-B(`StopTimeout=660`, `STOP_DURATION=600`)로 `docker compose stop minecraft`를 실행했다. 종료 상태 0, `exited exit=0 oom=false`, 세 차원의 `Saving chunks for level`과 러너 `Done`을 확인한 뒤 `docker compose start minecraft`로 기동했다. 기동 로그에 `Simple Tombstone 26.3-1.9.0 (simpletomb)`와 `mods/simpletomb-26.3-1.9.0.jar`가 나왔고 `Done`까지 도달했으며, 컨테이너는 `healthy`, 재시작 0회였다. 기동 로그의 Occultism `CuriosIntegrationImpl` `ClassNotFoundException`과 log4j `DebugFile` 어펜더의 netty `kqueue.Native` 오류는 변경 전 기동에도 있던 기존 로그다. 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
+2026-09-25 05:30 UTC 정기 백업 `26.3-world-20260925-053014.tar`(`world/level.dat` 포함 확인) 뒤, 접속자 0명 상태에서 15분·5분·1분 전 공지를 하고 [정상 종료 절차](BACKUPS.md#오프라인-월드-보호-백업) 3-B(`StopTimeout=660`, `STOP_DURATION=600`)로 `docker compose stop minecraft`를 실행했다. 종료 상태 0, `exited exit=0 oom=false`, 세 차원의 `Saving chunks for level`과 러너 `Done`을 확인한 뒤 `docker compose start minecraft`로 기동했다. 기동 로그에 `Simple Tombstone 26.3-1.9.0 (simpletomb)`와 `mods/simpletomb-26.3-1.9.0.jar`가 나왔고 `Done`까지 도달했으며, 컨테이너는 `healthy`, 재시작 0회였다. 기동 로그의 Occultism `CuriosIntegrationImpl` `ClassNotFoundException`과 log4j `DebugFile` 어펜더의 netty `kqueue.Native` 오류는 변경 전 기동에도 있던 기존 로그다. 무덤 생성·회수 실제 플레이는 아직 확인하지 않았다.
 
 ### 사용자가 지정한 모드
 
@@ -63,7 +75,7 @@ Structures(GaraKrral, 프로젝트 ID `1391238`, 파일 ID `8849254`, `Structure
 
 | 모드 | 고정 버전 | 채널 | 비고 |
 | --- | --- | --- | --- |
-| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.7.0 (서버 설치는 아직 2.6.0) | 정식 | Occultism 요구 `[2.5.0,)` 충족. 위 교체 준비 절 참고 |
+| [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.7.0 | 정식 | Occultism 요구 `[2.5.0,)` 충족. 2026-09-25 2.6.0에서 교체(위 절) |
 | [GeckoLib](https://modrinth.com/mod/geckolib) | 5.5.7 | 정식 | Occultism 요구 `[5.5.6,)` 충족. 자체적으로 NeoForge `[26.3.0.7-beta,)` 요구 |
 | [Curios API](https://modrinth.com/mod/curios) | 17.0.0-beta+26.3 | 베타 | 아래 제한 사항 참고 |
 
@@ -150,7 +162,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). 로컬에서 빌드했으며 Release는 아직 만들지 않았다. `1.1.7`은 사전 릴리스 `client-1.1.7`로 공개되어 있다. 아래는 이전 판 기록이다.
+클라이언트 팩 `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.7.0`으로 바꾼 판이다(모드 19개, 셰이더 팩 1개, 리소스팩 3개, `options.txt`·`servers.dat`는 `1.1.7`과 같다). GitHub 사전 릴리스 [`client-1.1.8`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.8)으로 2026-09-25 공개했고, 서버도 같은 날 2.7.0으로 교체했다. 1.1.7 이하 클라이언트의 접속 여부는 확인하지 않았다. 아래는 이전 판 기록이다.
 
 클라이언트 팩 `1.1.6`은 `1.1.5`의 구성(모드 18개, 셰이더 팩 1개, `options.txt`, 기본 멀티플레이 목록 `servers.dat`)에 서버와 같은 Simple Tomb `1.9.0` JAR을 더해 모드 19개를 담는다. GitHub 사전 릴리스 [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있다. `1.1.6` 아카이브로 새로 만든 인스턴스의 게임 실행은 아직 확인하지 않았다. 이전 버전 `1.1.5`·`1.1.4`는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개되어 있으며, 서버가 Simple Tomb을 활성화했으므로 이 판들로는 접속할 수 없다. 빌더는 `scripts/build_client_pack.py`이고, 산출물은 Git에서 제외한 `dist/`에 생성되며 설치 안내와 라이선스 표기를 함께 담는다. 생성된 고정 목록은 [mods-26.3-client.lock.json](../mods-26.3-client.lock.json)이다.
 
