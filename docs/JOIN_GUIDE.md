@@ -6,7 +6,7 @@
 - 게임 주소: `mc.aziran.uk` (Java Edition 기본 포트 25565)
 - 웹 원본: `site/`의 정적 HTML·CSS·JavaScript
 - 호스팅: GitHub Pages, `.github/workflows/pages.yml`로 `site/`만 배포
-- 다운로드: GitHub Release `client-1.1.7`의 `.mrpack`과 설치·라이선스 문서. **`client-1.1.7`은 아직 공개하지 않았다.** 사이트의 다운로드 링크는 이미 `client-1.1.7`을 가리키므로, 사이트 배포 전에 사전 릴리스 `client-1.1.7`을 만들고 `dist/`의 `aziran-26.3-client-1.1.7.mrpack`, `README.md`, `LICENSES.md`, `SHA256SUMS.txt`를 올려야 한다. 1.1.7은 모드 구성이 1.1.6과 같고 리소스팩만 더했으므로 서버 재시작이 필요 없으며, 1.1.6 인스턴스도 계속 접속할 수 있다. (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
+- 다운로드: GitHub Release `client-1.1.7`의 `.mrpack`과 설치·라이선스 문서. **`client-1.1.7` 사전 릴리스는 2026-09-25 공개했다.** 세 아카이브와 `README.md`, `LICENSES.md`, `SHA256SUMS.txt`가 업로드되어 있고 크기·SHA-256을 확인했다. 사이트 소스의 링크는 `client-1.1.7`을 가리키지만 [배포 실행](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36117840610)은 `github-pages` 환경 브랜치 보호 규칙에 거부됐다. 허용 브랜치는 `main`과 `feat/join-guide`이며, 현재 작업 브랜치는 제외되어 있다. PR #7을 `main`에 병합한 뒤 배포 성공을 확인해야 한다. 환경 보호 규칙은 변경하지 않았다. 1.1.7은 모드 구성이 1.1.6과 같고 리소스팩만 더했으므로 서버 재시작이 필요 없으며, 1.1.6 인스턴스도 계속 접속할 수 있다. (1.1.6은 GitHub 사전 릴리스(prerelease) [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개했다. 미병합 PR 빌드인 실험 단계 Iris를 담았기 때문에 사전 릴리스로 둔다. 이전 버전 1.1.5·1.1.4는 사전 릴리스 `client-1.1.5`·`client-1.1.4`로 공개했고 그대로 둔다. 새 버전은 Release를 먼저 만든 뒤 사이트를 배포하며, 순서가 바뀌면 다운로드 링크가 동작하지 않는다. 1.1.6은 서버에 넣은 무덤 모드 Simple Tomb을 담았고, 서버가 이 모드를 활성화하면 1.1.5 이하로는 접속할 수 없으므로 Release 공개 → 사이트 배포 → 서버 재시작 순서를 지켰다. 2026-09-25 이 순서로 활성화했다)
 - DNS: Cloudflare에서 웹 도메인은 GitHub Pages로, 게임 도메인은 서버 공인 IP로 연결
 
 Cloudflare Workers API는 현재 연결 권한으로 인증 오류를 반환해 사용할 수 없었다.
@@ -71,3 +71,8 @@ HTTP 접속은 HTTPS로 리다이렉트해야 하며 `mc.aziran.uk`의 게임 �
 루트 Compose에서는 Minecraft와 웹 RCON만 활성화한다. 웹 RCON은 Docker 내부 포트만
 사용하므로 공개 웹사이트에 관리자 화면이나 RCON 자격 증명을 제공하지 않는다.
 나머지 보조 서비스 정의는 복원할 수 있도록 주석으로 보존한다.
+
+
+### 1.1.7 독립 검증 기록
+
+Codex가 클라이언트 빌더를 다시 실행했고, 클라이언트·번역·가이드 관련 Python 검사 30개와 JavaScript 검사 2개가 통과했다. 내부 링크·앵커와 HTML ID 중복을 확인했고, 기존 모드 19개의 목록·해시, 셰이더, 서버 목록이 유지됨을 확인했다. 공개한 6개 Release 자산의 크기·SHA-256이 로컬 파일과 일치한다. Orca 브라우저 스냅샷은 `runtime_unavailable`(연결 종료)로 실패해 시각적 화면 검증을 완료하지 못했다. 게임 내 확인도 아직 수행하지 않았다.

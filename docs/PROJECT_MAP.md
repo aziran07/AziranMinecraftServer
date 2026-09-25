@@ -8,7 +8,7 @@ Compose에서 실행 중인 서비스는 Minecraft, 내부 웹 RCON, 지도 HTTP
 
 웹 지도는 BlueMap `5.27-neoforge` JAR을 운영 서버에 설치했다(2026-09-24, 오프라인 백업 확인 후). BlueMap은 Compose 네트워크의 `http://minecraft:8100`에서 HTTP 200으로 응답하며 렌더링이 진행 중이다. `8100`은 호스트에 게시하지 않는다. 공개 경로는 Cloudflare 프록시 `A` 레코드 `mcmap` → 호스트 `443`의 `webmap-nginx`(Let's Encrypt `mcmap.aziran.uk` 인증서, `nginx/webmap.conf`) → `http://minecraft:8100`이다. 2026-09-24 `mcmap` DNS 레코드를 만들고 공개 HTTPS 200을 확인했다. 원본 인증서는 2026-12-23 만료이며 자동 갱신이 없어 수동 DNS-01 갱신이 필요하다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류로 폐기했다. 남은 절차는 [BlueMap 배포 안내](BLUEMAP.md)를 따른다. 주석 처리된 기존 Nginx는 복원하지 않는다. 옛 Dynmap `8123` 경로는 1.21 서버의 기록이며 26.3 구성에서 제거했다.
 
-`https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 안내 테스트는 `tests/test_join_guide.py`다. 다운로드는 GitHub 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5)를 가리킨다(실험 단계 Iris 때문에 사전 릴리스로 공개했다. 새 버전은 Release 생성 후 사이트를 배포한다). 이전 버전 `client-1.1.4` 사전 릴리스는 그대로 둔다. 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
+`https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 안내 테스트는 `tests/test_join_guide.py`다. 새 클라이언트는 GitHub 사전 릴리스 [`client-1.1.7`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.7)에 공개했다. 사이트 소스도 이 버전으로 바꿨지만 작업 브랜치의 Pages 배포가 환경 보호 규칙에 거부되어 PR #7의 `main` 병합 후 배포 확인이 필요하다. 실험 단계 Iris 때문에 사전 릴리스로 제공하며 이전 릴리스는 유지한다. 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
 
 ## 26.3 준비 변경
 
