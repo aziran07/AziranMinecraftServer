@@ -24,6 +24,12 @@ lock의 24개 항목에 해당하는 JAR 24개를 `mods/`에 두었다. 최초 �
 
 ### Traveler's Backpack 추가 (2026-09-25)
 
+**2026-09-26 후속 조사:** Curios 착용 상태에서 배낭을 닫았다 열면 내용물이
+사라지는 결함을 사용자가 재현했다. 설치된 JAR의 복사본 반환·저장 경로를
+확인했으며 월드 보호 백업 후 `backSlotIntegration=false`로 자체 착용을 적용했다.
+[원인·설정·실제 검증 상태](BACKPACK_PERSISTENCE.md)를 참고한다.
+아래 기본 설정과 미검증 표시는 2026-09-25 최초 설치 당시의 기록이다.
+
 사용자 요청으로 배낭 모드 [Traveler's Backpack](https://modrinth.com/mod/travelersbackpack)(Modrinth 프로젝트 `rlloIFEV`, 버전 `Gdy0zkAN` `26.3-11.4.0`, 2026-09-24 공개, `travelersbackpack-neoforge-26.3-11.4.0.jar`, 1475945바이트, SHA-512 `0ec5ad7a…5f0fce1`)을 lock에 더해 24개가 됐다. CurseForge 프로젝트(`travelers-backpack`)와 같은 제작자(Tiviacz1337)의 공식 Modrinth 배포 파일이며 수정하지 않았다. Modrinth 메타데이터는 NeoForge, `26.3`, `client_and_server`(서버·클라이언트 모두 required)이다.
 
 호환성·의존성: JAR의 `neoforge.mods.toml`은 모드 ID `travelersbackpack` `11.4.0`, 필수 의존성 Minecraft `[26.3]`·NeoForge `[26.3.0.1-beta,)`만 선언하고 JarJar 번들 JAR이 없다. 현재 NeoForge `26.3.0.8-beta`가 범위를 충족하며 추가 필수 라이브러리는 없다. Modrinth의 선택 의존성(Curios, JEI 등) 중 Curios `17.0.0-beta+26.3`과 JEI `31.4.0.21`은 이미 설치되어 있고, 다른 선택 모드는 더하지 않았다. JAR에 `assets/travelersbackpack/lang/ko_kr.json`이 있다. 라이선스는 Modrinth 메타데이터의 LGPL-3.0-only(JAR은 `GNU LESSER GENERAL PUBLIC LICENSE`로 표기)이고, 제작자 프로젝트 설명이 "You are allowed to use this mod in public/private modpacks."라고 모드팩 사용을 허락한다. 소스는 https://github.com/Tiviacz1337/Travelers-Backpack 이다.
