@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "uk.aziran.backpackcurios.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "minVersion": "0.8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "AttachmentUtilsMixin",
+    "BackpackItemMenuMixin",
+    "BackpackSettingsMenuMixin",
+    "BackpackWrapperMixin",
+    "CuriosStacksResourceHandlerMixin",
+    "TravelersBackpackCurioMixin"
+  ]
+}

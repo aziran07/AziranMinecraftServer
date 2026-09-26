@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="aziran_backpack_tests"
+version="1.0.0"
+displayName="Aziran Backpack Runtime Tests"
+description="Test-only dedicated server harness; never install in production."
+
+[[dependencies.aziran_backpack_tests]]
+modId="travelersbackpack"
+type="required"
+versionRange="[11.4.0]"
+ordering="AFTER"
+side="SERVER"
+
+[[dependencies.aziran_backpack_tests]]
+modId="curios"
+type="required"
+versionRange="[17.0.0-beta+26.3]"
+ordering="AFTER"
+side="SERVER"

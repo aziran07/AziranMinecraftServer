@@ -20,13 +20,20 @@
 
 ## 설치 명세
 
-lock의 24개 항목에 해당하는 JAR 24개를 `mods/`에 두었다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+현재 lock은 서버 전용 Curios 배낭 패치까지 포함해 25개다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). 2026-09-26에는 원본 24개 JAR을 유지하고 Curios 배낭 패치를 더했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL 또는 로컬 소스·빌드 명령, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
 
 ### Traveler's Backpack 추가 (2026-09-25)
 
 **2026-09-26 후속 조사:** Curios 착용 상태에서 배낭을 닫았다 열면 내용물이
 사라지는 결함을 사용자가 재현했다. 설치된 JAR의 복사본 반환·저장 경로를
-확인했으며 월드 보호 백업 후 `backSlotIntegration=false`로 자체 착용을 적용했다.
+확인했으며 처음에는 월드 보호 백업 후 `backSlotIntegration=false`로 자체 착용을 적용했다.
+이후 사용자 요청에 따라 서버 전용 `Aziran Backpack Curios Persistence 1.0.0`을
+만들어 Curios Back 슬롯 저장 경로를 수정했다. 원본 모드 JAR은 유지하며
+`backSlotIntegration=true`로 연동한다. 설치 대상은 기존 24개와 패치 1개다.
+소스와 재현 빌드는 [compat/backpack-curios](../compat/backpack-curios/README.md),
+버전 고정·설계 제약은 [패치 설계](BACKPACK_CURIOS_FIX_DESIGN.md)에 있다.
+서버 전용 패치는 클라이언트 빌더의 제외 목록에 넣고 기존 클라이언트 팩을 유지한다.
+전체 운영 모드 구성을 넣은 임시 서버에서 Codex가 17개 회귀 검사를 통과시켰다.
 [원인·설정·실제 검증 상태](BACKPACK_PERSISTENCE.md)를 참고한다.
 아래 기본 설정과 미검증 표시는 2026-09-25 최초 설치 당시의 기록이다.
 
@@ -186,7 +193,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 24개)를 클라이언트 필수 목록으로 간주하지 않는다.
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards·Curios 배낭 패치 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 25개)를 클라이언트 필수 목록으로 간주하지 않는다.
 
 ## 클라이언트 모드팩
 

@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 24,
+  "mod_count": 25,
   "mods": [
     {
       "title": "Almanac",
@@ -71,6 +71,51 @@
       ],
       "bundled_jars": [],
       "has_fabric_metadata": false
+    },
+    {
+      "title": "Aziran Backpack Curios Persistence",
+      "source": "local-build",
+      "source_path": "compat/backpack-curios",
+      "build_command": "python3 compat/backpack-curios/build.py",
+      "version_number": "1.0.0",
+      "filename": "aziran-backpack-curios-1.0.0.jar",
+      "size": 12040,
+      "sha1": "921397ee1840a4ce711fb7fda2bbe6138d3521c4",
+      "sha256": "edffa69c4b391a1ee650458905a9ef031b541e3ec915ef28d8ce631af19ea755",
+      "sha512": "7967919b5707b8fc4d5336f941e45ec7e2726e92d348af01e7f07adb871141a66a013be1141dafd350d5bcbc785d8cfa3228cec8de22fc539565918f6e1c021c",
+      "game_versions": [
+        "26.3"
+      ],
+      "loaders": [
+        "neoforge"
+      ],
+      "environment": "server_only",
+      "server_side": "required",
+      "client_side": "unsupported",
+      "declared_mod_ids": [
+        "aziran_backpack_curios"
+      ],
+      "required_dependencies": [
+        {
+          "mod_id": "minecraft",
+          "version_range": "[26.3]"
+        },
+        {
+          "mod_id": "neoforge",
+          "version_range": "[26.3.0.8-beta]"
+        },
+        {
+          "mod_id": "travelersbackpack",
+          "version_range": "[11.4.0]"
+        },
+        {
+          "mod_id": "curios",
+          "version_range": "[17.0.0-beta+26.3]"
+        }
+      ],
+      "bundled_jars": [],
+      "has_fabric_metadata": false,
+      "note": "저장소에서 빌드하는 서버 전용 호환 패치. Curios 17의 Back 슬롯에 착용한 Traveler's Backpack 변경 사항이 저장되게 한다. 공개 배포처가 없으며, 네 버전이 정확히 일치할 때만 로드된다. 설계: docs/BACKPACK_CURIOS_FIX_DESIGN.md"
     },
     {
       "title": "Balm",

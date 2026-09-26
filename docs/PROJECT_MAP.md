@@ -11,8 +11,12 @@ Compose에서 실행 중인 서비스는 Minecraft, 내부 웹 RCON, 지도 HTTP
 `https://aziran.uk`의 접속 안내는 `site/`의 정적 페이지를 GitHub Pages로 배포한다. 게임 접속은 `mc.aziran.uk:25565`를 통해 Minecraft 컨테이너로 직접 연결한다. 사이트 배포 워크플로는 `.github/workflows/pages.yml`, 주소 복사 테스트는 `tests/test_join_guide_copy.cjs`다. 현재 클라이언트는 Nemo's Inventory Sorting을 더한 GitHub 일반 릴리스(latest) [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)이다(2026-09-25 공개, 사이트는 Pages 실행 `36146375828`로 배포·공개 확인). 서버는 바뀌지 않았다. 그 이전 판은 Traveler's Backpack을 더한 일반 릴리스 [`client-1.1.9`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.9)이다(2026-09-25 공개). 서버에도 같은 날 월드만 보호 백업한 뒤 Traveler's Backpack을 설치했다. 1.1.9 당시 사이트 소스는 `client-1.1.9` 링크로 바꿨지만, 1.1.7 때와 같이 작업 브랜치의 Pages 배포가 환경 보호 규칙에 거부됐고, PR #7을 `main`에 병합(`0a0056b`)한 뒤 Pages 배포 실행 `36144033527`이 성공해 해결됐다(2026-09-25). 1.1.8까지는 실험 단계 Iris 때문에 사전 릴리스로 제공했고, 사용자 결정으로 1.1.9부터 일반 릴리스로 공개한다(Iris는 계속 미병합 PR 로컬 빌드). 이전 릴리스는 유지한다. 상세 운영 절차는 [웹사이트 운영 안내](JOIN_GUIDE.md)를 참고한다.
 
 웹 안내의 현재 정보 구조는 [사이트 설계](SITE_INFORMATION_DESIGN.md)를 따른다.
-2026-09-26 배낭 내용물 소실 결함 때문에 운영 서버의 `backSlotIntegration`을
-`false`로 바꿨다. Curios Back 슬롯 대신 배낭 화면의 **배낭 착용** 버튼을 사용한다.
+2026-09-26 Curios 착용 배낭의 내용물 소실을 고치기 위해 서버 전용
+`compat/backpack-curios/` 패치를 만들었다. 자체 착용 임시 조치를 대체하고
+`backSlotIntegration=true`와 Curios **Back** 슬롯을 사용한다. 고정된 네 버전의
+내부 구현에 의존하므로 모드 업데이트 시 패치 검토와 실제 서버 회귀 검사가 필요하다.
+`tests/backpack-runtime/run.py`는 별도 임시 월드에서 원본 소실과 패치 후 저장,
+화면 재사용, Curios 동기화 snapshot 및 별도 JVM에서의 데이터 읽기를 검증한다.
 원인과 월드 백업·배포·게임 내 검증 상태는 [배낭 저장 검증](BACKPACK_PERSISTENCE.md)에 기록한다.
 `index.html`은 다운로드·주소 복사와 아이콘 가이드 카드, `join.html`은 설치,
 `play.html`은 배낭·정렬·지도, `visuals.html`은 화면 설정, `help.html`은 문제 해결을 담당한다.

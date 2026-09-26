@@ -226,6 +226,7 @@ CLIENT_TITLES = [
 # 제외한 모드와 근거. 서버에만 두고 클라이언트에서는 뺀다.
 EXCLUSIONS = {
     "Almanac": "Modrinth client_side=unsupported. Let Me Despawn 전용 서버 라이브러리.",
+    "Aziran Backpack Curios Persistence": "저장소에서 빌드한 서버 전용 믹스인 패치. 레지스트리·네트워크 페이로드가 없다.",
     "BlueMap": "Modrinth client_side=unsupported. 웹 지도는 서버가 렌더링해 브라우저로 제공한다.",
     "Chunky": "청크 프리젠 도구. 서버 콘솔에서만 사용하며 레지스트리·네트워크 페이로드가 없다.",
     "Cristel Lib": "Towns and Towers용 데이터팩 설정 라이브러리. 콘텐츠 레지스트리가 없다.",
