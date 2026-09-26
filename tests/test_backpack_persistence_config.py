@@ -29,7 +29,7 @@ class BackpackPersistenceConfigTests(unittest.TestCase):
         patches = [mod for mod in lock["mods"] if "aziran_backpack_curios" in mod["declared_mod_ids"]]
         self.assertEqual(len(patches), 1, "Curios wearing requires exactly one locked persistence patch")
         patch = patches[0]
-        self.assertEqual(patch["environment"], "server_only")
+        self.assertEqual(patch["client_side"], "optional")
         jar_path = ROOT / lock["mods_directory"] / patch["filename"]
         with zipfile.ZipFile(jar_path) as jar:
             metadata = tomllib.loads(jar.read("META-INF/neoforge.mods.toml").decode())
@@ -45,16 +45,19 @@ class BackpackPersistenceConfigTests(unittest.TestCase):
             self.assertFalse(any("backpacktests" in name for name in jar.namelist()),
                              "Production patch must not ship the automatic test server shutdown harness")
         client_lock = json.loads((ROOT / "mods-26.3-client.lock.json").read_text())
-        self.assertNotIn(patch["filename"], {mod["filename"] for mod in client_lock["mods"]})
+        bundled = next(mod for mod in client_lock["mods"] if mod["filename"] == patch["filename"])
+        self.assertEqual(bundled["sha512"], patch["sha512"])
 
-    def test_client_builder_accepts_server_patch_without_bundling_it(self):
+    def test_client_builder_bundles_existing_patch_for_singleplayer(self):
         spec = importlib.util.spec_from_file_location("client_builder", ROOT / "scripts/build_client_pack.py")
         builder = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(builder)
         server_lock, selected = builder.load_client_mods()
         patch = next(mod for mod in server_lock["mods"] if "aziran_backpack_curios" in mod["declared_mod_ids"])
         self.assertTrue(selected)
-        self.assertNotIn(patch["filename"], {mod["filename"] for mod in selected})
+        bundled = next(mod for mod in selected if mod["filename"] == patch["filename"])
+        self.assertTrue(bundled["bundle_jar"])
+        self.assertEqual(bundled["sha512"], patch["sha512"])
 
 
 if __name__ == "__main__":

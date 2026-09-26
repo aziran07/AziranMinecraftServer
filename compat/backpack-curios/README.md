@@ -28,7 +28,10 @@ rollback, deserialize, and resize. A moved, removed, or replaced bag is therefor
 has identical contents, and an old wrapper cannot write into the replacement.
 
 Held backpacks, placed backpacks, and native-attachment backpacks keep TB's original behaviour. The mod adds no
-registries, network payloads, or data formats, so clients do not need it.
+registries, network payloads, or data formats, so clients do not need it for multiplayer. Client pack 1.1.12 and
+later bundle the same jar so singleplayer worlds (integrated server) get the same fix; that use was not run-tested.
+The four version pins in `neoforge.mods.toml` are declared `side="SERVER"`, so on a client the pack's own pinned
+versions keep the combination exact.
 
 ## Constraints
 

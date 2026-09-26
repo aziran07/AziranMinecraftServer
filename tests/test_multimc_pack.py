@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class MultiMCPackTests(unittest.TestCase):
     def test_instance_and_mods(self):
         lock = json.loads((ROOT / 'mods-26.3-client.lock.json').read_text())
-        path = ROOT / 'dist/aziran-26.3-client-1.1.11-multimc.zip'
+        path = ROOT / 'dist/aziran-26.3-client-1.1.12-multimc.zip'
         self.assertEqual(list((ROOT / 'dist').glob('aziran-26.3-client-*-multimc.zip')), [path])
         with zipfile.ZipFile(path) as z:
             self.assertIsNone(z.testzip())
@@ -29,14 +29,14 @@ class MultiMCPackTests(unittest.TestCase):
             cfg = configparser.ConfigParser()
             cfg.read_string('[instance]\n' + z.read('instance.cfg').decode())
             self.assertEqual(cfg['instance']['InstanceType'], 'OneSix')
-            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.11')
+            self.assertEqual(cfg['instance']['name'], 'Aziran 26.3 Client 1.1.12')
             for key in ('JavaPath', 'PreLaunchCommand', 'PostExitCommand', 'WrapperCommand'):
                 self.assertFalse(cfg['instance'].get(key, ''))
             jars = {n for n in names if n.startswith('.minecraft/mods/') and n.endswith('.jar')}
             journey_name = 'journeymap-neoforge-26.3-6.0.9.jar'
             excluded = {journey_name, 'nemos-inventory-sorting-NeoForge-26.3-1.22.1.jar'}
             self.assertEqual(jars, {'.minecraft/mods/' + m['filename'] for m in lock['mods'] if m['filename'] not in excluded})
-            self.assertEqual(len(jars), 19)
+            self.assertEqual(len(jars), 20)
             self.assertTrue(any('sodium' in name.lower() for name in jars))
             self.assertFalse(any('xaerominimap' in name.lower() for name in jars))
             instructions = z.read('README.md').decode()

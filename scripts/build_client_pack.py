@@ -54,12 +54,19 @@ DIST = REPO / "dist"
 TRANSLATION_BUILDER = REPO / "scripts" / "build_occultism_resource_pack.py"
 
 PACK_NAME = "Aziran 26.3 Client"
-PACK_VERSION = "1.1.11"
+PACK_VERSION = "1.1.12"
 PACK_SUMMARY = "Aziran Minecraft 26.3 NeoForge 서버 접속용 클라이언트 모드 구성"
 
-# 1.1.11 구성과 그 바탕인 1.1.10·1.1.9·1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과
+# 1.1.12 구성과 그 바탕인 1.1.11·1.1.10·1.1.9·1.1.8·1.1.7·1.1.6·1.1.5·1.1.4 구성의 근거. 입력 lock의 restored·removed 항목과
 # 같은 내용을 산출물에도 남긴다.
 RELEASE_NOTE = (
+    "1.1.12는 1.1.11에 이 저장소에서 빌드해 서버에 설치한 호환 패치 Aziran Backpack Curios Persistence 1.0.0"
+    "(aziran-backpack-curios-1.0.0.jar, 소스 compat/backpack-curios)을 서버와 같은 파일로 더한 판이다. "
+    "Curios 17의 Back 슬롯에 멘 Traveler's Backpack의 변경 사항이 저장되게 하는 서버 로직이며, 멀티플레이 "
+    "접속에는 클라이언트에 필요 없다. 싱글플레이 통합 서버에서도 같은 패치가 동작하도록 담았지만, 사용자 "
+    "요청에 따라 싱글플레이·클라이언트 실행 시험은 하지 않았다. 나머지 모드 21개(같은 JAR), 셰이더 팩, "
+    "리소스팩 세 개와 기본 활성화, servers.dat, options.txt, Nemo 설정 파일은 1.1.11과 같다. "
+    "이하는 1.1.11 기록이다. "
     "1.1.11은 1.1.10의 모드 21개(같은 JAR), 셰이더 팩, 리소스팩 세 개와 기본 활성화, servers.dat, options.txt, "
     "Nemo 설정 파일을 그대로 두고 Occultism 한국어 번역 팩(occultism-ko-1.256.0-mc26.3.zip)만 새로 만든 "
     "판이다. 파일 이름과 활성화 ID(file/occultism-ko-1.256.0-mc26.3.zip)는 그대로다. Occultism 안내서 페이지 "
@@ -206,6 +213,7 @@ SERVER_LIST_ADDRESS = "mc.aziran.uk"
 
 # 서버와 공유하는 모드 중 클라이언트에도 설치할 모드. 서버 lock의 title을 키로 쓴다.
 CLIENT_TITLES = [
+    "Aziran Backpack Curios Persistence",
     "Balm",
     "Clumps",
     "Cooking for Blockheads",
@@ -226,7 +234,6 @@ CLIENT_TITLES = [
 # 제외한 모드와 근거. 서버에만 두고 클라이언트에서는 뺀다.
 EXCLUSIONS = {
     "Almanac": "Modrinth client_side=unsupported. Let Me Despawn 전용 서버 라이브러리.",
-    "Aziran Backpack Curios Persistence": "저장소에서 빌드한 서버 전용 믹스인 패치. 레지스트리·네트워크 페이로드가 없다.",
     "BlueMap": "Modrinth client_side=unsupported. 웹 지도는 서버가 렌더링해 브라우저로 제공한다.",
     "Chunky": "청크 프리젠 도구. 서버 콘솔에서만 사용하며 레지스트리·네트워크 페이로드가 없다.",
     "Cristel Lib": "Towns and Towers용 데이터팩 설정 라이브러리. 콘텐츠 레지스트리가 없다.",
@@ -239,6 +246,13 @@ EXCLUSIONS = {
 
 # 배포 라이선스와 근거 URL. 수동 ZIP에 JAR을 넣을 근거로 쓴다.
 LICENSES = {
+    "Aziran Backpack Curios Persistence": {
+        "id": "LicenseRef-All-Rights-Reserved",
+        "name": "All Rights Reserved (이 서버 저장소의 자체 패치)",
+        "url": "https://github.com/aziran07/AziranMinecraftServer/tree/main/compat/backpack-curios",
+        "note": "이 저장소에서 작성하고 빌드한 서버 운영자 소유의 호환 패치다. JAR 메타데이터가 license=\"All rights "
+                "reserved\"를 선언하며, 저장소 소유자가 이 모드팩에 담는 것을 허락했다. 소스와 빌드 절차는 위 경로에 있다.",
+    },
     "Balm": {
         "id": "LicenseRef-All-Rights-Reserved",
         "name": "All Rights Reserved (모드팩 사용 허가 있음)",
@@ -767,10 +781,29 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
     backpack = next(mod for mod in mods if "travelersbackpack" in mod["declared_mod_ids"])
     nemo = next(mod for mod in mods if "nemos_inventory_sorting" in mod["declared_mod_ids"])
     stay_true = next(pack for pack in optional_packs if pack["source"] == "curseforge")
+    patch = next(mod for mod in mods if "aziran_backpack_curios" in mod["declared_mod_ids"])
     lines += [
+        f"## 1.1.12 변경: {patch['title']} {patch['version_number']} 추가",
+        "",
+        f"서버에 설치한 호환 패치 {patch['title']}(`{patch['filename']}`)를 서버와 같은 파일로 더했다.",
+        "Curios의 **Back(등) 슬롯**에 멘 Traveler's Backpack의 내용·설정 변경이 저장되게 하는 서버 로직이다.",
+        "이 저장소(`compat/backpack-curios`)에서 소스와 함께 관리하는 자체 패치이며, Minecraft 26.3·NeoForge",
+        "26.3.0.8-beta·Traveler's Backpack 11.4.0·Curios 17.0.0-beta+26.3 조합 전용이다. 서버는 이 네 버전이",
+        "정확히 일치할 때만 패치를 로드하고, 클라이언트에서는 이 팩이 같은 네 버전을 고정한다.",
+        f"나머지 모드 {len(mods) - 1}개(같은 JAR), 셰이더 팩, 리소스팩 세 개와 기본 활성화, `options.txt`, `servers.dat`,",
+        "Nemo 설정 파일은 1.1.11과 같다.",
+        "",
+        "- **멀티플레이 접속에는 이 패치가 필요 없다.** 서버가 패치를 실행하므로 1.1.11 인스턴스도 그대로 접속할 수",
+        "  있다(서버 조건이 같다는 판단이며 접속 시험은 하지 않았다).",
+        "- 싱글플레이 월드는 게임 안의 통합 서버가 돌리므로, 거기서도 같은 저장 동작이 적용되도록 클라이언트에 담았다.",
+        "- **사용자 요청에 따라 1.1.12 새 인스턴스와 싱글플레이에서의 실행은 시험하지 않았다.**",
+        "- 서버에 설치하기 전에 전용 시험 서버에서 배낭 내용 저장, 닫았다 다시 열기, 배낭 교체 처리, Curios 데이터",
+        "  저장/불러오기를 확인했다. 설치 뒤 사용자가 기존 클라이언트로 서버에 다시 접속해, Back 슬롯에 멘 배낭을",
+        "  닫았다 연 뒤에도 내용이 남아 있는 것을 확인했다.",
+        "",
         "## 1.1.11 변경: 한국어 번역 팩 갱신",
         "",
-        f"{translation['title']}(`{translation['filename']}`)만 새로 만들었다. 모드 {len(mods)}개(같은 JAR), 셰이더 팩,",
+        f"{translation['title']}(`{translation['filename']}`)만 새로 만들었다. 모드 21개(같은 JAR), 셰이더 팩,",
         "리소스팩 세 개와 기본 활성화, `options.txt`, `servers.dat`, Nemo 설정 파일은 1.1.10과 같다. 번역 팩의 파일",
         f"이름과 활성화 ID(`file/{translation['filename']}`)도 그대로다. 서버는 바뀌지 않았다.",
         "",
@@ -1265,7 +1298,9 @@ def render_readme(server_lock, mods, shaderpacks, resourcepacks):
         "",
         "확인하지 않은 것:",
         "",
-        "- **이 1.1.11 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 새 번역 팩은 사용자가",
+        "- **이 1.1.12 아카이브로 새로 만든 인스턴스는 실행해 보지 않았다.** 사용자 요청에 따라 싱글플레이",
+        f"  월드에서 {patch['title']}의 배낭 저장 동작도 시험하지 않았다. 아카이브 구성과 파일 해시만 확인했다.",
+        "- **1.1.11 아카이브로 새로 만든 인스턴스는 아직 실행해 보지 않았다.** 새 번역 팩은 사용자가",
         "  기존 인스턴스에 넣어 번역이 적용되는 것만 확인했고, 모든 책 페이지·링크는 확인하지 않았다.",
         "- 1.1.10 아카이브로 새로 만든 인스턴스도 실행해 보지 않았다. Nemo's Inventory Sorting의",
         "  버튼·핫바 제외·슬롯 잠금·검색, 배낭·저장고 같은 모드 전용 화면에서의 호환을",

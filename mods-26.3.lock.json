@@ -89,9 +89,9 @@
       "loaders": [
         "neoforge"
       ],
-      "environment": "server_only",
+      "environment": "client_and_server",
       "server_side": "required",
-      "client_side": "unsupported",
+      "client_side": "optional",
       "declared_mod_ids": [
         "aziran_backpack_curios"
       ],
@@ -115,7 +115,7 @@
       ],
       "bundled_jars": [],
       "has_fabric_metadata": false,
-      "note": "저장소에서 빌드하는 서버 전용 호환 패치. Curios 17의 Back 슬롯에 착용한 Traveler's Backpack 변경 사항이 저장되게 한다. 공개 배포처가 없으며, 네 버전이 정확히 일치할 때만 로드된다. 설계: docs/BACKPACK_CURIOS_FIX_DESIGN.md"
+      "note": "저장소에서 빌드하는 호환 패치. Curios 17의 Back 슬롯에 착용한 Traveler's Backpack 변경 사항이 저장되게 하는 서버 로직이다. 멀티플레이 접속에는 클라이언트 설치가 필요 없고, 싱글플레이 통합 서버에서도 동작하도록 클라이언트 팩(1.1.12부터)에 같은 파일을 담는다. 싱글플레이·클라이언트 실행은 시험하지 않았다. 공개 배포처가 없으며, 네 버전이 정확히 일치할 때만 로드된다. 설계: docs/BACKPACK_CURIOS_FIX_DESIGN.md"
     },
     {
       "title": "Balm",
