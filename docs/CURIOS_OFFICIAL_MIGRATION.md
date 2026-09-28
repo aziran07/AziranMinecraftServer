@@ -92,3 +92,8 @@ downloaded again and matched local bytes before publication at 2026-09-28
 `851023c013181b112a417dd71926d41749172c44f9726cc2d9df65e3a159a38e`.
 Final README wording was corrected to identify replacement, not removal, as
 the failing edge case; rebuilt archive/config tests (5) and checksums passed.
+
+Pages run `36375327997` succeeded for commit `40131a5`; public `index.html`
+and `join.html` returned HTTP 200 with the 1.1.13 links. An unauthenticated
+public `.mrpack` download returned HTTP 200 and matched the SHA-256 above.
+Final live server status: running/healthy, restart count 0, OOM false.
