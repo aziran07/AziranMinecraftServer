@@ -54,7 +54,11 @@ docker compose ps
 
 ## 클라이언트 모드팩
 
-현재 버전은 `1.1.11`이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 21개, 셰이더 팩 1개, 리소스팩 3개로 구성했습니다. 서버와 공유하는 모드 15개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris·Nemo's Inventory Sorting 6개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.11`은 `1.1.10`의 모드·셰이더·리소스팩 구성과 `options.txt`·`servers.dat`를 그대로 두고 Occultism 한국어 번역 팩(`occultism-ko-1.256.0-mc26.3.zip`, 파일 이름·활성화 ID 유지)만 새로 만들어 Occultism 안내서의 영어 본문과 Modonomicon 화면을 번역했습니다. `1.1.10`은 `1.1.9`에 클라이언트 전용 인벤토리 정렬 모드 Nemo's Inventory Sorting `26.3-1.22.1`을 더했습니다. `1.1.9`는 `1.1.8`에 서버와 같은 배낭 모드 Traveler's Backpack `11.4.0`을 더했습니다. `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.6.0`에서 `26.3-2.7.0`으로 바꿔 책 화면의 왼쪽 버튼 끌기 수정을 담았습니다. `1.1.7`은 `1.1.6`의 모드·셰이더·`servers.dat`를 그대로 두고, 게임 언어를 한국어로 시작하게 하며 Occultism 한국어 번역 리소스팩(기본 켜짐)과 선택 리소스팩 Stay True·Vanilla Experience+(기본 꺼짐)를 더했습니다. `1.1.6`은 `1.1.5`에 서버와 같은 무덤 모드 Simple Tomb `1.9.0`만 더했습니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
+현재 빌드한 버전은 `1.1.13`(공개 전)이며 Minecraft `26.3`, NeoForge `26.3.0.8-beta`, Java `25`용 모드 21개, 셰이더 팩 1개, 리소스팩 3개로 구성했습니다. 서버와 공유하는 모드 15개는 서버와 같은 파일이고, ImmediatelyFast·Mouse Tweaks·JourneyMap·Sodium·Iris·Nemo's Inventory Sorting 6개는 서버에 설치하지 않는 클라이언트 전용 모드입니다. `1.1.13`은 `1.1.12`에서 Curios API를 공식 `17.0.0-beta.2+26.3`으로 바꾸고 `1.1.12`에 넣었던 Curios 배낭 저장 패치를 뺐습니다. `1.1.12`는 `1.1.11`에 그 패치 JAR을 더한 22개 모드 판이었습니다. `1.1.11`은 `1.1.10`의 모드·셰이더·리소스팩 구성과 `options.txt`·`servers.dat`를 그대로 두고 Occultism 한국어 번역 팩(`occultism-ko-1.256.0-mc26.3.zip`, 파일 이름·활성화 ID 유지)만 새로 만들어 Occultism 안내서의 영어 본문과 Modonomicon 화면을 번역했습니다. `1.1.10`은 `1.1.9`에 클라이언트 전용 인벤토리 정렬 모드 Nemo's Inventory Sorting `26.3-1.22.1`을 더했습니다. `1.1.9`는 `1.1.8`에 서버와 같은 배낭 모드 Traveler's Backpack `11.4.0`을 더했습니다. `1.1.8`은 `1.1.7`에서 Modonomicon만 `26.3-2.6.0`에서 `26.3-2.7.0`으로 바꿔 책 화면의 왼쪽 버튼 끌기 수정을 담았습니다. `1.1.7`은 `1.1.6`의 모드·셰이더·`servers.dat`를 그대로 두고, 게임 언어를 한국어로 시작하게 하며 Occultism 한국어 번역 리소스팩(기본 켜짐)과 선택 리소스팩 Stay True·Vanilla Experience+(기본 꺼짐)를 더했습니다. `1.1.6`은 `1.1.5`에 서버와 같은 무덤 모드 Simple Tomb `1.9.0`만 더했습니다. `1.1.5`의 모드·셰이더 구성은 `1.1.4`와 같고, 새 인스턴스의 멀티플레이 목록에 `Aziran`(`mc.aziran.uk`) 서버를 미리 넣는 기본 `servers.dat`만 더했습니다. `1.1.4`는 `1.1.3`의 모드 16개를 바이트 단위로 그대로 두고 셰이더를 위해 Iris·Sodium과 Complementary Reimagined 셰이더 팩을 더한 판입니다.
+
+`1.1.13`은 2026-09-28 서버에 공식 Curios를 배포하고 패치 JAR을 뺀 뒤 빌드했으며 아직 공개하지 않았습니다(`.mrpack` SHA-256 `851023c013181b112a417dd71926d41749172c44f9726cc2d9df65e3a159a38e`). 배포 기록은 [모드 설치 안내](docs/MODS_26_3.md)에 있습니다. 다음 순서는 GitHub Release `client-1.1.13` 공개, 그다음 사이트 배포입니다. 사이트 소스는 이미 `client-1.1.13` 링크를 가리키므로 Release 공개 전에 배포하지 않습니다.
+
+`1.1.12`는 2026-09-26 03:35 UTC GitHub **일반 릴리스(latest)** [`client-1.1.12`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.12)로 공개했습니다. 서버에 설치한 호환 패치 `aziran-backpack-curios-1.0.0.jar`를 싱글플레이용으로 같은 파일로 담았고, 사용자 요청에 따라 게임 실행 시험은 하지 않았고, 공개 뒤 사용자가 싱글플레이 월드에서도 잘 동작한다고 알려 왔습니다.
 
 `1.1.11`은 2026-09-25 15:08 UTC GitHub **일반 릴리스(latest)** [`client-1.1.11`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.11)로 공개했습니다. 릴리스에는 세 아카이브, 설치·라이선스 문서, 번역 팩 단독 ZIP `occultism-ko-1.256.0-mc26.3.zip`(SHA-256 `206fe5460f3cbe3bc84ace4a981ec5924dd52301dddf605895c992409e091c0d`)과 이 6개 파일의 `SHA256SUMS.txt`를 공개했습니다. 초안에 올린 7개 자산을 다시 내려받아 크기·SHA-256을 확인하고 공개한 뒤 `main`을 푸시했습니다. Python 테스트 64개와 JavaScript 테스트 2개가 통과했으며, Pages 배포 [36152198220](https://github.com/aziran07/AziranMinecraftServer/actions/runs/36152198220)이 성공하고 공개 사이트의 1.1.11 링크와 `.mrpack` 다운로드(HTTP 200·SHA-256 일치)를 확인했습니다. 사용자가 새 번역 팩을 기존 게임 인스턴스에 넣어 번역이 적용되는 것을 확인했습니다. `1.1.11` 아카이브로 새로 만든 인스턴스의 실행과 모든 책 페이지·링크는 확인하지 않았습니다. 서버는 바뀌지 않았으므로 서버 재시작이 필요 없고, `1.1.10` 인스턴스도 그대로 접속할 수 있습니다.
 
@@ -70,9 +74,9 @@ docker compose ps
 
 `1.1.6`은 GitHub **사전 릴리스(prerelease)** [`client-1.1.6`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.6)으로 공개되어 있으며, 리소스팩을 추가하기 전 판입니다. 서버는 `client-1.1.6` Release 공개와 사이트 배포를 마친 뒤 2026-09-25에 재시작해 Simple Tomb을 활성화했으므로, 이 모드가 없는 `1.1.5` 이하 팩으로는 접속할 수 없습니다. 사전 릴리스로 두는 이유는 **공식 출시 전 실험 단계의 Iris(미병합 PR 빌드)를 담았기 때문입니다.** 이전 버전 `1.1.5`와 `1.1.4`는 사전 릴리스 [`client-1.1.5`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.5), [`client-1.1.4`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.4)에 `.mrpack`과 설치 안내·라이선스 문서·체크섬으로 공개되어 있고 그대로 둡니다. 서버가 Simple Tomb을 활성화했으므로 두 판으로는 접속할 수 없습니다.
 
-- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.11.mrpack)
-- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.11-multimc.zip)
-- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.11-manual.zip)
+- 런처 가져오기(권장): [Modrinth 형식 팩](dist/aziran-26.3-client-1.1.13.mrpack)
+- MultiMC 가져오기: [인스턴스 ZIP](dist/aziran-26.3-client-1.1.13-multimc.zip)
+- 수동 설치: [모드 ZIP](dist/aziran-26.3-client-1.1.13-manual.zip)
 - [설치 안내](dist/README.md), [라이선스](dist/LICENSES.md), [고정 목록](mods-26.3-client.lock.json)
 - [클라이언트 모드 호환성 검토](docs/CLIENT_MOD_COMPATIBILITY_26_3.md)
 
@@ -86,6 +90,15 @@ docker compose ps
 - Vanilla Experience+ `2.0` 리소스팩 — [제작자 FAQ](https://modrinth.com/resourcepack/vanilla-exp)가 모드팩 의존성 사용은 허락하지만 에셋 재배포는 명시적 허가 없이 금지합니다.
 
 **`.mrpack`을 쓰는 쪽을 권합니다.** 런처가 설치 중에 Modrinth CDN에서 네 파일을 받으므로 모드 21개와 셰이더 팩, 리소스팩이 모두 갖춰집니다. MultiMC도 `Add Instance` → `Import from zip`에서 `.mrpack`을 가져올 수 있습니다([MultiMC 위키](https://github.com/MultiMC/Launcher/wiki/Import-Instance), 실제 가져오기는 시험하지 않았습니다). ZIP 두 개를 쓰면 모드 19개와 리소스팩 2개(번역·Stay True)만 설치되며, 팩 안 `README.md`가 나머지 파일을 공식 배포처에서 받아 `mods/`·`shaderpacks/`·`resourcepacks/`에 넣는 절차와 SHA-512를 안내합니다. 셰이더 팩과 Vanilla Experience+는 선택 사항이라 넣지 않아도 접속할 수 있습니다.
+
+### 1.1.13: 공식 Curios 수정판, 배낭 저장 패치 제거
+
+Curios API를 `17.0.0-beta+26.3`에서 공식 [`17.0.0-beta.2+26.3`](https://modrinth.com/mod/curios/version/LeVAnMq4)(`curios-neoforge-17.0.0-beta.2+26.3.jar`)으로 바꿨습니다. 변경 기록이 "Fixed items losing changes while inside a curio slot"을 밝히며, [Traveler's Backpack #1618](https://github.com/Tiviacz1337/Travelers-Backpack/issues/1618)이 이 수정을 가리킵니다. 그래서 `1.1.12`의 자체 패치 `aziran-backpack-curios-1.0.0.jar`를 서버 lock과 팩에서 뺐습니다(소스 `compat/backpack-curios/`는 이력으로 보존). 나머지 모드 20개, 셰이더 팩, 리소스팩 3개와 기본 활성화, `options.txt`, `servers.dat`, Nemo 설정 파일은 `1.1.12`와 같습니다. 원인과 기록은 [배낭 저장 검증](docs/BACKPACK_PERSISTENCE.md)에 있습니다.
+
+- **기존 인스턴스:** 게임을 끄고 `mods/`에서 `curios-neoforge-17.0.0-beta+26.3.jar`와(1.1.12로 설치했다면) `aziran-backpack-curios-1.0.0.jar`를 지운 뒤 새 Curios JAR만 넣습니다. 다른 모드·설정·리소스팩·`options.txt`·`servers.dat`·월드는 그대로 둡니다. 새 인스턴스로 가져오는 쪽을 권합니다.
+- **알려진 제한:** 등 슬롯 배낭의 화면을 연 채 그 슬롯의 배낭이 다른 배낭(내용이 같은 배낭 포함)으로 바뀌면 열린 화면이 이전 배낭을 계속 다룰 수 있습니다. 사용자가 공식 판만 쓰기로 결정해 받아들인 상류 제한이며, 배낭을 바꾸거나 빼기 전에 화면을 닫도록 안내합니다.
+- **자동 검사:** 공식 JAR과 서버 모드 전체를 넣은 임시 서버에서 18개 중 14개 통과(일반 저장, 서버 프로세스를 새로 띄운 뒤 읽기 포함), 교체 경우 4개 실패. 실제 클라이언트 조작은 아닙니다.
+- **확인하지 않은 것:** `1.1.13` 아카이브로 새로 만든 인스턴스의 실행과 싱글플레이 배낭 저장, 배포 뒤 실제 플레이어의 재접속. 이전 Curios 인스턴스로 새 서버에 접속되는지도 확인하지 않았습니다.
 
 ### 1.1.11: 한국어 번역 팩 갱신
 

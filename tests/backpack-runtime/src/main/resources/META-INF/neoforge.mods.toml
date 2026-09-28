@@ -18,6 +18,6 @@ side="SERVER"
 [[dependencies.aziran_backpack_tests]]
 modId="curios"
 type="required"
-versionRange="[17.0.0-beta+26.3]"
+versionRange="[17.0.0-beta.2+26.3]"
 ordering="AFTER"
 side="SERVER"

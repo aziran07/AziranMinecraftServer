@@ -1,63 +1,42 @@
-"""Require the tested compatibility patch whenever Curios wearing is enabled.
-
-This checks deployment configuration, not in-game persistence. The runtime
-acceptance procedure is documented in docs/BACKPACK_PERSISTENCE.md.
-"""
+"""Require official Curios persistence fix without the retired compatibility addon."""
 
 from pathlib import Path
 import importlib.util
 import json
 import tomllib
 import unittest
-import zipfile
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class BackpackPersistenceConfigTests(unittest.TestCase):
-    def test_server_enables_curios_with_the_pinned_patch(self):
-        path = ROOT / "server-data-26.3-neoforge/config/travelersbackpack-server.toml"
-        with path.open("rb") as stream:
+    def test_server_enables_curios_with_official_fix(self):
+        with (ROOT / "server-data-26.3-neoforge/config/travelersbackpack-server.toml").open("rb") as stream:
             config = tomllib.load(stream)
-        self.assertIs(
-            config["server"]["backpackSettings"]["backSlotIntegration"],
-            True,
-            "The validated compatibility patch should restore Curios Back-slot wearing.",
-        )
-        lock = json.loads((ROOT / "mods-26.3.lock.json").read_text())
-        patches = [mod for mod in lock["mods"] if "aziran_backpack_curios" in mod["declared_mod_ids"]]
-        self.assertEqual(len(patches), 1, "Curios wearing requires exactly one locked persistence patch")
-        patch = patches[0]
-        self.assertEqual(patch["client_side"], "optional")
-        jar_path = ROOT / lock["mods_directory"] / patch["filename"]
-        with zipfile.ZipFile(jar_path) as jar:
-            metadata = tomllib.loads(jar.read("META-INF/neoforge.mods.toml").decode())
-            pins = {dependency["modId"]: dependency["versionRange"]
-                    for dependency in metadata["dependencies"]["aziran_backpack_curios"]}
-            self.assertEqual(pins, {
-                "minecraft": "[26.3]", "neoforge": "[26.3.0.8-beta]",
-                "travelersbackpack": "[11.4.0]", "curios": "[17.0.0-beta+26.3]",
-            })
-            mixins = json.loads(jar.read("aziran_backpack_curios.mixins.json"))
-            self.assertIs(mixins["required"], True)
-            self.assertEqual(mixins["injectors"]["defaultRequire"], 1)
-            self.assertFalse(any("backpacktests" in name for name in jar.namelist()),
-                             "Production patch must not ship the automatic test server shutdown harness")
-        client_lock = json.loads((ROOT / "mods-26.3-client.lock.json").read_text())
-        bundled = next(mod for mod in client_lock["mods"] if mod["filename"] == patch["filename"])
-        self.assertEqual(bundled["sha512"], patch["sha512"])
+        self.assertIs(config["server"]["backpackSettings"]["backSlotIntegration"], True)
+        server = json.loads((ROOT / "mods-26.3.lock.json").read_text())
+        client = json.loads((ROOT / "mods-26.3-client.lock.json").read_text())
+        official = []
+        for lock in (server, client):
+            self.assertFalse(any("aziran_backpack_curios" in mod["declared_mod_ids"] for mod in lock["mods"]))
+            curios = [mod for mod in lock["mods"] if "curios" in mod["declared_mod_ids"]]
+            self.assertEqual(len(curios), 1)
+            self.assertEqual(curios[0]["version_number"], "17.0.0-beta.2+26.3")
+            official.append(curios[0])
+        self.assertEqual(official[0]["sha512"], official[1]["sha512"])
+        directory = ROOT / server["mods_directory"]
+        self.assertFalse(list(directory.glob("aziran-backpack-curios-*.jar")))
+        self.assertEqual([path.name for path in directory.glob("curios-*.jar")], [official[0]["filename"]])
 
-    def test_client_builder_bundles_existing_patch_for_singleplayer(self):
+    def test_client_builder_selects_official_curios_without_local_patch(self):
         spec = importlib.util.spec_from_file_location("client_builder", ROOT / "scripts/build_client_pack.py")
         builder = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(builder)
-        server_lock, selected = builder.load_client_mods()
-        patch = next(mod for mod in server_lock["mods"] if "aziran_backpack_curios" in mod["declared_mod_ids"])
+        _, selected = builder.load_client_mods()
         self.assertTrue(selected)
-        bundled = next(mod for mod in selected if mod["filename"] == patch["filename"])
-        self.assertTrue(bundled["bundle_jar"])
-        self.assertEqual(bundled["sha512"], patch["sha512"])
+        self.assertFalse(any("aziran_backpack_curios" in mod["declared_mod_ids"] for mod in selected))
+        curios = next(mod for mod in selected if "curios" in mod["declared_mod_ids"])
+        self.assertEqual(curios["version_number"], "17.0.0-beta.2+26.3")
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@
   "data_directory": "server-data-26.3-neoforge",
   "mods_directory": "server-data-26.3-neoforge/mods",
   "previous_fabric_lock": "mods-26.3-fabric-historical.lock.json",
-  "mod_count": 25,
+  "mod_count": 24,
   "mods": [
     {
       "title": "Almanac",
@@ -71,51 +71,6 @@
       ],
       "bundled_jars": [],
       "has_fabric_metadata": false
-    },
-    {
-      "title": "Aziran Backpack Curios Persistence",
-      "source": "local-build",
-      "source_path": "compat/backpack-curios",
-      "build_command": "python3 compat/backpack-curios/build.py",
-      "version_number": "1.0.0",
-      "filename": "aziran-backpack-curios-1.0.0.jar",
-      "size": 12040,
-      "sha1": "921397ee1840a4ce711fb7fda2bbe6138d3521c4",
-      "sha256": "edffa69c4b391a1ee650458905a9ef031b541e3ec915ef28d8ce631af19ea755",
-      "sha512": "7967919b5707b8fc4d5336f941e45ec7e2726e92d348af01e7f07adb871141a66a013be1141dafd350d5bcbc785d8cfa3228cec8de22fc539565918f6e1c021c",
-      "game_versions": [
-        "26.3"
-      ],
-      "loaders": [
-        "neoforge"
-      ],
-      "environment": "client_and_server",
-      "server_side": "required",
-      "client_side": "optional",
-      "declared_mod_ids": [
-        "aziran_backpack_curios"
-      ],
-      "required_dependencies": [
-        {
-          "mod_id": "minecraft",
-          "version_range": "[26.3]"
-        },
-        {
-          "mod_id": "neoforge",
-          "version_range": "[26.3.0.8-beta]"
-        },
-        {
-          "mod_id": "travelersbackpack",
-          "version_range": "[11.4.0]"
-        },
-        {
-          "mod_id": "curios",
-          "version_range": "[17.0.0-beta+26.3]"
-        }
-      ],
-      "bundled_jars": [],
-      "has_fabric_metadata": false,
-      "note": "저장소에서 빌드하는 호환 패치. Curios 17의 Back 슬롯에 착용한 Traveler's Backpack 변경 사항이 저장되게 하는 서버 로직이다. 멀티플레이 접속에는 클라이언트 설치가 필요 없고, 싱글플레이 통합 서버에서도 동작하도록 클라이언트 팩(1.1.12부터)에 같은 파일을 담는다. 싱글플레이·클라이언트 실행은 시험하지 않았다. 공개 배포처가 없으며, 네 버전이 정확히 일치할 때만 로드된다. 설계: docs/BACKPACK_CURIOS_FIX_DESIGN.md"
     },
     {
       "title": "Balm",
@@ -411,15 +366,15 @@
       "source": "modrinth",
       "project_slug": "curios",
       "project_id": "vvuO3ImH",
-      "version_id": "QZcvrMJc",
-      "version_number": "17.0.0-beta+26.3",
+      "version_id": "LeVAnMq4",
+      "version_number": "17.0.0-beta.2+26.3",
       "version_type": "beta",
-      "date_published": "2026-09-22T06:12:54.761652Z",
-      "filename": "curios-neoforge-17.0.0-beta+26.3.jar",
-      "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/QZcvrMJc/curios-neoforge-17.0.0-beta%2B26.3.jar",
-      "size": 430333,
-      "sha1": "1f11b7a64387bf52a62af3cca7430ba2ae9fe2f7",
-      "sha512": "6d58479f53150e604e6eac839d251299a44486fa4e61d4598940e85e0b3328bf1c0ac71919076aacef8495af0ac37171fc80f4c69c274a3ce6a7cf4c3494e557",
+      "date_published": "2026-09-26T19:34:12.092103Z",
+      "filename": "curios-neoforge-17.0.0-beta.2+26.3.jar",
+      "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/LeVAnMq4/curios-neoforge-17.0.0-beta.2%2B26.3.jar",
+      "size": 431111,
+      "sha1": "09e8f9fc2e04bccc6b3268bbfa743ed7e409fec4",
+      "sha512": "4eca404d26fee1d78d148fe563c6d6b227da831da93e48afc2dc79e6867ce8ff71906fc1bf1087d5aad809f958157e00d07808863d76018c9f5dde392f057a1f",
       "game_versions": [
         "26.3"
       ],

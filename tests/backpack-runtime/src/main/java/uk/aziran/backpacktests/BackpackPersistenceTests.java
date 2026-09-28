@@ -53,7 +53,7 @@ public final class BackpackPersistenceTests {
             if (System.getProperty("aziran.backpackTestPhase", "write").equals("read")) {
                 run("curios_contents_survive_server_process_restart", () -> readDurable(server));
             } else {
-            run("curios_getter_stays_detached", () -> getterContract(server));
+            run("curios_getter_preserves_live_reference", () -> getterContract(server));
             run("worn_menu_close_reopen", () -> closeReopen(server));
             run("curios_inventory_serialization", () -> serialization(server));
             run("tools_upgrades_settings", () -> components(server));
@@ -68,6 +68,7 @@ public final class BackpackPersistenceTests {
             run("stale_identical_bag", () -> staleMenu(server, "identical"));
             run("stale_removed_bag", () -> staleMenu(server, "removed"));
             run("stale_settings_menu", () -> staleSettings(server));
+            run("replacement_lookup_uses_current_bag", () -> replacementLookup(server));
             run("write_curios_restart_fixture", () -> writeDurable(server));
             }
             try {
@@ -131,9 +132,11 @@ public final class BackpackPersistenceTests {
     private static void getterContract(MinecraftServer server) {
         Fixture fixture = fixture(server);
         ItemStack original = fixture.back().getStackInSlot(0);
-        ItemStack copy = fixture.back().getStackInSlot(0);
-        copy.set(ModDataComponents.COOLDOWN.get(), 1234);
-        expect(fixture.back().getStackInSlot(0), original, "Curios getter must still return a detached stack");
+        ItemStack current = fixture.back().getStackInSlot(0);
+        check(current == original, "Official Curios fix must preserve the stored stack reference");
+        current.set(ModDataComponents.COOLDOWN.get(), 1234);
+        check(fixture.back().getStackInSlot(0).getOrDefault(ModDataComponents.COOLDOWN.get(), 0) == 1234,
+            "Mutating the returned stack must update Curios storage");
     }
 
     private static void closeReopen(MinecraftServer server) {
@@ -275,14 +278,15 @@ public final class BackpackPersistenceTests {
         BackpackItemMenu menu = open(fixture);
         ItemStack replacement = switch (scenario) {
             case "different" -> new ItemStack(ModItems.DIAMOND_TRAVELERS_BACKPACK.get());
-            case "identical" -> fixture.back().getStackInSlot(0);
+            case "identical" -> fixture.back().getStackInSlot(0).copy();
             case "removed" -> ItemStack.EMPTY;
             default -> throw new IllegalArgumentException(scenario);
         };
+        ItemStack expectedReplacement = replacement.copy();
         fixture.back().setStackInSlot(0, replacement);
         check(!menu.stillValid(fixture.player()), "Menu must become invalid when its slot object is " + scenario);
         set(menu.getWrapper().getStorage(), 0, new ItemStack(Items.DIAMOND, 12));
-        expect(fixture.back().getStackInSlot(0), replacement, "Orphaned wrapper must not overwrite the " + scenario + " slot");
+        expect(fixture.back().getStackInSlot(0), expectedReplacement, "Orphaned wrapper must not overwrite the " + scenario + " slot");
         BackpackWrapper next = AttachmentUtils.getBackpackWrapper(fixture.player());
         if (scenario.equals("removed")) {
             check(next == null, "Removing the backpack must leave no worn wrapper");
@@ -311,11 +315,29 @@ public final class BackpackPersistenceTests {
         BackpackWrapper wrapper = AttachmentUtils.getBackpackWrapper(fixture.player());
         BackpackSettingsMenu menu = new BackpackSettingsMenu(2, fixture.player().getInventory(), wrapper);
         fixture.player().containerMenu = menu;
-        ItemStack replacement = fixture.back().getStackInSlot(0);
+        ItemStack replacement = fixture.back().getStackInSlot(0).copy();
+        ItemStack expectedReplacement = replacement.copy();
         fixture.back().setStackInSlot(0, replacement);
         check(!menu.stillValid(fixture.player()), "Settings menu must become invalid after an identical bag replaces its owner");
         wrapper.setCooldown(1234);
-        expect(fixture.back().getStackInSlot(0), replacement, "Stale settings must not change the replacement");
+        expect(fixture.back().getStackInSlot(0), expectedReplacement, "Stale settings must not change the replacement");
+    }
+
+    private static void replacementLookup(MinecraftServer server) {
+        Fixture fixture = fixture(server);
+        BackpackItemMenu menu = open(fixture);
+        ItemStack replacement = fixture.back().getStackInSlot(0).copy();
+        fixture.back().setStackInSlot(0, replacement);
+        BackpackWrapper current = AttachmentUtils.getBackpackWrapper(fixture.player());
+        check(current.getBackpackStack() == fixture.back().getStackInSlot(0),
+            "Lookup after replacement must target the currently stored backpack, not an orphaned menu stack");
+        ItemStack diamonds = new ItemStack(Items.DIAMOND, 7);
+        set(current.getStorage(), 0, diamonds);
+        close(fixture, menu);
+        BackpackItemMenu reopened = open(fixture);
+        expect(ItemUtil.getStack(reopened.getWrapper().getStorage(), 0), diamonds,
+            "Writes through the resolved wrapper after replacement must survive reopening");
+        close(fixture, reopened);
     }
 
     private static void writeDurable(MinecraftServer server) {

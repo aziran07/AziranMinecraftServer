@@ -1,5 +1,11 @@
 # Aziran Backpack Curios Persistence
 
+> **Retired (2026-09-28).** Curios 17.0.0-beta.2+26.3 (Modrinth version `LeVAnMq4`) fixes items losing changes inside
+> a curio slot, the upstream cause tracked by [Traveler's Backpack #1618](https://github.com/Tiviacz1337/Travelers-Backpack/issues/1618).
+> The server lock and client pack 1.1.13 use that official Curios jar and no longer ship this addon. The source and
+> build are kept as a historical record only. `build.py` pins the old Curios 17.0.0-beta+26.3 jar in the server
+> `mods/` directory, so it cannot be rebuilt once the official jar is deployed.
+
 A server-only compatibility mod that makes the Traveler's Backpack Curios Back slot persist its contents again.
 It supports exactly Minecraft 26.3, NeoForge 26.3.0.8-beta, Traveler's Backpack 11.4.0, and Curios 17.0.0-beta+26.3.
 Design and acceptance criteria: [docs/BACKPACK_CURIOS_FIX_DESIGN.md](../../docs/BACKPACK_CURIOS_FIX_DESIGN.md).

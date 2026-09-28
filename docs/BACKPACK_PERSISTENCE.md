@@ -33,7 +33,22 @@ Curios Back 슬롯 착용을 지원한다고 명시한다. 비슷한 증상의
 [Traveler's Backpack #1613](https://github.com/Tiviacz1337/Travelers-Backpack/issues/1613)은
 이전 버전에서 26.2로 이행하는 저장 형식 문제다. 이번 원인과 같다고 보지 않는다.
 
-## Curios 연동 패치
+## 공식 Curios 수정판 전환 (2026-09-28)
+
+Curios `17.0.0-beta.2+26.3`(Modrinth 버전 `LeVAnMq4`, 2026-09-26 공개)의 변경 기록이
+"Fixed items losing changes while inside a curio slot"을 밝히며, 위
+[Traveler's Backpack #1618](https://github.com/Tiviacz1337/Travelers-Backpack/issues/1618)이
+이 수정을 가리킨다. 서버·클라이언트 lock이 이 공식 JAR(SHA-512 `4eca404d…2f057a1f`)을 고르고,
+아래 자체 패치 `aziran-backpack-curios-1.0.0.jar`는 lock과 클라이언트 팩 1.1.13에서 뺀다.
+`backSlotIntegration=true`는 그대로다. 패치 소스와 아래 기록은 이력으로 보존한다.
+
+2026-09-28 운영 서버 배포: 접속자 0명 확인 뒤 `docker compose stop minecraft`로 정상 종료했다(03:43:56Z 요청, exit 0, OOM 없음, `StopTimeout=660`·`STOP_DURATION=600`, 세 차원 `Saving chunks`와 러너 `Done`, 저장 오류 없음). 월드만 보호 백업 `/home/pilon1945/aziran-26.3-protected-backups/pre-curios-beta2-world-2026-09-28-034407.tar`(11454986240바이트, SHA-256 `5fa96ee1f764e773af73b130385732507b1a06968acf951afd97039e2b9e5fb4`)을 만들고 필수 항목·범위·해시를 검증했다. 그 뒤 기존 Curios와 패치 JAR만 빼고 새 Curios(소유자 1000:1000, 0664)를 넣었다. 나머지 23개 JAR의 해시는 배포 전과 같고, 설정 파일도 재시작 전 기준 해시가 같았다(spark가 종료 때 지우는 임시 파일 제외). 재시작 뒤 `packetfixer.properties`는 생성 시각 주석만 바뀌었다(Codex가 주석을 이전 시각으로 바꾸면 배포 전 해시가 재현됨을 확인). 기존 컨테이너를 재생성 없이 03:44:57Z에 시작해 03:45:17Z healthy, 재시작 0회, OOM 없음, 로그의 `Curios API 17.0.0-beta.2+26.3`, RCON 응답과 `save-all` 저장을 확인했다. 새 경고는 월드에 기록된 모드 버전 차이(`aziran_backpack_curios 1.0.0 -> MISSING`, `curios` 버전 변경) 한 건이며, 그 밖의 경고·예외(kqueue log4j, refmap, udev, Occultism Curios 폴백, apothic 데이터 맵)는 2026-09-26 기동에도 있었다. 실제 플레이어의 재접속과 게임 내 배낭 확인은 아직 하지 않았다.
+
+공식 판만 쓰기로 한 사용자 결정(설계 [CURIOS_OFFICIAL_MIGRATION.md](CURIOS_OFFICIAL_MIGRATION.md))에 따라 1.1.12 패치가 막던 교체 경우 하나를 알려진 상류 제한으로 받아들였다. Back 슬롯 배낭의 화면이나 설정 화면이 열린 채 그 슬롯의 배낭이 다른 배낭(내용이 같은 배낭 포함)으로 바뀌면 열린 화면이 무효가 되지 않고, 교체 뒤 조회도 지금 멘 배낭이 아니라 열린 화면의 이전 wrapper를 가리킬 수 있다. 닫았다 다시 여는 일반 저장과는 별개다. Codex가 공식 JAR과 운영 모드 전체로 만든 임시 서버(`/tmp/aziran-backpack-test-ytu9tcj3`, 운영 월드·설정 미사용)에서 자동 검사 18개 중 14개가 통과했다. 통과: 일반 닫기·열기 저장, 개수 변경, 도구·업그레이드·설정, 초기 업그레이드, Curios 직렬화·틱, 들고 있는·놓은·자체 착용 배낭, 빠진 배낭의 메뉴 무효화, 그리고 별도 서버 프로세스를 새로 띄워 저장된 내용을 읽는 검사. 실패 4개(`stale_replaced_bag`, `stale_identical_bag`, `stale_settings_menu`, `replacement_lookup_uses_current_bag`)는 모두 위 교체 경우이며, 두 Java 프로세스는 exit 0이고 검사 실행기는 실패를 그대로 exit 1로 보고했다. 실제 클라이언트 접속과 화면 조작으로 확인한 것은 아니다.
+
+클라이언트 팩 1.1.13(모드 21개)은 배포한 서버 JAR로 빌드했고 아직 공개하지 않았다.
+
+## Curios 연동 패치 (1.1.13에서 공식 수정판으로 대체)
 
 서버 전용 `aziran-backpack-curios-1.0.0.jar`를 만들어 실제 저장 경로를 수정했다.
 소스·재현 빌드는 [compat/backpack-curios](../compat/backpack-curios/README.md),
@@ -189,7 +204,8 @@ Curios 자체와 다른 장신구는 유지한다. 사망 시 배낭 배치 설�
 
 이번 작업에서는 게임·통합 서버 실행 검증을 수행하지 않는다. 검사 범위는
 아카이브 구성, 원본 JAR과 해시 일치, 기존 모드·설정 보존 및 배포 파일이다.
-싱글플레이에서 정상 동작한다고 검증한 릴리스로 표기하지 않는다. 운영 서버의
+싱글플레이에서 정상 동작한다고 검증한 릴리스로 표기하지 않는다(공개 뒤 2026-09-26 사용자가 싱글플레이
+월드에서도 잘 동작한다고 알려 왔다. 자동·게임 실행 시험과는 구분한다). 운영 서버의
 JAR·설정·월드를 변경하거나 다시 시작하지 않는다.
 
 패키징 결과: Codex의 파일·배포 구성 검사 12개와 사이트 JavaScript 검사 2개가

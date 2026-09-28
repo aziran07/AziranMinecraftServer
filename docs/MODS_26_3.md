@@ -20,7 +20,23 @@
 
 ## 설치 명세
 
-현재 lock은 서버 전용 Curios 배낭 패치까지 포함해 25개다. 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). 2026-09-26에는 원본 24개 JAR을 유지하고 Curios 배낭 패치를 더했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL 또는 로컬 소스·빌드 명령, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+현재 lock과 서버 `mods/`는 24개다(2026-09-28 Curios 공식 수정판으로 바꾸고 Curios 배낭 패치를 뺐다, 아래 절). 최초 설치 20개에 BlueMap `5.27-neoforge`를 2026-09-24, SableCraft Standards `1.10.0+mc26.3`과 Simple Tomb `1.9.0`을 2026-09-25 추가했다. 같은 날 Modonomicon을 `2.6.0`에서 `2.7.0`으로 교체했고, Traveler's Backpack `11.4.0`을 추가했다(아래 절). 2026-09-26에는 원본 24개 JAR을 유지하고 Curios 배낭 패치를 더했다. Simple Tomb은 `client-1.1.6` 공개 뒤 서버를 재시작해 활성화했다(아래 절)([BlueMap 배포 안내](BLUEMAP.md)). 아래 설치 검증 기록은 최초 20개 기준이다. 배포 채널, 다운로드 URL 또는 로컬 소스·빌드 명령, 파일 크기, SHA-1/SHA-512, 선언된 모드 ID, 필수 의존성 범위, 내부 번들 JAR은 [mods-26.3.lock.json](../mods-26.3.lock.json)에 기록한다.
+
+### Curios 17.0.0-beta.2 교체와 배낭 패치 제거 (2026-09-28)
+
+Curios API를 `17.0.0-beta+26.3`에서 공식 [`17.0.0-beta.2+26.3`](https://modrinth.com/mod/curios/version/LeVAnMq4)
+(Modrinth 버전 `LeVAnMq4`, 2026-09-26 공개, `curios-neoforge-17.0.0-beta.2+26.3.jar`, 431111바이트,
+SHA-1 `09e8f9fc2e04bccc6b3268bbfa743ed7e409fec4`)으로 바꿨다. 변경 기록이
+"Fixed items losing changes while inside a curio slot"을 밝히며, Traveler's Backpack 이슈
+[#1618](https://github.com/Tiviacz1337/Travelers-Backpack/issues/1618)이 이 수정을 가리킨다.
+그래서 자체 호환 패치 Aziran Backpack Curios Persistence 1.0.0을 lock에서 뺐다. 소스
+[compat/backpack-curios](../compat/backpack-curios/README.md)는 기록으로 보존하며 더 이상 빌드·배포하지 않는다.
+`backSlotIntegration=true`와 나머지 23개 JAR·설정은 그대로다. 모드 ID·필수 의존성(NeoForge `[26.3,27)`,
+Minecraft `[26.3,)`)은 이전 판과 같다.
+
+2026-09-28 운영 서버 배포: 접속자 0명 확인 뒤 `docker compose stop minecraft`로 정상 종료했다(03:43:56Z 요청, exit 0, OOM 없음, `StopTimeout=660`·`STOP_DURATION=600`, 세 차원 `Saving chunks`와 러너 `Done`, 저장 오류 없음). 월드만 보호 백업 `/home/pilon1945/aziran-26.3-protected-backups/pre-curios-beta2-world-2026-09-28-034407.tar`(11454986240바이트, SHA-256 `5fa96ee1f764e773af73b130385732507b1a06968acf951afd97039e2b9e5fb4`)을 만들고 필수 항목·범위·해시를 검증했다. 그 뒤 기존 Curios와 패치 JAR만 빼고 새 Curios(소유자 1000:1000, 0664)를 넣었다. 나머지 23개 JAR의 해시는 배포 전과 같고, 설정 파일도 재시작 전 기준 해시가 같았다(spark가 종료 때 지우는 임시 파일 제외). 재시작 뒤 `packetfixer.properties`는 생성 시각 주석만 바뀌었다(Codex가 주석을 이전 시각으로 바꾸면 배포 전 해시가 재현됨을 확인). 기존 컨테이너를 재생성 없이 03:44:57Z에 시작해 03:45:17Z healthy, 재시작 0회, OOM 없음, 로그의 `Curios API 17.0.0-beta.2+26.3`, RCON 응답과 `save-all` 저장을 확인했다. 새 경고는 월드에 기록된 모드 버전 차이(`aziran_backpack_curios 1.0.0 -> MISSING`, `curios` 버전 변경) 한 건이며, 그 밖의 경고·예외(kqueue log4j, refmap, udev, Occultism Curios 폴백, apothic 데이터 맵)는 2026-09-26 기동에도 있었다. 실제 플레이어의 재접속과 게임 내 배낭 확인은 아직 하지 않았다.
+
+**알려진 제한:** 공식 판만 쓰기로 한 사용자 결정(설계 [CURIOS_OFFICIAL_MIGRATION.md](CURIOS_OFFICIAL_MIGRATION.md))에 따라 1.1.12 패치가 막던 교체 경우 하나를 알려진 상류 제한으로 받아들였다. Back 슬롯 배낭의 화면이나 설정 화면이 열린 채 그 슬롯의 배낭이 다른 배낭(내용이 같은 배낭 포함)으로 바뀌면 열린 화면이 무효가 되지 않고, 교체 뒤 조회도 지금 멘 배낭이 아니라 열린 화면의 이전 wrapper를 가리킬 수 있다. 닫았다 다시 여는 일반 저장과는 별개다. Codex가 공식 JAR과 운영 모드 전체로 만든 임시 서버(`/tmp/aziran-backpack-test-ytu9tcj3`, 운영 월드·설정 미사용)에서 자동 검사 18개 중 14개가 통과했다. 통과: 일반 닫기·열기 저장, 개수 변경, 도구·업그레이드·설정, 초기 업그레이드, Curios 직렬화·틱, 들고 있는·놓은·자체 착용 배낭, 빠진 배낭의 메뉴 무효화, 그리고 별도 서버 프로세스를 새로 띄워 저장된 내용을 읽는 검사. 실패 4개(`stale_replaced_bag`, `stale_identical_bag`, `stale_settings_menu`, `replacement_lookup_uses_current_bag`)는 모두 위 교체 경우이며, 두 Java 프로세스는 exit 0이고 검사 실행기는 실패를 그대로 exit 1로 보고했다. 실제 클라이언트 접속과 화면 조작으로 확인한 것은 아니다.
 
 ### Traveler's Backpack 추가 (2026-09-25)
 
@@ -115,7 +131,7 @@ Structures(GaraKrral, 프로젝트 ID `1391238`, 파일 ID `8849254`, `Structure
 | --- | --- | --- | --- |
 | [Modonomicon](https://modrinth.com/mod/modonomicon) | 26.3-2.7.0 | 정식 | Occultism 요구 `[2.5.0,)` 충족. 2026-09-25 2.6.0에서 교체(위 절) |
 | [GeckoLib](https://modrinth.com/mod/geckolib) | 5.5.7 | 정식 | Occultism 요구 `[5.5.6,)` 충족. 자체적으로 NeoForge `[26.3.0.7-beta,)` 요구 |
-| [Curios API](https://modrinth.com/mod/curios) | 17.0.0-beta+26.3 | 베타 | 아래 제한 사항 참고 |
+| [Curios API](https://modrinth.com/mod/curios) | 17.0.0-beta.2+26.3 | 베타 | 아래 제한 사항 참고. 2026-09-28 17.0.0-beta+26.3에서 교체(위 절) |
 
 Occultism JAR은 `codedefinedgui 1.13.0`과 `magicparticleslib 1.8.0`을 JarJar로 내장하므로 별도 설치가 필요 없다.
 
@@ -196,9 +212,11 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 - `mc_backup.sh`는 현재 `server-data-26.3-neoforge/world/`를 매시 30분 백업한다. 월드 외의 모드·설정은 포함하지 않는다([월드 백업 안내](BACKUPS.md)).
 - Dynmap은 26.3 배포가 없어 설치하지 않았고, 옛 `8123` 지도 경로는 제거했다. 대신 BlueMap `5.27-neoforge`(Modrinth `1EXOwqA2`)를 lock에 고정했다. 웹 지도는 호스트에 `8100`을 게시하지 않고, 호스트 `443`의 `webmap-nginx`가 Let's Encrypt 인증서로 TLS를 종료해 `minecraft:8100`으로 넘긴다. `https://mcmap.aziran.uk`는 Cloudflare 프록시 `A` 레코드로 이 원본에 연결한다. JAR은 2026-09-24 설치했고 서버 healthy·재시작 0회, Compose 네트워크 `minecraft:8100` HTTP 200, 렌더링 진행 중이다. 로컬 HTTPS 원본과 공개 HTTPS 모두 200을 확인했다. 이전 Cloudflare Tunnel 계획은 터널 생성 API 인증 오류(`10000`)로 폐기했다. 배포·검증·롤백 절차는 [BlueMap 배포 안내](BLUEMAP.md)에 있다.
 - Compose의 고정 컨테이너 이름 `minecraft`는 다른 프로젝트의 종료된 컨테이너와 충돌할 수 있다. 공개 기동 전에 대상 컨테이너와 포트를 정리해야 한다.
-- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 25개)를 클라이언트 필수 목록으로 간주하지 않는다. Curios 배낭 패치는 멀티플레이 클라이언트에는 선택 사항이지만, 1.1.12부터 싱글플레이 사용을 위해 팩에 포함한다(통합 서버 실행 미검증).
+- 클라이언트는 NeoForge 26.3.0.8-beta와 서버의 콘텐츠 모드 및 클라이언트 필수 의존성을 같은 버전으로 설치해야 한다. Jade, JEI 표시 기능은 클라이언트 설치가 필요하다. Simple Tomb과 Traveler's Backpack도 블록·아이템을 등록하므로 클라이언트에 필요하다. Almanac·Let Me Despawn·BlueMap·SableCraft Standards 등 서버 전용 모드는 제외하며 서버의 파일 전체(lock 24개)를 클라이언트 필수 목록으로 간주하지 않는다. 1.1.12에 담았던 Curios 배낭 패치는 1.1.13에서 공식 Curios 수정판으로 대체해 뺀다.
 
 ## 클라이언트 모드팩
+
+클라이언트 팩 `1.1.13`(2026-09-28 빌드, 아직 공개 전)은 `1.1.12`에서 Curios를 공식 `17.0.0-beta.2+26.3`으로 바꾸고 Curios 배낭 패치를 뺀 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개). 나머지 모드·셰이더 팩·리소스팩·`options.txt`·`servers.dat`·Nemo 설정은 `1.1.12`와 같다. 기존 인스턴스는 `mods/`에서 `curios-neoforge-17.0.0-beta+26.3.jar`와 `aziran-backpack-curios-1.0.0.jar`를 지우고 새 Curios JAR을 넣는다. `1.1.12`(모드 22개, 패치 포함)는 2026-09-26 일반 릴리스로 공개했고, 자동 실행 시험은 하지 않았지만 공개 뒤 사용자가 싱글플레이 월드에서도 잘 동작한다고 알려 왔다. `1.1.13`은 새 인스턴스·싱글플레이 실행을 게임에서 시험하지 않았다.
 
 클라이언트 팩 `1.1.10`은 `1.1.9`에 클라이언트 전용 Nemo's Inventory Sorting `26.3-1.22.1`(Modrinth `aeA0nhgf`)을 더한 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap과 Nemo는 라이선스상 `.mrpack` 다운로드 전용). 서버 lock·서버 `mods/`는 바꾸지 않았으므로 서버 백업·재시작이 필요 없다. 세 아카이브에 Nemo 설정 `config/nemos-inventory-sorting/general.json`을 더했고 `options.txt`·`servers.dat`·셰이더 팩·리소스팩은 `1.1.9`와 같다. GitHub 일반 릴리스(latest) [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)로 2026-09-25 공개했고 사이트도 배포했다. 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#1110-nemos-inventory-sorting과-mouse-tweaks)에 있다.
 
