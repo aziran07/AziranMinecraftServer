@@ -216,7 +216,7 @@ Architectury·PolyLib·Resourceful Lib·MidnightLib은 필요해지면 그대로
 
 ## 클라이언트 모드팩
 
-클라이언트 팩 `1.1.13`(2026-09-28 빌드, 아직 공개 전)은 `1.1.12`에서 Curios를 공식 `17.0.0-beta.2+26.3`으로 바꾸고 Curios 배낭 패치를 뺀 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개). 나머지 모드·셰이더 팩·리소스팩·`options.txt`·`servers.dat`·Nemo 설정은 `1.1.12`와 같다. 기존 인스턴스는 `mods/`에서 `curios-neoforge-17.0.0-beta+26.3.jar`와 `aziran-backpack-curios-1.0.0.jar`를 지우고 새 Curios JAR을 넣는다. `1.1.12`(모드 22개, 패치 포함)는 2026-09-26 일반 릴리스로 공개했고, 자동 실행 시험은 하지 않았지만 공개 뒤 사용자가 싱글플레이 월드에서도 잘 동작한다고 알려 왔다. `1.1.13`은 새 인스턴스·싱글플레이 실행을 게임에서 시험하지 않았다.
+클라이언트 팩 `1.1.13`(2026-09-28 일반 릴리스 공개)은 `1.1.12`에서 Curios를 공식 `17.0.0-beta.2+26.3`으로 바꾸고 Curios 배낭 패치를 뺀 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개). 나머지 모드·셰이더 팩·리소스팩·`options.txt`·`servers.dat`·Nemo 설정은 `1.1.12`와 같다. 기존 인스턴스는 `mods/`에서 `curios-neoforge-17.0.0-beta+26.3.jar`와 `aziran-backpack-curios-1.0.0.jar`를 지우고 새 Curios JAR을 넣는다. `1.1.12`(모드 22개, 패치 포함)는 2026-09-26 일반 릴리스로 공개했고, 자동 실행 시험은 하지 않았지만 공개 뒤 사용자가 싱글플레이 월드에서도 잘 동작한다고 알려 왔다. `1.1.13`은 새 인스턴스·싱글플레이 실행을 게임에서 시험하지 않았다.
 
 클라이언트 팩 `1.1.10`은 `1.1.9`에 클라이언트 전용 Nemo's Inventory Sorting `26.3-1.22.1`(Modrinth `aeA0nhgf`)을 더한 판이다(모드 21개: 서버 공통 15개·클라이언트 전용 6개, 수동·MultiMC ZIP에 담는 JAR 19개. JourneyMap과 Nemo는 라이선스상 `.mrpack` 다운로드 전용). 서버 lock·서버 `mods/`는 바꾸지 않았으므로 서버 백업·재시작이 필요 없다. 세 아카이브에 Nemo 설정 `config/nemos-inventory-sorting/general.json`을 더했고 `options.txt`·`servers.dat`·셰이더 팩·리소스팩은 `1.1.9`와 같다. GitHub 일반 릴리스(latest) [`client-1.1.10`](https://github.com/aziran07/AziranMinecraftServer/releases/tag/client-1.1.10)로 2026-09-25 공개했고 사이트도 배포했다. 근거는 [클라이언트 모드 호환성 검토](CLIENT_MOD_COMPATIBILITY_26_3.md#1110-nemos-inventory-sorting과-mouse-tweaks)에 있다.
 

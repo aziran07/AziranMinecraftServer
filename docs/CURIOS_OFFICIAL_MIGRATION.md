@@ -83,3 +83,12 @@ checkpoint.
   other Modrinth download entries are unchanged. Bundled/downloaded Curios hashes
   match the independently downloaded official artifact. Release checksum file
   independently verified for every listed asset.
+
+## Published release
+
+`client-1.1.13` tags source commit `fae58ca`. All seven draft assets were
+downloaded again and matched local bytes before publication at 2026-09-28
+03:50:31 UTC as a normal release/latest. The `.mrpack` SHA-256 is
+`851023c013181b112a417dd71926d41749172c44f9726cc2d9df65e3a159a38e`.
+Final README wording was corrected to identify replacement, not removal, as
+the failing edge case; rebuilt archive/config tests (5) and checksums passed.
